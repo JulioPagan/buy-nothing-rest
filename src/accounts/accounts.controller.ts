@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class AccountsController {
     @Get()
     getAccounts(): string {
-        return "This returns all accounts"
+        return "Returning All Accounts";
     }
 }
