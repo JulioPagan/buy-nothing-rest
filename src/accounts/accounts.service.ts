@@ -3,7 +3,6 @@ import { Account } from '../interfaces/account.interface';
 
 @Injectable()
 export class AccountsService {
-
     private readonly accounts: Account[] = [];
 
     create(account: Account) {
