@@ -11,10 +11,10 @@ export class AccountsController {
     async create(@Body() createAccountDto: CreateAccountDto) {
         this.accountsService.create(createAccountDto);
     }
-    // @Get(':id/activate')
-    // async activate(@Param('id', ParseIntPipe) id: number): Promise<Account> {
-    //     return this.accountsService.activate(id);
-    // }
+    @Get(':id/activate')
+    async activate(@Param('id', ParseIntPipe) id: number): Promise<Account> {
+        return this.accountsService.activate(id);
+    }
     @Put()
     async update(@Param('id', ParseIntPipe) id: number, @Body() account: Account): Promise<Account> {
         return this.accountsService.update(id, account);

@@ -17,10 +17,11 @@ export class AccountsService {
         this.accounts.push(newAccount);
         return newAccount;
     }
-    // activate(id: number): Account {
-    //     const activatedAccount: Account = {}
-    //     return activatedAccount;
-    // } 
+    activate(id: number): Account {
+        const index: number = this.accounts.findIndex((account) => account.id === id);
+        this.accounts[index].is_active = true;
+        return this.accounts[index];
+    } 
     update(id: number, account: Account): Account {
         const index: number = this.accounts.findIndex((account) => account.id === id);
         //no match handler (-1):
