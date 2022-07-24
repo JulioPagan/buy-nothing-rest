@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { Account } from 'src/interfaces/account.interface';
 import { CreateAccountDto } from 'src/dto/create-account.dto';
@@ -11,13 +11,16 @@ export class AccountsController {
     async create(@Body() createAccountDto: CreateAccountDto) {
         this.accountsService.create(createAccountDto);
     }
-    
+    @Delete(':id')
+    async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+        this.accountsService.delete(id);
+    }
     @Get()
     async findAccounts(): Promise<Account[]> {
         return this.accountsService.findAll();
     }
     @Get(':id')
-    public findOneAccount(@Param('id', ParseIntPipe) id: number): Account {
+    async findOneAccount(@Param('id', ParseIntPipe) id: number): Promise<Account> {
         return this.accountsService.findOne(id);
     }
 }
