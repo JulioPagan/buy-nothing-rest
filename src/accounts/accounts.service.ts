@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
 import { Account } from '../interfaces/account.interface';
 
 @Injectable()
@@ -6,10 +6,41 @@ export class AccountsService {
     private readonly accounts: Account[] = [];
 
     create(account: Account): Account {
+        // find the next id for a new account
+        const maxId: number = Math.max(...this.accounts.map((account) => account.id), 0);
+        const id: number = maxId + 1;
 
-        this.accounts.push(account);
-
-        return account;
+        const newAccount: Account = {
+            ...account,
+            id
+        };
+        this.accounts.push(newAccount);
+        return newAccount;
+    }
+    // activate(id: number): Account {
+    //     const activatedAccount: Account = {}
+    //     return activatedAccount;
+    // } 
+    update(id: number, account: Account): Account {
+        const index: number = this.accounts.findIndex((account) => account.id === id);
+        //no match handler (-1):
+        if (index === -1) {
+            throw new NotFoundException('Account not found.');
+        }
+        //if id is already being used by another account give error
+        const idExists: boolean = this.accounts.some(
+            (item) => item.id === account.id && item.id !== id,
+        );
+        if (idExists) {
+        throw new BadRequestException('Account id cannot update another account id');
+        }
+        
+        const updatedAccount: Account = {
+            ...account,
+            id
+        };
+        this.accounts[index] = updatedAccount;
+        return updatedAccount;
     }
     delete(id: number): void {
         const index: number = this.accounts.findIndex(account => account.id === id);
