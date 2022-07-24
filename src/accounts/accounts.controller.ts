@@ -31,4 +31,9 @@ export class AccountsController {
     async findOneAccount(@Param('id', ParseIntPipe) id: number): Promise<Account> {
         return this.accountsService.findOne(id);
     }
+    // Search accounts by keyword
+    @Get(':key')
+    async searchAccounts(@Param('key') key: string): Promise<Account[]> {
+        return this.accountsService.search(key);
+    }
 }

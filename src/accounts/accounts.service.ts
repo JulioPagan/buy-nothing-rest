@@ -52,7 +52,7 @@ export class AccountsService {
         this.accounts.splice(index, 1);
     }
     findAll(): Account[] {
-        return this.accounts
+        return this.accounts;
     }
     findOne(id: number): Account {
         const account: Account = this.accounts.find(account => account.id === id);
@@ -61,5 +61,12 @@ export class AccountsService {
             throw new NotFoundException('Account Not Found');
         }
         return account;
+    }
+    // Search accounts by keyword
+    search(key: string): Account[] {
+        const matchingAccounts: Account[] = {
+            ...this.accounts
+        };
+        return matchingAccounts;
     }
 }
