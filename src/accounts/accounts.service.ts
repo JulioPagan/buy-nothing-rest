@@ -23,7 +23,7 @@ export class AccountsService {
         return this.accounts[index];
     } 
     // Update account
-    // CHECKER IN PROGRESS
+    // INCOMPLETE TEMPLATE - MUST FIX
     update(id: number, account: Account): Account {
         const index: number = this.accounts.findIndex((account) => account.id === id);
         //no match handler (-1):
@@ -65,7 +65,7 @@ export class AccountsService {
         return account;
     }
     // Search accounts by keyword
-    // In progress
+    // INCOMPLETE TEMPLATE - MUST FIX
     search(key: string): Account[] {
         const matchingAccounts: Account[] = {
             ...this.accounts

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Give } from 'src/interfaces/give.interface';
 
 @Injectable()
@@ -11,4 +11,19 @@ export class GivesService {
     findAll(): Give[] {
         return this.gives
     }
+    findOne(gid: number): Give {
+        const give: Give = this.gives.find(give => give.gid === gid);
+        if (!give) {
+            throw new NotFoundException('Give Not Found');
+        }
+
+        return give;
+    }
+    search(key: string): Give[] {
+        const matchingGives: Give[] = {
+            ...this.gives
+        };
+        return matchingGives;
+    }
+
 }

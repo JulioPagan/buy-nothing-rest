@@ -14,11 +14,12 @@ export class AsksService {
     findOne(aid: number): Ask {
         const ask: Ask = this.asks.find(ask => ask.aid === aid);
         if (!ask) {
-            throw new NotFoundException('Account Not Found');
+            throw new NotFoundException('Ask Not Found');
         }
 
         return ask;
     }
+    // INCOMPLETE TEMPLATE - MUST FIX
     search(key: string): Ask[] {
         const matchingAsks: Ask[] = {
             ...this.asks

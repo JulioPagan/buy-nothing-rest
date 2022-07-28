@@ -11,4 +11,12 @@ export class NotesService {
     findAll(): Note[] {
         return this.notes
     }
+    // INCOMPLETE TEMPLATE - MUST FIX
+    search(key: string): Note[] {
+        const matchingNotes: Note[] = {
+            ...this.notes
+        };
+        return matchingNotes;
+    }
+
 }

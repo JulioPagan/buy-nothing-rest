@@ -15,7 +15,7 @@ export class AsksController {
     async findOneAsk(@Param('aid', ParseIntPipe) aid: number): Promise<Ask> {
         return this.asksService.findOne(aid);
     }
-    // Search accounts by keyword
+    // INCOMPLETE TEMPLATE - MUST FIX
     @Get(':key')
     async searchAccounts(@Param('key') key: string): Promise<Ask[]> {
         return this.asksService.search(key);

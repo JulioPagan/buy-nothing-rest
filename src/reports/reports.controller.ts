@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { Report } from 'src/interfaces/report.interface';
 import { CreateReportDto } from 'src/dto/create-report.dto';
@@ -7,13 +7,13 @@ import { CreateReportDto } from 'src/dto/create-report.dto';
 export class ReportsController {
     constructor(private reportsService: ReportsService){}
 
-    @Post()
-    async create(@Body() createReportDto: CreateReportDto){
-        this.reportsService.create(createReportDto);
-    }
-    
     @Get()
     async findReports(): Promise<Report[]> {
         return this.reportsService.findAll();
     }
+    @Get(':rid')
+    async findOneAsk(@Param('rid', ParseIntPipe) rid: number): Promise<Report> {
+        return this.reportsService.findOne(rid);
+    }
+
 }
