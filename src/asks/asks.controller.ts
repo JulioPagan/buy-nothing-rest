@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { AsksService } from './asks.service';
 import { Ask } from 'src/interfaces/ask.interface';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
@@ -7,13 +7,18 @@ import { CreateAskDto } from 'src/dto/create-ask.dto';
 export class AsksController {
     constructor(private asksService: AsksService){}
 
-    @Post()
-    async create(@Body() createAskDto: CreateAskDto){
-        this.asksService.create(createAskDto);
-    }
-    
     @Get()
     async findAsks(): Promise<Ask[]> {
         return this.asksService.findAll();
     }
+    @Get(':aid')
+    async findOneAsk(@Param('aid', ParseIntPipe) aid: number): Promise<Ask> {
+        return this.asksService.findOne(aid);
+    }
+    // Search accounts by keyword
+    @Get(':key')
+    async searchAccounts(@Param('key') key: string): Promise<Ask[]> {
+        return this.asksService.search(key);
+    }
+
 }

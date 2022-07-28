@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Ask } from 'src/interfaces/ask.interface';
 
 @Injectable()
@@ -9,6 +9,20 @@ export class AsksService {
         this.asks.push(ask);
     }
     findAll(): Ask[] {
-        return this.asks
+        return this.asks;
+    }
+    findOne(aid: number): Ask {
+        const ask: Ask = this.asks.find(ask => ask.aid === aid);
+        if (!ask) {
+            throw new NotFoundException('Account Not Found');
+        }
+
+        return ask;
+    }
+    search(key: string): Ask[] {
+        const matchingAsks: Ask[] = {
+            ...this.asks
+        };
+        return matchingAsks;
     }
 }
