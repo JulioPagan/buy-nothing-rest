@@ -1,75 +1,74 @@
 import { BadRequestException, Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
+import { CreateAccountDto } from 'src/dto/create-account.dto';
 import { Account } from '../interfaces/account.interface';
 
 @Injectable()
 export class AccountsService {
     private readonly accounts: Account[] = [];
+    private counter = 1;
 
-    create(account: Account): Account {
+    create(createAccountDto: CreateAccountDto): Account {
         // find the next id for a new account
-        const maxId: number = Math.max(...this.accounts.map((account) => account.id), 0);
-        const id: number = maxId + 1;
-
+        let uid = this.counter;
         const newAccount: Account = {
-            ...account,
-            id
+            ...createAccountDto,
+            uid
         };
         this.accounts.push(newAccount);
+        this.counter ++;
         return newAccount;
     }
-    activate(id: number): Account {
-        const index: number = this.accounts.findIndex((account) => account.id === id);
+    activate(uid: number): Account {
+        const index: number = this.accounts.findIndex((account) => account.uid === uid);
         this.accounts[index].is_active = true;
         return this.accounts[index];
     } 
     // Update account
     // INCOMPLETE TEMPLATE - MUST FIX
-    update(id: number, account: Account): Account {
-        const index: number = this.accounts.findIndex((account) => account.id === id);
+    update(uid: number, account: Account): Account {
+        const index: number = this.accounts.findIndex((account) => account.uid === uid);
         //no match handler (-1):
         if (index === -1) {
             throw new NotFoundException('Account not found.');
         }
         //if id is already being used by another account give error
         const idExists: boolean = this.accounts.some(
-            (item) => item.id === account.id && item.id !== id,
+            (item) => item.uid === account.uid && item.uid !== uid,
         );
         if (idExists) {
-        throw new BadRequestException('Account id cannot update another account id');
+        throw new BadRequestException('Account id cannot update another account uid');
         }
         
         const updatedAccount: Account = {
             ...account,
-            id
+            uid
         };
         this.accounts[index] = updatedAccount;
         return updatedAccount;
     }
-    delete(id: number): void {
-        const index: number = this.accounts.findIndex(account => account.id === id);
+    delete(uid: number): void {
+        const index: number = this.accounts.findIndex(account => account.uid === uid);
         //no match handler (-1):
         if (index === -1) {
             throw new NotFoundException('Account not found')
         }
         this.accounts.splice(index, 1);
     }
-    findAll(): Account[] {
+    // ?key=keyword{&start_date=DD-MMM-YYYY&end_date=DD-MMM-YYYY} )
+    findAll(key?: string, start_date?: Date, end_date?: Date): Account[] {
+        if (key) {
+            return this.accounts.filter(account => { 
+                let accountName = account.name.toLowerCase();
+                return accountName.includes(key.toLowerCase()) });
+        }
         return this.accounts;
     }
-    findOne(id: number): Account {
-        const account: Account = this.accounts.find(account => account.id === id);
+    findOne(uid: number): Account {
+        const account: Account = this.accounts.find(account => account.uid === uid);
 
         if (!account) {
             throw new NotFoundException('Account Not Found');
         }
         return account;
-    }
-    // Search accounts by keyword
-    // INCOMPLETE TEMPLATE - MUST FIX
-    search(key: string): Account[] {
-        const matchingAccounts: Account[] = {
-            ...this.accounts
-        };
-        return matchingAccounts;
     }
 }

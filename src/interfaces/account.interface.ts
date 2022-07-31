@@ -1,5 +1,5 @@
 export interface Account {
-    id: number;
+    uid: number;
     name: string;
     address: { street : string, zip : string };
     phone: string;
