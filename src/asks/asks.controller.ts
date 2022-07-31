@@ -16,9 +16,9 @@ export class AsksController {
         return this.asksService.findOne(aid);
     }
     // INCOMPLETE TEMPLATE - MUST FIX
-    @Get(':key')
-    async searchAccounts(@Param('key') key: string): Promise<Ask[]> {
-        return this.asksService.search(key);
-    }
+    // @Get(':key')
+    // async searchAccounts(@Param('key') key: string): Promise<Ask[]> {
+    //     return this.asksService.search(key);
+    // }
 
 }
