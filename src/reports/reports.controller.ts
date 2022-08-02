@@ -8,11 +8,11 @@ export class ReportsController {
     constructor(private reportsService: ReportsService){}
 
     @Get()
-    async findReports(): Promise<Report[]> {
+    findReports(): Report[] {
         return this.reportsService.findAll();
     }
     @Get(':rid')
-    async findOneAsk(@Param('rid', ParseIntPipe) rid: number): Promise<Report> {
+    findOneAsk(@Param('rid', ParseIntPipe) rid: number): Report {
         return this.reportsService.findOne(rid);
     }
 

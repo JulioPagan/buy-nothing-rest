@@ -36,30 +36,69 @@ export class AccountsController {
     //** Asks endpoints **\\
     @Post(':uid/asks')
     createAsk() {
-        return 
+        return 'This request creates an ask'
     }
-
     @Get(':uid/asks/:aid/deactivate')
-    deactivateAsk(){
+    deactivateAsk() {
         return 'This request deactivates an ask based on id'
     }
-
     @Put(':uid/asks/:aid')
     updateAsk() {
         return 'This request updates an existing Ask'
     }
-
     @Delete(':uid/asks/:aid')
     deleteAsk() {
         return 'This request deletes an asks'
     }
-
     @Get(':uid/asks')
     getAsksByActive(@Query() query?: {is_active: boolean}) {
-        return 'This request returns ';
+        return 'This request returns the asks that are active';
     }
 
 
     //** Gives endpoints **\\
-    
+    @Post(':uid/gives')
+    createGive() {
+        return 'This request creates a give'
+    }
+    @Get(':uid/gives/:gid/deactivate')
+    deactivateGive() { 
+        return 'This request deactivates a give'
+    }
+    @Put(':uid/gives/:gid')
+    updateGive() {
+        return 'This request updates a give'
+    }
+    @Delete(':uid/gives/:gid')
+    deleteGive() {
+        return 'This request updates a give'
+    }
+    @Get(':uid/gives')
+    getAccountGives() {
+        return 'This request finds the gives for an account'
+    }
+
+
+    //** Thanks endpoints **\\    
+    @Post(':uid/thanks')
+    createThank() {
+        return 'This request creates a thank'
+    }
+    @Put(':uid/thanks/:tid')
+    updateThank() {
+        return 'This request updates a thank'
+    }
+    @Get(':uid/thanks')
+    getAccountThanks() {
+        return 'This request finds the thanks for an account'
+    }
+
+// TO-DO: CREATE ENDPOINTS 
+    //** Notes endpoints **/
+    // @Put(':uid/a')
+
+    // @Delete('')
+
+    // @Get()
+
 }
