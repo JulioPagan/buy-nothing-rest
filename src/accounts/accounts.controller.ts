@@ -12,30 +12,54 @@ export class AccountsController {
         this.accountsService.create(createAccountDto);
     }
     @Get(':id/activate')
-    async activate(@Param('id', ParseIntPipe) id: number): Promise<Account> {
+    activate(@Param('id', ParseIntPipe) id: number): Account {
         return this.accountsService.activate(id);
     }
     @Put()
-    async update(@Param('id', ParseIntPipe) id: number, @Body() account: Account): Promise<Account> {
+    update(@Param('id', ParseIntPipe) id: number, @Body() account: Account): Account {
         return this.accountsService.update(id, account);
     }
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    delete(@Param('id', ParseIntPipe) id: number): void {
         this.accountsService.delete(id);
     }
     @Get()
-    async findAccounts(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Promise<Account[]> {
+    findAccounts(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Account[] {
         console.log(query);
         return this.accountsService.findAll(query.key, query.start_date, query.end_date);
     }
     @Get(':id')
-    async findOneAccount(@Param('id', ParseIntPipe) id: number): Promise<Account> {
+    findOneAccount(@Param('id', ParseIntPipe) id: number): Account {
         return this.accountsService.findOne(id);
     }
 
-    // Asks endpoints
+    //** Asks endpoints **\\
     @Post(':uid/asks')
     createAsk() {
         return 
     }
+
+    @Get(':uid/asks/:aid/deactivate')
+    deactivateAsk(){
+        return 'This request deactivates an ask based on id'
+    }
+
+    @Put(':uid/asks/:aid')
+    updateAsk() {
+        return 'This request updates an existing Ask'
+    }
+
+    @Delete(':uid/asks/:aid')
+    deleteAsk() {
+        return 'This request deletes an asks'
+    }
+
+    @Get(':uid/asks')
+    getAsksByActive(@Query() query?: {is_active: boolean}) {
+        return 'This request returns ';
+    }
+
+
+    //** Gives endpoints **\\
+    
 }
