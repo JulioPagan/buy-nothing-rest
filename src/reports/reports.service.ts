@@ -8,7 +8,7 @@ export class ReportsService {
     findAll(): Report[] {
         return this.reports
     }
-    findOne(rid: number): Report {
+    findOne(rid: number, c_by?, v_by?, start_date?, end_date?): Report {
         const report: Report = this.reports.find(report => report.rid === rid);
         if (!report) {
             throw new NotFoundException('Report Not Found');
