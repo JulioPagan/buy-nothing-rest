@@ -93,12 +93,31 @@ export class AccountsController {
         return 'This request finds the thanks for an account'
     }
 
-// TO-DO: CREATE ENDPOINTS 
     //** Notes endpoints **/
-    // @Put(':uid/a')
+    @Put(':uid/asks/:aid/notes/:nid')
+    updateAskNote() {
+        return 'This request updates a note based on a given account and ask'
+    }
+    @Put(':uid/gives/:gid/notes/:nid')
+    updateGiveNote() {
+        return 'This request updates a note based on a given account and give'
+    }
 
-    // @Delete('')
+    @Delete(':uid/asks/:aid/notes/:nid')
+    deleteAskNote() {
+        return 'This request deletes a note based on a given account and give'
+    }
+    @Delete(':uid/gives/:gid/notes/:nid')
+    deleteGiveNote() {
+        return 'This request deletes a note based on a given account and give'
+    }
 
-    // @Get()
-
+    @Get(':uid/asks/:aid/notes/:nid')
+    getAskNotes() {
+        return 'This request finds the notes of a given account and ask'
+    }
+    @Get(':uid/gives/:gid/notes/:nid')
+    getGiveNotes() {
+        return 'This request finds the notes of a given account and ask'
+    }
 }
