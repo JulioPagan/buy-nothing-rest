@@ -17,7 +17,7 @@ export class AsksService {
     delete() {
 
     }
-    getMyAsk() {
+    getMyAsks() {
 
     }
     findAll(): Ask[] {
@@ -30,5 +30,13 @@ export class AsksService {
         }
 
         return ask;
+    }
+    searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
+        if (key) {
+            return this.asks.filter(ask => { 
+                let askDescription = ask.description.toLowerCase();
+                return askDescription.includes(key.toLowerCase()) });
+        }
+        return this.asks;
     }
 }

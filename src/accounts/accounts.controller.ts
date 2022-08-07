@@ -50,15 +50,15 @@ export class AccountsController {
     }
     @Put(':uid/asks/:aid')
     updateAsk() {
-        return 'This request updates an existing Ask'
+        return this.asksService.update();
     }
     @Delete(':uid/asks/:aid')
     deleteAsk() {
-        return 'This request deletes an asks'
+        return this.asksService.delete();
     }
     @Get(':uid/asks')
-    getAsksByActive(@Query() query?: {is_active: boolean}) {
-        return 'This request returns the asks that are active';
+    getMyAsks(@Query() query?: {is_active: boolean}) {
+        return this.asksService.getMyAsks();
     }
 
 
