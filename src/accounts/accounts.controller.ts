@@ -24,7 +24,7 @@ export class AccountsController {
     activate(@Param('id', ParseIntPipe) id: number): Account {
         return this.accountsService.activate(id);
     }
-    @Put()
+    @Put(':id')
     update(@Param('id', ParseIntPipe) id: number, @Body() account: Account): Account {
         return this.accountsService.update(id, account);
     }

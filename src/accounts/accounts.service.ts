@@ -23,27 +23,11 @@ export class AccountsService {
         this.accounts[index].is_active = true;
         return this.accounts[index];
     } 
-    // Update account
-    // INCOMPLETE TEMPLATE - MUST FIX
-    update(uid: number, account: Account): Account {
-        const index: number = this.accounts.findIndex((account) => account.uid === uid);
-        //no match handler (-1):
-        if (index === -1) {
-            throw new NotFoundException('Account not found.');
-        }
-        //if id is already being used by another account give error
-        const idExists: boolean = this.accounts.some(
-            (item) => item.uid === account.uid && item.uid !== uid,
-        );
-        if (idExists) {
-        throw new BadRequestException('Account id cannot update another account uid');
-        }
-        
+    update(uid: number, account: Account): Account {        
         const updatedAccount: Account = {
-            ...account,
-            uid
+            ...account
         };
-        this.accounts[index] = updatedAccount;
+        this.accounts[uid] = updatedAccount;
         return updatedAccount;
     }
     delete(uid: number): void {
