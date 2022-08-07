@@ -8,6 +8,18 @@ export class GivesService {
     create(give: Give) {
         this.gives.push(give);
     }
+    deactivate() {
+
+    }
+    update() {
+
+    }
+    delete() {
+
+    }
+    viewMyGives() {
+
+    }
     findAll(): Give[] {
         return this.gives
     }
@@ -19,11 +31,13 @@ export class GivesService {
 
         return give;
     }
-    search(key: string): Give[] {
-        const matchingGives: Give[] = {
-            ...this.gives
-        };
-        return matchingGives;
+    searchGives(key?: string, start_date?: Date, end_date?: Date): Give[] {
+        if (key) {
+            return this.gives.filter(give => { 
+                let giveDescription = give.description.toLowerCase();
+                return giveDescription.includes(key.toLowerCase()) });
+        }
+        return this.gives;
     }
 
 }

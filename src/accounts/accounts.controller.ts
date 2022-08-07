@@ -8,6 +8,7 @@ import { ReportsService } from 'src/reports/reports.service';
 import { Account } from 'src/interfaces/account.interface';
 import { CreateAccountDto } from 'src/dto/create-account.dto';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
+import { CreateGiveDto } from 'src/dto/create-give.dto';
 
 @Controller('accounts')
 export class AccountsController {
@@ -64,24 +65,24 @@ export class AccountsController {
 
     //** Gives endpoints **\\
     @Post(':uid/gives')
-    createGive() {
-        return 'This request creates a give'
+    createGive(@Body() createGiveDto: CreateGiveDto) {
+        return this.givesService.create(createGiveDto);
     }
     @Get(':uid/gives/:gid/deactivate')
     deactivateGive() { 
-        return 'This request deactivates a give'
+        return this.givesService.deactivate();
     }
     @Put(':uid/gives/:gid')
     updateGive() {
-        return 'This request updates a give'
+        return this.givesService.update();
     }
     @Delete(':uid/gives/:gid')
     deleteGive() {
-        return 'This request updates a give'
+        return this.givesService.delete();
     }
     @Get(':uid/gives')
-    getAccountGives() {
-        return 'This request finds the gives for an account'
+    getMyGives() {
+        return this.givesService.viewMyGives();
     }
 
 

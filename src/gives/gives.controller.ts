@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { GivesService } from './gives.service';
 import { Give } from 'src/interfaces/give.interface';
 import { CreateGiveDto } from 'src/dto/create-give.dto';
@@ -8,16 +8,16 @@ export class GivesController {
     constructor(private givesService: GivesService){}
 
     @Get()
-    async findGives(): Promise<Give[]> {
+    findGives(): Give[] {
         return this.givesService.findAll();
     }
     @Get(':gid')
-    async findOneGive(@Param('aid', ParseIntPipe) gid: number): Promise<Give> {
+    findOneGive(@Param('aid', ParseIntPipe) gid: number): Give {
         return this.givesService.findOne(gid);
     }
-    // Search accounts by keyword
     @Get(':key')
-    async searchGives(@Param('key') key: string): Promise<Give[]> {
-        return this.givesService.search(key);
+    searchGives(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Give[] {
+        console.log(query);
+        return this.givesService.searchGives(query.key, query.start_date, query.end_date);
     }
 }
