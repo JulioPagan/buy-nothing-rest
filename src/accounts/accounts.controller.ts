@@ -18,7 +18,7 @@ export class AccountsController {
 
     @Post()
     create(@Body() createAccountDto: CreateAccountDto) {
-        this.accountsService.create(createAccountDto);
+        return this.accountsService.create(createAccountDto);
     }
     @Get(':id/activate')
     activate(@Param('id', ParseIntPipe) id: number): Account {

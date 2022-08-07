@@ -5,7 +5,7 @@ import { Account } from '../interfaces/account.interface';
 @Injectable()
 export class AccountsService {
     private readonly accounts: Account[] = [];
-    private counter = 1;
+    private counter = 0;
 
     create(createAccountDto: CreateAccountDto): Account {
         // find the next id for a new account
