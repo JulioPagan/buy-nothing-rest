@@ -19,11 +19,17 @@ export class AccountsService {
         return newAccount;
     }
     activate(uid: number): Account {
-        const index: number = this.accounts.findIndex((account) => account.uid === uid);
-        this.accounts[index].is_active = true;
-        return this.accounts[index];
+        if (!this.accounts[uid]) {
+            throw new NotFoundException('Account UID not found, cannot ACTIVATE');
+        }
+        // const index: number = this.accounts.findIndex((account) => account.uid === uid);
+        this.accounts[uid].is_active = true;
+        return this.accounts[uid];
     } 
-    update(uid: number, account: Account): Account {        
+    update(uid: number, account: Account): Account {
+        if (!this.accounts[uid]) {
+            throw new NotFoundException('Account UID not found, cannot UPDATE');
+        }
         const updatedAccount: Account = {
             ...account
         };
@@ -31,14 +37,12 @@ export class AccountsService {
         return updatedAccount;
     }
     delete(uid: number): void {
-        const index: number = this.accounts.findIndex(account => account.uid === uid);
-        //no match handler (-1):
-        if (index === -1) {
-            throw new NotFoundException('Account not found')
+        if (!this.accounts[uid]) {
+            throw new NotFoundException('Account UID not found, cannot DELETE');
         }
-        this.accounts.splice(index, 1);
+        this.accounts.splice(uid, 1);
     }
-    // ?key=keyword{&start_date=DD-MMM-YYYY&end_date=DD-MMM-YYYY} )
+    // Search ALL accounts or add optional queries
     findAll(key?: string, start_date?: Date, end_date?: Date): Account[] {
         if (key) {
             return this.accounts.filter(account => { 
