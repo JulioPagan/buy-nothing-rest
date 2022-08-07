@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note } from 'src/interfaces/note.interface';
 import { CreateNoteDto } from 'src/dto/create-note.dto';
@@ -8,18 +8,19 @@ export class NotesController {
     constructor(private notesService: NotesService){}
 
     @Post()
-    async create(@Body() createNoteDto: CreateNoteDto){
+    create(@Body() createNoteDto: CreateNoteDto){
         this.notesService.create(createNoteDto);
     }
     
     @Get()
-    async findNotes(): Promise<Note[]> {
+    findNotes(): Note[] {
         return this.notesService.findAll();
     }
     // INCOMPLETE TEMPLATE - MUST FIX
     @Get(':key')
-    async searchNotes(@Param('key') key: string): Promise<Note[]> {
-        return this.notesService.search(key);
+    searchGives(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Note[] {
+        console.log(query);
+        return this.notesService.searchNotes(query.key, query.start_date, query.end_date);
     }
 
 }

@@ -4,7 +4,15 @@ import { Thank } from 'src/interfaces/thank.interface';
 @Injectable()
 export class ThanksService {
     private readonly thanks: Thank[] = [];
+    createThank(thank: Thank) {
+        this.thanks.push(thank);
+    }
+    update() {
 
+    }
+    getMyThanks() {
+
+    }
     findAll(): Thank[] {
         return this.thanks
     }
@@ -25,12 +33,12 @@ export class ThanksService {
 
         return thank;
     }
-    // INCOMPLETE TEMPLATE - MUST FIX
-    search(key: string): Thank[] {
-        const matchingThanks: Thank[] = {
-            ...this.thanks
-        };
-        return matchingThanks;
+    searchThanks(key?: string, start_date?: Date, end_date?: Date): Thank[] {
+        if (key) {
+            return this.thanks.filter(thank => { 
+                let thankDescription = thank.description.toLowerCase();
+                return thankDescription.includes(key.toLowerCase()) });
+        }
+        return this.thanks;
     }
-
 }

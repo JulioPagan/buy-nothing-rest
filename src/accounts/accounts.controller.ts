@@ -9,6 +9,8 @@ import { Account } from 'src/interfaces/account.interface';
 import { CreateAccountDto } from 'src/dto/create-account.dto';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { CreateGiveDto } from 'src/dto/create-give.dto';
+import { CreateThankDto } from 'src/dto/create-thank.dto';
+import { Note } from 'src/interfaces/note.interface';
 
 @Controller('accounts')
 export class AccountsController {
@@ -58,7 +60,7 @@ export class AccountsController {
         return this.asksService.delete();
     }
     @Get(':uid/asks')
-    getMyAsks(@Query() query?: {is_active: boolean}) {
+    getMyAsks(@Query() query?: {is_active?: boolean}) {
         return this.asksService.getMyAsks();
     }
 
@@ -88,43 +90,50 @@ export class AccountsController {
 
     //** Thanks endpoints **\\    
     @Post(':uid/thanks')
-    createThank() {
-        return 'This request creates a thank'
+    createThank(@Body() createThankDto: CreateThankDto) {
+        return this.thanksService.createThank(createThankDto);
     }
     @Put(':uid/thanks/:tid')
     updateThank() {
-        return 'This request updates a thank'
+        return this.thanksService.update();
     }
     @Get(':uid/thanks')
     getAccountThanks() {
-        return 'This request finds the thanks for an account'
+        return this.thanksService.getMyThanks();
     }
 
-    //** Notes endpoints **/
+    //** Notes endpoints **\\
+
+    // Update Ask
     @Put(':uid/asks/:aid/notes/:nid')
     updateAskNote() {
-        return 'This request updates a note based on a given account and ask'
+        return this.notesService.updateAskNote();
     }
+    // Update Give
     @Put(':uid/gives/:gid/notes/:nid')
     updateGiveNote() {
-        return 'This request updates a note based on a given account and give'
+        return this.notesService.updateGiveNote();
     }
 
+    // Delete Ask
     @Delete(':uid/asks/:aid/notes/:nid')
     deleteAskNote() {
-        return 'This request deletes a note based on a given account and give'
+        return this.notesService.deleteAskNote();
     }
+    // Delete Give
     @Delete(':uid/gives/:gid/notes/:nid')
     deleteGiveNote() {
-        return 'This request deletes a note based on a given account and give'
+        return this.notesService.deleteGiveNote();
     }
 
+    // View ask notes
     @Get(':uid/asks/:aid/notes/:nid')
     getAskNotes() {
-        return 'This request finds the notes of a given account and ask'
+        return this.notesService.viewNotes();
     }
+    // View give notes
     @Get(':uid/gives/:gid/notes/:nid')
     getGiveNotes() {
-        return 'This request finds the notes of a given account and ask'
+        return this.notesService.viewNotes();
     }
 }
