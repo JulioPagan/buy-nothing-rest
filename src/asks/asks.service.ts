@@ -8,6 +8,18 @@ export class AsksService {
     create(ask: Ask) {
         this.asks.push(ask);
     }
+    deactivate() {
+
+    }
+    update() {
+
+    }
+    delete() {
+
+    }
+    getMyAsk() {
+
+    }
     findAll(): Ask[] {
         return this.asks;
     }
@@ -18,12 +30,5 @@ export class AsksService {
         }
 
         return ask;
-    }
-    // INCOMPLETE TEMPLATE - MUST FIX
-    search(key: string): Ask[] {
-        const matchingAsks: Ask[] = {
-            ...this.asks
-        };
-        return matchingAsks;
     }
 }

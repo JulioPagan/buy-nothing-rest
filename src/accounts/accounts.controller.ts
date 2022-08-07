@@ -1,14 +1,20 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
+import { AsksService } from 'src/asks/asks.service';
+import { GivesService } from 'src/gives/gives.service';
+import { ThanksService } from 'src/thanks/thanks.service';
+import { NotesService } from 'src/notes/notes.service';
+import { ReportsService } from 'src/reports/reports.service';
 import { Account } from 'src/interfaces/account.interface';
 import { CreateAccountDto } from 'src/dto/create-account.dto';
+import { CreateAskDto } from 'src/dto/create-ask.dto';
 
 @Controller('accounts')
 export class AccountsController {
-    constructor(private accountsService: AccountsService){}
+    constructor(private accountsService: AccountsService, private asksService: AsksService, private givesService: GivesService, private thanksService: ThanksService, private notesService: NotesService, private reportsService: ReportsService){}
 
     @Post()
-    async create(@Body() createAccountDto: CreateAccountDto) {
+    create(@Body() createAccountDto: CreateAccountDto) {
         this.accountsService.create(createAccountDto);
     }
     @Get(':id/activate')
@@ -35,12 +41,12 @@ export class AccountsController {
 
     //** Asks endpoints **\\
     @Post(':uid/asks')
-    createAsk() {
-        return 'This request creates an ask'
+    createAsk(@Body() createAskDto: CreateAskDto) {
+        return this.asksService.create(createAskDto);
     }
     @Get(':uid/asks/:aid/deactivate')
     deactivateAsk() {
-        return 'This request deactivates an ask based on id'
+        return this.asksService.deactivate();
     }
     @Put(':uid/asks/:aid')
     updateAsk() {
