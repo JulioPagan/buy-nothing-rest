@@ -7,6 +7,43 @@ export class AccountsService {
     private readonly accounts: Account[] = [];
     private counter = 0;
 
+    public account1 = {
+		"uid": "",
+		"name": "Virgil Bistriceanu",
+		"address": {
+			"street": "10 West 31st ST",
+			"zip": "60616"
+		},
+		"phone": "312-567-5146",
+		"picture": "http://cs.iit.edu/~virgil/pictures/virgil-head-small-200811.jpg",
+		"is_active": true,
+		"date_created": ""
+	};
+    public account2 = {
+		"uid": "",
+		"name": "Jane Smith",
+		"address": {
+			"street": "123 2nd ST",
+			"zip": "60607"
+		},
+		"phone": "217-456-7890",
+		"picture": "http://example.com/images/jane-smith.jpeg",
+		"is_active": false,
+		"date_created": ""
+	};
+    public account3 = {
+		"uid": "",
+		"name": "CSR #1",
+		"address": {
+			"street": "101 W Main St.",
+			"zip": "60010"
+		},
+		"phone": "(847) 842-8048",
+		"picture": "http://example.com/images/jane-smith.jpeg",
+		"is_active": true,
+		"date_created": ""
+	};
+    
     create(createAccountDto: CreateAccountDto): Account {
         // find the next id for a new account
         let uid = this.counter;
