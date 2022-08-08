@@ -16,40 +16,43 @@ import { Note } from 'src/interfaces/note.interface';
 export class AccountsController {
     constructor(private accountsService: AccountsService, private asksService: AsksService, private givesService: GivesService, private thanksService: ThanksService, private notesService: NotesService, private reportsService: ReportsService){}
 
+     //** ---------------- **\\
+    //** Accounts endpoints **\\
     @Post()
     create(@Body() createAccountDto: CreateAccountDto) {
         return this.accountsService.create(createAccountDto);
     }
-    @Get(':id/activate')
-    activate(@Param('id', ParseIntPipe) id: number): Account {
-        return this.accountsService.activate(id);
+    @Get(':uid/activate')
+    activateAccount(@Param('uid', ParseIntPipe) uid: number): Account {
+        return this.accountsService.activate(uid);
     }
-    @Put(':id')
-    update(@Param('id', ParseIntPipe) id: number, @Body() account: Account): Account {
-        return this.accountsService.update(id, account);
+    @Put(':uid')
+    update(@Param('uid', ParseIntPipe) uid: number, @Body() account: Account): Account {
+        return this.accountsService.update(uid, account);
     }
-    @Delete(':id')
-    delete(@Param('id', ParseIntPipe) id: number): void {
-        this.accountsService.delete(id);
+    @Delete(':uid')
+    delete(@Param('uid', ParseIntPipe) uid: number): void {
+        this.accountsService.delete(uid);
     }
     @Get()
     findAccounts(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Account[] {
         console.log(query);
         return this.accountsService.findAll(query.key, query.start_date, query.end_date);
     }
-    @Get(':id')
-    findOneAccount(@Param('id', ParseIntPipe) id: number): Account {
-        return this.accountsService.findOne(id);
+    @Get(':uid')
+    findOneAccount(@Param('uid', ParseIntPipe) uid: number): Account {
+        return this.accountsService.findOne(uid);
     }
 
+     //** ------------ **\\
     //** Asks endpoints **\\
     @Post(':uid/asks')
     createAsk(@Body() createAskDto: CreateAskDto) {
         return this.asksService.create(createAskDto);
     }
     @Get(':uid/asks/:aid/deactivate')
-    deactivateAsk() {
-        return this.asksService.deactivate();
+    deactivateAsk(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number) {
+        return this.asksService.deactivate(uid, aid);
     }
     @Put(':uid/asks/:aid')
     updateAsk() {
@@ -64,7 +67,7 @@ export class AccountsController {
         return this.asksService.getMyAsks();
     }
 
-
+     //** ------------- **\\
     //** Gives endpoints **\\
     @Post(':uid/gives')
     createGive(@Body() createGiveDto: CreateGiveDto) {
@@ -87,7 +90,7 @@ export class AccountsController {
         return this.givesService.viewMyGives();
     }
 
-
+     //** -------------- **\\
     //** Thanks endpoints **\\    
     @Post(':uid/thanks')
     createThank(@Body() createThankDto: CreateThankDto) {
@@ -102,6 +105,8 @@ export class AccountsController {
         return this.thanksService.getMyThanks();
     }
 
+
+     //** ------------- **\\
     //** Notes endpoints **\\
 
     // Update Ask

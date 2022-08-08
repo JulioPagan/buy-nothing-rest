@@ -46,6 +46,7 @@ export class AccountsService {
     findAll(key?: string, start_date?: Date, end_date?: Date): Account[] {
         if (key) {
             return this.accounts.filter(account => { 
+                // TO-DO: Process s_date & e_date 
                 let accountName = account.name.toLowerCase();
                 return accountName.includes(key.toLowerCase()) });
         }

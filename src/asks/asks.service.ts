@@ -1,16 +1,29 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { Ask } from 'src/interfaces/ask.interface';
 
 @Injectable()
 export class AsksService {
     private readonly asks: Ask[] = [];
+    private counter = 0;
 
-    create(ask: Ask) {
-        this.asks.push(ask);
+    create(createAskDto: CreateAskDto): Ask {
+        let aid = this.counter;
+        const newAsk: Ask = {
+            ...createAskDto,
+            aid
+        };
+        this.asks.push(newAsk);
+        this.counter ++;
+        return newAsk;
     }
-    deactivate() {
-
-    }
+    deactivate(uid: number, aid: number): Ask {
+        if (uid != this.asks[aid].uid) {
+            throw new NotFoundException('Ask AID not found, cannot DEACTIVATE');
+        }
+        this.asks[aid].is_active = false;
+        return this.asks[aid];
+    } 
     update() {
 
     }
