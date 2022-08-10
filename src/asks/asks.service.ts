@@ -77,13 +77,14 @@ export class AsksService {
 
         return this.asks.find(ask => ask.aid === aid);
     }
+    // REVIEW AND FIX
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
-        if (key) {
-            return this.asks.filter(ask => { 
-                // TO-DO: Process s_date & e_date 
-                let askDescription = ask.description.toLowerCase();
-                return askDescription.includes(key.toLowerCase()) });
+        if (!key || key === null) {
+            return this.asks;
+            // throw new BadRequestException('MUST identify the user requesitng VIEWING access')
         }
-        return this.asks;
-    }
+        return this.asks.filter(ask => { 
+            // TO-DO: Process s_date & e_date 
+            let askDescription = ask.description.toLowerCase();
+            return askDescription.includes(key.toLowerCase()) });    }
 }
