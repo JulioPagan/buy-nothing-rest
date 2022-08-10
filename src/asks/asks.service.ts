@@ -48,25 +48,21 @@ export class AsksService {
         }
         this.asks.splice(aid, 1);
     }
+    // REVIEW AND FIX
     getMyAsks(uid: number, is_active?: boolean): Ask[] {
         // TO-DO: Process is_active
         if (uid) {
             return this.asks.filter(ask => { 
-                if (!(ask.uid == uid)) {
-                    throw new NotFoundException('NO accounts with the UID of: ' + uid)
-                }
                 return ask.uid == uid;
             });
         }else {
             throw new NotFoundException('Valid UID required to find account Asks');
         }
     }
+    // REVIEW AND FIX
     findAll(v_by: number, is_active?): Ask[] {
         if (v_by) {
             return this.asks.filter(ask => { 
-                if (!(ask.uid == v_by)) {
-                    throw new NotFoundException('NO accounts with the UID of: ' + v_by)
-                }
                 return ask.uid == v_by;
             });
 
@@ -75,12 +71,11 @@ export class AsksService {
         };
     }
     findOne(aid: number): Ask {
-        const ask: Ask = this.asks.find(ask => ask.aid === aid);
-        if (!ask) {
-            throw new NotFoundException('Ask Not Found');
+        if (!this.asks[aid]) {
+            throw new NotFoundException('AID Not Found');
         }
 
-        return ask;
+        return this.asks.find(ask => ask.aid === aid);
     }
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
         if (key) {
