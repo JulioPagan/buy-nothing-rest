@@ -61,7 +61,7 @@ export class AccountsController {
         return this.asksService.update(uid, aid, ask);
     }
     @Delete(':uid/asks/:aid')
-    deleteAsk(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid): void {
+    deleteAsk(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): void {
         return this.asksService.delete(uid, gid);
     }
     @Get(':uid/asks')
@@ -76,20 +76,20 @@ export class AccountsController {
         return this.givesService.create(createGiveDto);
     }
     @Get(':uid/gives/:gid/deactivate')
-    deactivateGive() { 
-        return this.givesService.deactivate();
+    deactivateGive(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): Give { 
+        return this.givesService.deactivateGive(uid, gid);
     }
     @Put(':uid/gives/:gid')
-    updateGive() {
-        return this.givesService.update();
+    updateGive(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number, @Body() give: Give): Give {
+        return this.givesService.update(uid, gid, give);
     }
     @Delete(':uid/gives/:gid')
-    deleteGive() {
-        return this.givesService.delete();
+    deleteGive(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): void {
+        return this.givesService.delete(uid, gid);
     }
     @Get(':uid/gives')
-    getMyGives() {
-        return this.givesService.viewMyGives();
+    getMyGives(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {
+        return this.givesService.getMyGives(uid, query.is_active);
     }
 
      //** -------------- **\\
