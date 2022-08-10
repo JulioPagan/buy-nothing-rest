@@ -11,6 +11,8 @@ import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { CreateGiveDto } from 'src/dto/create-give.dto';
 import { CreateThankDto } from 'src/dto/create-thank.dto';
 import { Note } from 'src/interfaces/note.interface';
+import { Ask } from 'src/interfaces/ask.interface';
+import { Give } from 'src/interfaces/give.interface';
 
 @Controller('accounts')
 export class AccountsController {
@@ -27,11 +29,11 @@ export class AccountsController {
         return this.accountsService.activate(uid);
     }
     @Put(':uid')
-    update(@Param('uid', ParseIntPipe) uid: number, @Body() account: Account): Account {
+    updateAccount(@Param('uid', ParseIntPipe) uid: number, @Body() account: Account): Account {
         return this.accountsService.update(uid, account);
     }
     @Delete(':uid')
-    delete(@Param('uid', ParseIntPipe) uid: number): void {
+    deleteAccount(@Param('uid', ParseIntPipe) uid: number): void {
         this.accountsService.delete(uid);
     }
     @Get()
@@ -51,20 +53,20 @@ export class AccountsController {
         return this.asksService.create(createAskDto);
     }
     @Get(':uid/asks/:aid/deactivate')
-    deactivateAsk(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number) {
+    deactivateAsk(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number): Ask {
         return this.asksService.deactivate(uid, aid);
     }
     @Put(':uid/asks/:aid')
-    updateAsk() {
-        return this.asksService.update();
+    updateAsk(@Param(':uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Body() ask: Ask): Ask {
+        return this.asksService.update(uid, aid, ask);
     }
     @Delete(':uid/asks/:aid')
-    deleteAsk() {
-        return this.asksService.delete();
+    deleteAsk(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid): void {
+        return this.asksService.delete(uid, gid);
     }
     @Get(':uid/asks')
-    getMyAsks(@Query() query?: {is_active?: boolean}) {
-        return this.asksService.getMyAsks();
+    getMyAsks(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {
+        return this.asksService.getMyAsks(uid, query.is_active);
     }
 
      //** ------------- **\\

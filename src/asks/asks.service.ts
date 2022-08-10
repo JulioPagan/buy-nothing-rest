@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { Ask } from 'src/interfaces/ask.interface';
 
@@ -18,23 +18,61 @@ export class AsksService {
         return newAsk;
     }
     deactivate(uid: number, aid: number): Ask {
-        if (uid != this.asks[aid].uid) {
+        if (!this.asks[aid]) {
             throw new NotFoundException('Ask AID not found, cannot DEACTIVATE');
+        } else if (uid != this.asks[aid].uid) {
+            throw new NotFoundException('Account UID not found, cannot deactivate');
         }
         this.asks[aid].is_active = false;
         return this.asks[aid];
     } 
-    update() {
-
+    update(uid: number, aid: number, ask: Ask): Ask {
+        if (!this.asks[aid]) {
+            throw new NotFoundException('Ask AID not found, cannot UPDATE');
+        }else if (uid != this.asks[aid].uid) {
+            throw new NotFoundException('Account UID invalid, cannot UPDATE');
+        }else if (this.asks[aid].is_active) {
+            throw new BadRequestException('Ask is NOT active, cannot UPDATE')
+        }
+        const updatedAsk: Ask = {
+            ...ask
+        };
+        this.asks[aid] = updatedAsk;
+        return updatedAsk;
     }
-    delete() {
-
+    delete(uid: number, aid: number): void {
+        if (!this.asks[aid]) {
+            throw new NotFoundException('Ask AID not found, cannot DELETE');
+        }else if (uid != this.asks[aid].uid) {
+            throw new NotFoundException('Account UID invalid, cannot DELETE');
+        }
+        this.asks.splice(aid, 1);
     }
-    getMyAsks() {
-
+    getMyAsks(uid: number, is_active?: boolean): Ask[] {
+        // TO-DO: Process is_active
+        if (uid) {
+            return this.asks.filter(ask => { 
+                if (!(ask.uid == uid)) {
+                    throw new NotFoundException('NO accounts with the UID of: ' + uid)
+                }
+                return ask.uid == uid;
+            });
+        }else {
+            throw new NotFoundException('Valid UID required to find account Asks');
+        }
     }
-    findAll(): Ask[] {
-        return this.asks;
+    findAll(v_by: number, is_active?): Ask[] {
+        if (v_by) {
+            return this.asks.filter(ask => { 
+                if (!(ask.uid == v_by)) {
+                    throw new NotFoundException('NO accounts with the UID of: ' + v_by)
+                }
+                return ask.uid == v_by;
+            });
+
+        } else {
+            throw new BadRequestException('MUST identify the user requesitng VIEWING access')
+        };
     }
     findOne(aid: number): Ask {
         const ask: Ask = this.asks.find(ask => ask.aid === aid);
@@ -47,6 +85,7 @@ export class AsksService {
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
         if (key) {
             return this.asks.filter(ask => { 
+                // TO-DO: Process s_date & e_date 
                 let askDescription = ask.description.toLowerCase();
                 return askDescription.includes(key.toLowerCase()) });
         }
