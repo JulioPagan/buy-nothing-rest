@@ -61,6 +61,7 @@ export class AsksService {
     }
     // REVIEW AND FIX
     findAll(v_by: number, is_active?): Ask[] {
+        // TO-DO: Process is_active
         if (v_by) {
             return this.asks.filter(ask => { 
                 return ask.uid == v_by;

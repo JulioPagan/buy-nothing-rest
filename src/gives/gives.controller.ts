@@ -12,7 +12,7 @@ export class GivesController {
         return this.givesService.findAll(query.v_by);
     }
     @Get(':gid')
-    findOneGive(@Param('aid', ParseIntPipe) gid: number): Give {
+    findOneGive(@Param('gid', ParseIntPipe) gid: number): Give {
         return this.givesService.findOne(gid);
     }
     @Get()

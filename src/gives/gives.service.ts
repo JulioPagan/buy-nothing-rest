@@ -50,6 +50,7 @@ export class GivesService {
         }
     }
     findAll(v_by: number, is_active?): Give[] {
+        // TO-DO: Process is_active
         if (v_by) {
             return this.gives.filter(give => { 
                 return give.uid == v_by;

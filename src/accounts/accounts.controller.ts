@@ -13,6 +13,7 @@ import { CreateThankDto } from 'src/dto/create-thank.dto';
 import { Note } from 'src/interfaces/note.interface';
 import { Ask } from 'src/interfaces/ask.interface';
 import { Give } from 'src/interfaces/give.interface';
+import { Thank } from 'src/interfaces/thank.interface';
 
 @Controller('accounts')
 export class AccountsController {
@@ -99,12 +100,12 @@ export class AccountsController {
         return this.thanksService.createThank(createThankDto);
     }
     @Put(':uid/thanks/:tid')
-    updateThank() {
-        return this.thanksService.update();
+    updateThank(@Param('uid', ParseIntPipe) uid: number, @Param('tid', ParseIntPipe) tid: number, @Body() thank: Thank): Thank {
+        return this.thanksService.update(uid, tid, thank);
     }
     @Get(':uid/thanks')
-    getAccountThanks() {
-        return this.thanksService.getMyThanks();
+    getMyThanks(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {
+        return this.thanksService.getMyThanks(uid, query.is_active);
     }
 
 

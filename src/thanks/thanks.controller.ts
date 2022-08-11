@@ -15,9 +15,9 @@ export class ThanksController {
     findOneThank(@Param('tid', ParseIntPipe) tid: number): Thank {
         return this.thanksService.findOne(tid);
     }
-    @Get('/received:id')
-    findThanksForUser(@Param('id', ParseIntPipe) id: number): Thank {
-        return this.thanksService.findAllForUser(id);
+    @Get('/received:uid')
+    findThanksForUser(@Param('uid', ParseIntPipe) uid: number): Thank[] {
+        return this.thanksService.findAllForUser(uid);
     }
     @Get(':key')
     searchThanks(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Thank[] {
