@@ -55,7 +55,6 @@ export class GivesService {
             return this.gives.filter(give => { 
                 return give.uid == v_by;
             });
-
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')
         };

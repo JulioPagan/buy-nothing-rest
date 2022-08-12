@@ -114,34 +114,22 @@ export class AccountsController {
 
     // Update Ask
     @Put(':uid/asks/:aid/notes/:nid')
-    updateAskNote() {
-        return this.notesService.updateAskNote();
+    updateAskNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
+        return this.notesService.updateAskNote(uid, aid, nid, note);
     }
     // Update Give
     @Put(':uid/gives/:gid/notes/:nid')
-    updateGiveNote() {
-        return this.notesService.updateGiveNote();
+    updateGiveNote(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number, @Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
+        return this.notesService.updateGiveNote(uid, gid, nid, note);
     }
-
     // Delete Ask
     @Delete(':uid/asks/:aid/notes/:nid')
-    deleteAskNote() {
-        return this.notesService.deleteAskNote();
+    deleteAskNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
+        return this.notesService.deleteAskNote(uid, aid, nid);
     }
     // Delete Give
     @Delete(':uid/gives/:gid/notes/:nid')
-    deleteGiveNote() {
-        return this.notesService.deleteGiveNote();
-    }
-
-    // View ask notes
-    @Get(':uid/asks/:aid/notes/:nid')
-    getAskNotes() {
-        return this.notesService.viewNotes();
-    }
-    // View give notes
-    @Get(':uid/gives/:gid/notes/:nid')
-    getGiveNotes() {
-        return this.notesService.viewNotes();
+    deleteGiveNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
+        return this.notesService.deleteGiveNote(uid, aid, nid);
     }
 }

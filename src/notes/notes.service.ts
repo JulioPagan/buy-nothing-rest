@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Note } from 'src/interfaces/note.interface';
 
 @Injectable()
@@ -8,31 +8,74 @@ export class NotesService {
     create(note: Note) {
         this.notes.push(note);
     }
-    updateAskNote() {
+    updateAskNote(uid: number, aid: number, nid: number, note: Note): Note {
+        if (!this.notes[nid]) {
+            throw new NotFoundException('Give GID not found, cannot UPDATE');
+        }else if (uid != this.notes[nid].uid) {
+            throw new NotFoundException('Account UID invalid, cannot UPDATE');
+        }else if (aid != this.notes[nid].to_id) {
+            throw new NotFoundException('Ask ID invalid, cannot UPDATE');
+        }
+        const updatedNote: Note = {
+            ...note
+        };
+        this.notes[nid] = updatedNote;
+        return updatedNote;
+    }
 
+    updateGiveNote(uid: number, gid: number, nid: number, note: Note): Note {
+        if (!this.notes[nid]) {
+            throw new NotFoundException('Note NID not found, cannot UPDATE');
+        }else if (uid != this.notes[nid].uid) {
+            throw new NotFoundException('Account UID invalid, cannot UPDATE');
+        }else if (gid != this.notes[nid].to_id) {
+            throw new NotFoundException('Give ID invalid, cannot UPDATE');
+        }
+        const updatedNote: Note = {
+            ...note
+        };
+        this.notes[nid] = updatedNote;
+        return updatedNote;
     }
-    updateGiveNote() {
+    deleteAskNote(uid: number, aid: number, nid: number): void {
+        if (!this.notes[nid]) {
+            throw new NotFoundException('Ask AID not found, cannot DELETE');
+        }else if (uid != this.notes[nid].uid) {
+            throw new NotFoundException('Account UID invalid, cannot DELETE');
+        }else if (aid != this.notes[nid].to_id) {
+            throw new NotFoundException('Ask ID invalid, cannot UPDATE');
+        }
+        this.notes.splice(nid, 1);
+    }
+    deleteGiveNote(uid: number, gid: number, nid: number) {
+        if (!this.notes[nid]) {
+            throw new NotFoundException('Note AID not found, cannot DELETE');
+        }else if (uid != this.notes[nid].uid) {
+            throw new NotFoundException('Account UID invalid, cannot DELETE');
+        }else if (gid != this.notes[nid].to_id) {
+            throw new NotFoundException('Give ID invalid, cannot DELETE');
+        }
+        this.notes.splice(nid, 1);
+    }
+    viewNote(nid: number): Note {
+        const note: Note = this.notes.find(note => note.uid === nid);
 
+        if (!note) {
+            throw new NotFoundException('Note Not Found');
+        }
+        return note;
     }
-    deleteAskNote() {
-
-    }
-    deleteGiveNote() {
-
-    }
-    getAskNote() {
-
-    }
-    getGiveNote() {
-        
-    }
-    findAll(): Note[] {
-        return this.notes
-    }
-    viewNotes() {
-        
+    viewNotes(c_by?: number, type?: string, v_by?: number): Note[] {
+        // Process type and v_by
+        if (c_by) {
+            return this.notes.filter(note => { 
+                return note.uid == c_by;
+            });
+        } 
+        return this.notes;
     }
     searchNotes(key?: string, start_date?: Date, end_date?: Date): Note[] {
+        // Process start_date and end_date
         if (key) {
             return this.notes.filter(note => { 
                 let noteDescription = note.description.toLowerCase();
