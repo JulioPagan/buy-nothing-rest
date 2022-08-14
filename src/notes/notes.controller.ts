@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note } from 'src/interfaces/note.interface';
 import { CreateNoteDto } from 'src/dto/create-note.dto';
@@ -10,6 +10,14 @@ export class NotesController {
     @Post()
     create(@Body() createNoteDto: CreateNoteDto){
         this.notesService.create(createNoteDto);
+    }
+    @Put(':nid')
+    updateAskNote(@Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
+        return this.notesService.updateNote(nid, note);
+    }
+    @Delete(':nid')
+    deleteNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
+        return this.notesService.deleteNote(nid);
     }
     @Get(':nid')
     viewNote(@Param('nid', ParseIntPipe) nid: number): Note {

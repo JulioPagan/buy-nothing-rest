@@ -110,26 +110,26 @@ export class AccountsController {
 
 
      //** ------------- **\\
-    //** Notes endpoints **\\
+    //** Notes endpoints **\\       Endpoints not exercised by the functional testing environment
 
     // Update Ask
-    @Put(':uid/asks/:aid/notes/:nid')
-    updateAskNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
-        return this.notesService.updateAskNote(uid, aid, nid, note);
-    }
-    // Update Give
-    @Put(':uid/gives/:gid/notes/:nid')
-    updateGiveNote(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number, @Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
-        return this.notesService.updateGiveNote(uid, gid, nid, note);
-    }
-    // Delete Ask
-    @Delete(':uid/asks/:aid/notes/:nid')
-    deleteAskNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
-        return this.notesService.deleteAskNote(uid, aid, nid);
-    }
-    // Delete Give
-    @Delete(':uid/gives/:gid/notes/:nid')
-    deleteGiveNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
-        return this.notesService.deleteGiveNote(uid, aid, nid);
-    }
+    // @Put(':uid/asks/:aid/notes/:nid')
+    // updateAskNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
+    //     return this.notesService.updateAskNote(uid, aid, nid, note);
+    // }
+    // // Update Give
+    // @Put(':uid/gives/:gid/notes/:nid')
+    // updateGiveNote(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number, @Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
+    //     return this.notesService.updateGiveNote(uid, gid, nid, note);
+    // }
+    // // Delete Ask
+    // @Delete(':uid/asks/:aid/notes/:nid')
+    // deleteAskNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
+    //     return this.notesService.deleteAskNote(uid, aid, nid);
+    // }
+    // // Delete Give
+    // @Delete(':uid/gives/:gid/notes/:nid')
+    // deleteGiveNote(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Param('nid', ParseIntPipe) nid: number): void {
+    //     return this.notesService.deleteGiveNote(uid, aid, nid);
+    // }
 }
