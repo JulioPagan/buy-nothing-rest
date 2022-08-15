@@ -8,8 +8,8 @@ export class AsksController {
     constructor(private asksService: AsksService){}
 
     @Get()
-    findAsks(@Query() query: { v_by: number}): Ask[] {
-        return this.asksService.findAll(query.v_by);
+    findAsks(@Query() query: { v_by: string}): Ask[] {
+        return this.asksService.findAll(parseInt(query.v_by));
     }
     @Get(':aid')
     findOneAsk(@Param('aid', ParseIntPipe) aid: number): Ask {
@@ -17,7 +17,6 @@ export class AsksController {
     }
     @Get()
     searchAsks(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Ask[] {
-        console.log(query);
         return this.asksService.searchAsks(query.key, query.start_date, query.end_date);
     }
 }

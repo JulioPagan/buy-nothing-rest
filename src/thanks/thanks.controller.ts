@@ -21,7 +21,6 @@ export class ThanksController {
     }
     @Get(':key')
     searchThanks(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Thank[] {
-        console.log(query);
         return this.thanksService.searchThanks(query.key, query.start_date, query.end_date);
     }
 

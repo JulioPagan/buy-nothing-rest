@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { AccountsService } from 'src/accounts/accounts.service';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { Ask } from 'src/interfaces/ask.interface';
 
@@ -63,10 +64,15 @@ export class AsksService {
     findAll(v_by: number, is_active?): Ask[] {
         // TO-DO: Process is_active
         if (v_by) {
+            // CSR account returns all asks
+            const Actor = AccountsService.Actors[v_by];
+            if (Actor === "CSR"){
+                return this.asks;
+            }
+            // RU account returns asks visible to them
             return this.asks.filter(ask => { 
                 return ask.uid == v_by;
             });
-
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')
         };

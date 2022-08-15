@@ -17,7 +17,6 @@ export class GivesController {
     }
     @Get()
     searchGives(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Give[] {
-        console.log(query);
         return this.givesService.searchGives(query.key, query.start_date, query.end_date);
     }
 }

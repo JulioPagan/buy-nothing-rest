@@ -39,7 +39,6 @@ export class AccountsController {
     }
     @Get()
     findAccounts(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Account[] {
-        console.log(query);
         return this.accountsService.findAll(query.key, query.start_date, query.end_date);
     }
     @Get(':uid')

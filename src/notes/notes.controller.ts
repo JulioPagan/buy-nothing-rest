@@ -30,7 +30,6 @@ export class NotesController {
     // INCOMPLETE TEMPLATE - MUST FIX
     @Get()
     searchGives(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Note[] {
-        console.log(query);
         return this.notesService.searchNotes(query.key, query.start_date, query.end_date);
     }
 

@@ -6,9 +6,14 @@ import { Account } from '../interfaces/account.interface';
 export class AccountsService {
     private readonly accounts: Account[] = [];
     private counter = 0;
+    static Actors = {
+        0: "RU",
+        1: "RU",
+        2: "CSR"
+    }
 
-    public account1 = {
-		"uid": "",
+    private account1 = {
+		"uid": null,
 		"name": "Virgil Bistriceanu",
 		"address": {
 			"street": "10 West 31st ST",
@@ -19,8 +24,8 @@ export class AccountsService {
 		"is_active": true,
 		"date_created": ""
 	};
-    public account2 = {
-		"uid": "",
+    private account2 = {
+		"uid": null,
 		"name": "Jane Smith",
 		"address": {
 			"street": "123 2nd ST",
@@ -31,8 +36,8 @@ export class AccountsService {
 		"is_active": false,
 		"date_created": ""
 	};
-    public account3 = {
-		"uid": "",
+    private account3 = {
+		"uid": null,
 		"name": "CSR #1",
 		"address": {
 			"street": "101 W Main St.",
@@ -44,6 +49,11 @@ export class AccountsService {
 		"date_created": ""
 	};
     
+    constructor () {
+        this.create(this.account1);
+        this.create(this.account2);
+        this.create(this.account3);
+    }
     create(createAccountDto: CreateAccountDto): Account {
         // find the next id for a new account
         let uid = this.counter;

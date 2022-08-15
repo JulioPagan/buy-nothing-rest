@@ -1,5 +1,5 @@
 export class CreateAccountDto {
-    uid: number;
+    uid: number|null;
     name: string;
     address: { street : string, zip : string };
     phone: string;
