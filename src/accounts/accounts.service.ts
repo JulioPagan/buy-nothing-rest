@@ -5,12 +5,12 @@ import { Account } from '../interfaces/account.interface';
 @Injectable()
 export class AccountsService {
     private readonly accounts: Account[] = [];
-    private counter = 0;
+    public counter = 0;
     static Actors = {
         0: "RU",
         1: "RU",
         2: "CSR"
-    }
+    };
 
     private account1 = {
 		"uid": null,
@@ -63,25 +63,31 @@ export class AccountsService {
         };
         this.accounts.push(newAccount);
         this.counter ++;
+
         return newAccount;
     }
     activate(uid: number): Account {
+        if (uid == null || typeof uid != 'number') {
+            throw new BadRequestException('UID cannot be empty and must be of type: Number')
+        }
         if (!this.accounts[uid]) {
             throw new NotFoundException('Account UID not found, cannot ACTIVATE');
         }
-        // const index: number = this.accounts.findIndex((account) => account.uid === uid);
         this.accounts[uid].is_active = true;
         return this.accounts[uid];
     } 
-    update(uid: number, account: Account): Account {
+    update(uid: number, account: Account): void {
         if (!this.accounts[uid]) {
             throw new NotFoundException('Account UID not found, cannot UPDATE');
+        }
+        if (account.is_active != this.accounts[uid].is_active && account.is_active == true) {
+            throw new BadRequestException('CANNOT activate account by UPDATING');
         }
         const updatedAccount: Account = {
             ...account
         };
         this.accounts[uid] = updatedAccount;
-        return updatedAccount;
+        this.accounts[uid].uid = +this.accounts[uid].uid;
     }
     delete(uid: number): void {
         if (!this.accounts[uid]) {
@@ -101,7 +107,6 @@ export class AccountsService {
     }
     findOne(uid: number): Account {
         const account: Account = this.accounts.find(account => account.uid === uid);
-
         if (!account) {
             throw new NotFoundException('Account Not Found');
         }

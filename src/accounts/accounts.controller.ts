@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Res } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AsksService } from 'src/asks/asks.service';
 import { GivesService } from 'src/gives/gives.service';
@@ -22,16 +22,19 @@ export class AccountsController {
      //** ---------------- **\\
     //** Accounts endpoints **\\
     @Post()
-    create(@Body() createAccountDto: CreateAccountDto) {
+    create(@Body() createAccountDto: CreateAccountDto, @Res( {passthrough: true}) res) {
+        let locationHeader = '/accounts/' + this.accountsService.counter;
+        res.header('Location', locationHeader);
         return this.accountsService.create(createAccountDto);
     }
     @Get(':uid/activate')
-    activateAccount(@Param('uid', ParseIntPipe) uid: number): Account {
-        return this.accountsService.activate(uid);
+    activateAccount(@Param('uid') uid: string): Account {
+        return this.accountsService.activate(parseInt(uid));
     }
     @Put(':uid')
-    updateAccount(@Param('uid', ParseIntPipe) uid: number, @Body() account: Account): Account {
-        return this.accountsService.update(uid, account);
+    @HttpCode(HttpStatus.NO_CONTENT)
+    updateAccount(@Param('uid') uid: string, @Body() account: Account): void {
+        this.accountsService.update(parseInt(uid), account);
     }
     @Delete(':uid')
     deleteAccount(@Param('uid', ParseIntPipe) uid: number): void {
@@ -42,8 +45,8 @@ export class AccountsController {
         return this.accountsService.findAll(query.key, query.start_date, query.end_date);
     }
     @Get(':uid')
-    findOneAccount(@Param('uid', ParseIntPipe) uid: number): Account {
-        return this.accountsService.findOne(uid);
+    findOneAccount(@Param('uid') uid: string): Account {
+        return this.accountsService.findOne(parseInt(uid));
     }
 
      //** ------------ **\\
