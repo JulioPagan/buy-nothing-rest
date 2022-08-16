@@ -6,7 +6,7 @@ import { Ask } from 'src/interfaces/ask.interface';
 @Injectable()
 export class AsksService {
     private readonly asks: Ask[] = [];
-    private counter = 0;
+    public counter = 0;
 
     create(createAskDto: CreateAskDto): Ask {
         let aid = this.counter;
@@ -16,6 +16,7 @@ export class AsksService {
         };
         this.asks.push(newAsk);
         this.counter ++;
+        this.asks[aid].uid = +this.asks[aid].uid;
         return newAsk;
     }
     deactivate(uid: number, aid: number): Ask {
@@ -27,19 +28,26 @@ export class AsksService {
         this.asks[aid].is_active = false;
         return this.asks[aid];
     } 
-    update(uid: number, aid: number, ask: Ask): Ask {
+    update(uid: number, aid: number, ask: Ask): void {
+        console.log(typeof uid);
+        console.log(uid);
+        console.log(aid);
+        console.log(this.asks[aid].uid);
+        console.log(this.asks[aid].is_active);
         if (!this.asks[aid]) {
             throw new NotFoundException('Ask AID not found, cannot UPDATE');
         }else if (uid != this.asks[aid].uid) {
             throw new NotFoundException('Account UID invalid, cannot UPDATE');
-        }else if (this.asks[aid].is_active) {
+        }else if (!this.asks[aid].is_active) {
             throw new BadRequestException('Ask is NOT active, cannot UPDATE')
         }
         const updatedAsk: Ask = {
             ...ask
         };
+        updatedAsk.date_created = this.asks[aid].date_created;
         this.asks[aid] = updatedAsk;
-        return updatedAsk;
+        this.asks[aid].uid = +this.asks[aid].uid;
+        this.asks[aid].aid = +this.asks[aid].aid;
     }
     delete(uid: number, aid: number): void {
         if (!this.asks[aid]) {

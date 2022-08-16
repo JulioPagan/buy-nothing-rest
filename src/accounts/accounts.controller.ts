@@ -52,7 +52,9 @@ export class AccountsController {
      //** ------------ **\\
     //** Asks endpoints **\\
     @Post(':uid/asks')
-    createAsk(@Body() createAskDto: CreateAskDto) {
+    createAsk(@Body() createAskDto: CreateAskDto, @Res( {passthrough: true}) res) {
+        let locationHeader = '/accounts/' + createAskDto.uid + '/asks/' + this.asksService.counter;
+        res.header('Location', locationHeader);
         return this.asksService.create(createAskDto);
     }
     @Get(':uid/asks/:aid/deactivate')
@@ -60,8 +62,9 @@ export class AccountsController {
         return this.asksService.deactivate(uid, aid);
     }
     @Put(':uid/asks/:aid')
-    updateAsk(@Param(':uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number, @Body() ask: Ask): Ask {
-        return this.asksService.update(uid, aid, ask);
+    @HttpCode(HttpStatus.NO_CONTENT)
+    updateAsk(@Param(':uid') uid: string, @Param('aid') aid: string, @Body() ask: Ask): void {
+        return this.asksService.update(parseInt(uid), parseInt(aid), ask);
     }
     @Delete(':uid/asks/:aid')
     deleteAsk(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): void {
