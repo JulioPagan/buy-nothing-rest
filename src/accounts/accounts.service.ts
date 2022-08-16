@@ -12,7 +12,7 @@ export class AccountsService {
         2: "CSR"
     };
 
-    private account1 = {
+    private account0 = {
 		"uid": null,
 		"name": "Virgil Bistriceanu",
 		"address": {
@@ -24,7 +24,7 @@ export class AccountsService {
 		"is_active": true,
 		"date_created": ""
 	};
-    private account2 = {
+    private account1 = {
 		"uid": null,
 		"name": "Jane Smith",
 		"address": {
@@ -36,7 +36,7 @@ export class AccountsService {
 		"is_active": false,
 		"date_created": ""
 	};
-    private account3 = {
+    private account2 = {
 		"uid": null,
 		"name": "CSR #1",
 		"address": {
@@ -50,9 +50,9 @@ export class AccountsService {
 	};
     
     constructor () {
+        this.create(this.account0);
         this.create(this.account1);
         this.create(this.account2);
-        this.create(this.account3);
     }
     create(createAccountDto: CreateAccountDto): Account {
         // find the next id for a new account
@@ -83,9 +83,10 @@ export class AccountsService {
         if (account.is_active != this.accounts[uid].is_active && account.is_active == true) {
             throw new BadRequestException('CANNOT activate account by UPDATING');
         }
-        const updatedAccount: Account = {
+        let updatedAccount: Account = {
             ...account
         };
+        updatedAccount.date_created = this.accounts[uid].date_created;
         this.accounts[uid] = updatedAccount;
         this.accounts[uid].uid = +this.accounts[uid].uid;
     }
@@ -101,7 +102,8 @@ export class AccountsService {
             return this.accounts.filter(account => { 
                 // TO-DO: Process s_date & e_date 
                 let accountName = account.name.toLowerCase();
-                return accountName.includes(key.toLowerCase()) });
+                let accountAddressStreet = account.address.street.toLowerCase();
+                return accountName.includes(key.toLowerCase()) || accountAddressStreet.includes(key.toLowerCase()) || account.address.zip.includes(key) || account.phone.includes(key) });
         }
         return this.accounts;
     }
