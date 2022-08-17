@@ -29,11 +29,6 @@ export class AsksService {
         return this.asks[aid];
     } 
     update(uid: number, aid: number, ask: Ask): void {
-        console.log(typeof uid);
-        console.log(uid);
-        console.log(aid);
-        console.log(this.asks[aid].uid);
-        console.log(this.asks[aid].is_active);
         if (!this.asks[aid]) {
             throw new NotFoundException('Ask AID not found, cannot UPDATE');
         }else if (uid != this.asks[aid].uid) {

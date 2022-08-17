@@ -63,7 +63,7 @@ export class AccountsController {
     }
     @Put(':uid/asks/:aid')
     @HttpCode(HttpStatus.NO_CONTENT)
-    updateAsk(@Param(':uid') uid: string, @Param('aid') aid: string, @Body() ask: Ask): void {
+    updateAsk(@Param('uid') uid: string, @Param('aid') aid: string, @Body() ask: Ask): void {
         return this.asksService.update(parseInt(uid), parseInt(aid), ask);
     }
     @Delete(':uid/asks/:aid')
