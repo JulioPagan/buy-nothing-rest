@@ -67,8 +67,9 @@ export class AccountsController {
         return this.asksService.update(parseInt(uid), parseInt(aid), ask);
     }
     @Delete(':uid/asks/:aid')
-    deleteAsk(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): void {
-        return this.asksService.delete(uid, gid);
+    @HttpCode(HttpStatus.NO_CONTENT)
+    deleteAsk(@Param('uid') uid: string, @Param('aid') aid: string): void {
+        return this.asksService.delete(parseInt(uid), parseInt(aid));
     }
     @Get(':uid/asks')
     getMyAsks(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {

@@ -9,6 +9,11 @@ export class AsksService {
     public counter = 0;
 
     create(createAskDto: CreateAskDto): Ask {
+        // Check if the account creating the ask is active
+        // if (!this.accountsService.accounts[accountForAsk].is_active) {
+        //     throw new BadRequestException('INACTIVE Account CANNOTT create an Ask');
+        // }
+
         let aid = this.counter;
         const newAsk: Ask = {
             ...createAskDto,
@@ -56,8 +61,13 @@ export class AsksService {
     getMyAsks(uid: number, is_active?: boolean): Ask[] {
         // TO-DO: Process is_active
         if (uid) {
+            if (is_active != null) {
+                return this.asks.filter(ask => { 
+                return (ask.uid == uid) && ask.is_active;
+                });
+            }
             return this.asks.filter(ask => { 
-                return ask.uid == uid;
+                return (ask.uid == uid);
             });
         }else {
             throw new NotFoundException('Valid UID required to find account Asks');
