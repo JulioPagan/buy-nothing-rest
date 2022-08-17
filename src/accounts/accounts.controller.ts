@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Res } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Header, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Res } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AsksService } from 'src/asks/asks.service';
 import { GivesService } from 'src/gives/gives.service';
@@ -52,7 +52,11 @@ export class AccountsController {
      //** ------------ **\\
     //** Asks endpoints **\\
     @Post(':uid/asks')
-    createAsk(@Body() createAskDto: CreateAskDto, @Res( {passthrough: true}) res) {
+    createAsk(@Param('uid') uid: string, @Body() createAskDto: CreateAskDto, @Res( {passthrough: true}) res) {
+        // Check if the account creating the ask is active
+        if (!this.accountsService.accounts[parseInt(uid)].is_active) {
+            throw new BadRequestException('INACTIVE Account CANNOTT create an Ask');
+        }
         let locationHeader = '/accounts/' + createAskDto.uid + '/asks/' + this.asksService.counter;
         res.header('Location', locationHeader);
         return this.asksService.create(createAskDto);

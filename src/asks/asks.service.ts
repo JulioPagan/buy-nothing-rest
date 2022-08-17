@@ -9,19 +9,15 @@ export class AsksService {
     public counter = 0;
 
     create(createAskDto: CreateAskDto): Ask {
-        // Check if the account creating the ask is active
-        // if (!this.accountsService.accounts[accountForAsk].is_active) {
-        //     throw new BadRequestException('INACTIVE Account CANNOTT create an Ask');
-        // }
-
         let aid = this.counter;
         const newAsk: Ask = {
             ...createAskDto,
             aid
         };
+        newAsk.uid = +newAsk.uid;
+        newAsk.aid = + newAsk.aid;
         this.asks.push(newAsk);
         this.counter ++;
-        this.asks[aid].uid = +this.asks[aid].uid;
         return newAsk;
     }
     deactivate(uid: number, aid: number): Ask {
@@ -63,7 +59,7 @@ export class AsksService {
         if (uid) {
             if (is_active != null) {
                 return this.asks.filter(ask => { 
-                return (ask.uid == uid) && ask.is_active;
+                    return (ask.uid == uid) && ask.is_active;
                 });
             }
             return this.asks.filter(ask => { 
@@ -76,6 +72,7 @@ export class AsksService {
     // REVIEW AND FIX
     findAll(v_by: number, is_active?): Ask[] {
         // TO-DO: Process is_active
+        console.log(this.asks);
         if (v_by) {
             // CSR account returns all asks
             const Actor = AccountsService.Actors[v_by];
@@ -83,8 +80,12 @@ export class AsksService {
                 return this.asks;
             }
             // RU account returns asks visible to them
-            return this.asks.filter(ask => { 
-                return ask.uid == v_by;
+            return this.asks.filter(ask => {
+                if (is_active != null) {
+                    return this.asks.filter(ask => { 
+                        return (ask.uid == v_by) && ask.is_active;
+                    });
+                }    
             });
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')
