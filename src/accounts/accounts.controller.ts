@@ -76,7 +76,7 @@ export class AccountsController {
         return this.asksService.delete(parseInt(uid), parseInt(aid));
     }
     @Get(':uid/asks')
-    getMyAsks(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {
+    getMyAsks(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: string}) {
         return this.asksService.getMyAsks(uid, query.is_active);
     }
 

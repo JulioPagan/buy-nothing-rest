@@ -8,8 +8,8 @@ export class AsksController {
     constructor(private asksService: AsksService){}
 
     @Get()
-    findAsks(@Query() query: { v_by: string}): Ask[] {
-        return this.asksService.findAll(parseInt(query.v_by));
+    findAsks(@Query() query: { v_by: string, is_active?: string}): Ask[] {
+        return this.asksService.findAll(parseInt(query.v_by), query.is_active);
     }
     @Get(':aid')
     findOneAsk(@Param('aid', ParseIntPipe) aid: number): Ask {

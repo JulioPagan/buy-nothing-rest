@@ -54,13 +54,20 @@ export class AsksService {
         this.asks.splice(aid, 1);
     }
     // REVIEW AND FIX
-    getMyAsks(uid: number, is_active?: boolean): Ask[] {
+    getMyAsks(uid: number, is_active?: string): Ask[] {
         // TO-DO: Process is_active
         if (uid) {
             if (is_active != null) {
-                return this.asks.filter(ask => { 
-                    return (ask.uid == uid) && ask.is_active;
-                });
+                let activeBoolean = is_active == 'true' ? true : false
+                if (activeBoolean) {
+                    return this.asks.filter(ask => { 
+                        return (ask.uid == uid) && ask.is_active;
+                    });
+                }else if (!activeBoolean) {
+                    return this.asks.filter(ask => { 
+                        return (ask.uid == uid) && !ask.is_active;
+                    });
+                }
             }
             return this.asks.filter(ask => { 
                 return (ask.uid == uid);
