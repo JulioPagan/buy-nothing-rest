@@ -107,7 +107,7 @@ export class AccountsController {
         return this.givesService.delete(parseInt(uid), parseInt(gid));
     }
     @Get(':uid/gives')
-    getMyGives(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {
+    getMyGives(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: string}) {
         return this.givesService.getMyGives(uid, query.is_active);
     }
 

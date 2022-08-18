@@ -52,9 +52,21 @@ export class GivesService {
         }
         this.gives.splice(gid, 1);
     }
-    getMyGives(uid: number, is_active?: boolean): Give[] {
+    getMyGives(uid: number, is_active?: string): Give[] {
         // TO-DO: Process is_active
         if (uid) {
+            if (is_active != null) {
+                let activeBoolean = is_active == 'true' ? true : false
+                if (activeBoolean) {
+                    return this.gives.filter(give => { 
+                        return (give.uid == uid) && give.is_active;
+                    });
+                }else if (!activeBoolean) {
+                    return this.gives.filter(give => { 
+                        return (give.uid == uid) && !give.is_active;
+                    });
+                }
+            }
             return this.gives.filter(give => { 
                 return give.uid == uid;
             });
