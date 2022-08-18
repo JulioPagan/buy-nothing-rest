@@ -1,6 +1,6 @@
 export class CreateGiveDto {
     uid: number;
-    gid: number;
+    gid: number|null;
     type: string;
     description: string;
     start_date: string;

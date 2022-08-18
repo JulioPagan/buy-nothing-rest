@@ -83,7 +83,13 @@ export class AccountsController {
      //** ------------- **\\
     //** Gives endpoints **\\
     @Post(':uid/gives')
-    createGive(@Body() createGiveDto: CreateGiveDto) {
+    createGive(@Param('uid') uid: string, @Body() createGiveDto: CreateGiveDto, @Res( {passthrough: true}) res) {
+        // Check if the account creating the give is active
+        if (!this.accountsService.accounts[parseInt(uid)].is_active) {
+            throw new BadRequestException('INACTIVE Account CANNOTT create a Give');
+        }
+        let locationHeader = '/accounts/' + createGiveDto.uid + '/gives/' + this.givesService.counter;
+        res.header('Location', locationHeader);
         return this.givesService.create(createGiveDto);
     }
     @Get(':uid/gives/:gid/deactivate')
@@ -91,12 +97,14 @@ export class AccountsController {
         return this.givesService.deactivateGive(uid, gid);
     }
     @Put(':uid/gives/:gid')
-    updateGive(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number, @Body() give: Give): Give {
-        return this.givesService.update(uid, gid, give);
+    @HttpCode(HttpStatus.NO_CONTENT)
+    updateGive(@Param('uid') uid: string, @Param('gid') gid: string, @Body() give: Give): Give {
+        return this.givesService.update(parseInt(uid), parseInt(gid), give);
     }
     @Delete(':uid/gives/:gid')
-    deleteGive(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): void {
-        return this.givesService.delete(uid, gid);
+    @HttpCode(HttpStatus.NO_CONTENT)
+    deleteGive(@Param('uid') uid: string, @Param('gid') gid: string): void {
+        return this.givesService.delete(parseInt(uid), parseInt(gid));
     }
     @Get(':uid/gives')
     getMyGives(@Param('uid', ParseIntPipe) uid: number, @Query() query?: {is_active?: boolean}) {

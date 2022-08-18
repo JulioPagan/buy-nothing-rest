@@ -1,12 +1,24 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateGiveDto } from 'src/dto/create-give.dto';
 import { Give } from 'src/interfaces/give.interface';
 
 @Injectable()
 export class GivesService {
     private readonly gives: Give[] = [];
+    public counter = 0;
 
-    create(give: Give) {
-        this.gives.push(give);
+    create(createGiveDto: CreateGiveDto): Give {
+        let gid = this.counter;
+        const newGive: Give = {
+            ...createGiveDto,
+            gid
+        };
+        newGive.uid = +newGive.uid;
+        newGive.gid = + newGive.gid;
+        this.gives.push(newGive);
+        this.counter ++;
+        this.gives.push(newGive);
+        return newGive;
     }
     deactivateGive(uid: number, gid: number): Give {
         if (!this.gives[gid]) {
@@ -22,13 +34,14 @@ export class GivesService {
             throw new NotFoundException('Give GID not found, cannot UPDATE');
         }else if (uid != this.gives[gid].uid) {
             throw new NotFoundException('Account UID invalid, cannot UPDATE');
-        }else if (this.gives[gid].is_active) {
+        }else if (!this.gives[gid].is_active) {
             throw new BadRequestException('Give is NOT active, cannot UPDATE')
         }
         const updatedGive: Give = {
             ...give
         };
         this.gives[gid] = updatedGive;
+        console.log(updatedGive);
         return updatedGive;
     }
     delete(uid: number, gid: number): void {

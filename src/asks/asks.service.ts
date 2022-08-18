@@ -72,7 +72,6 @@ export class AsksService {
     // REVIEW AND FIX
     findAll(v_by: number, is_active?): Ask[] {
         // TO-DO: Process is_active
-        console.log(this.asks);
         if (v_by) {
             // CSR account returns all asks
             const Actor = AccountsService.Actors[v_by];
