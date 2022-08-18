@@ -62,8 +62,8 @@ export class AccountsController {
         return this.asksService.create(createAskDto);
     }
     @Get(':uid/asks/:aid/deactivate')
-    deactivateAsk(@Param('uid', ParseIntPipe) uid: number, @Param('aid', ParseIntPipe) aid: number): Ask {
-        return this.asksService.deactivate(uid, aid);
+    deactivateAsk(@Param('uid') uid: string, @Param('aid') aid: string): Ask {
+        return this.asksService.deactivate(parseInt(uid), parseInt(aid));
     }
     @Put(':uid/asks/:aid')
     @HttpCode(HttpStatus.NO_CONTENT)
@@ -93,8 +93,8 @@ export class AccountsController {
         return this.givesService.create(createGiveDto);
     }
     @Get(':uid/gives/:gid/deactivate')
-    deactivateGive(@Param('uid', ParseIntPipe) uid: number, @Param('gid', ParseIntPipe) gid: number): Give { 
-        return this.givesService.deactivateGive(uid, gid);
+    deactivateGive(@Param('uid') uid: string, @Param('gid') gid: string): Give { 
+        return this.givesService.deactivateGive(parseInt(uid), parseInt(gid));
     }
     @Put(':uid/gives/:gid')
     @HttpCode(HttpStatus.NO_CONTENT)

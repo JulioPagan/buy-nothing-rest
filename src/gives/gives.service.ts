@@ -17,7 +17,6 @@ export class GivesService {
         newGive.gid = + newGive.gid;
         this.gives.push(newGive);
         this.counter ++;
-        this.gives.push(newGive);
         return newGive;
     }
     deactivateGive(uid: number, gid: number): Give {
