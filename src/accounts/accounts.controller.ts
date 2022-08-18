@@ -98,7 +98,7 @@ export class AccountsController {
     }
     @Put(':uid/gives/:gid')
     @HttpCode(HttpStatus.NO_CONTENT)
-    updateGive(@Param('uid') uid: string, @Param('gid') gid: string, @Body() give: Give): Give {
+    updateGive(@Param('uid') uid: string, @Param('gid') gid: string, @Body() give: Give): void {
         return this.givesService.update(parseInt(uid), parseInt(gid), give);
     }
     @Delete(':uid/gives/:gid')

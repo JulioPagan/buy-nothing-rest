@@ -29,7 +29,7 @@ export class GivesService {
         this.gives[gid].is_active = false;
         return this.gives[gid];
     }
-    update(uid: number, gid: number, give: Give): Give {
+    update(uid: number, gid: number, give: Give): void {
         if (!this.gives[gid]) {
             throw new NotFoundException('Give GID not found, cannot UPDATE');
         }else if (uid != this.gives[gid].uid) {
@@ -41,8 +41,9 @@ export class GivesService {
             ...give
         };
         this.gives[gid] = updatedGive;
-        console.log(updatedGive);
-        return updatedGive;
+        this.gives[gid].uid = +this.gives[gid].uid;
+        this.gives[gid].gid = +this.gives[gid].gid;
+
     }
     delete(uid: number, gid: number): void {
         if (!this.gives[gid]) {
