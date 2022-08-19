@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ThanksService } from './thanks.service';
 import { Thank } from 'src/interfaces/thank.interface';
-import { CreateThankDto } from 'src/dto/create-thank.dto';
 
 @Controller('thanks')
 export class ThanksController {
@@ -15,9 +14,9 @@ export class ThanksController {
     findOneThank(@Param('tid', ParseIntPipe) tid: number): Thank {
         return this.thanksService.findOne(tid);
     }
-    @Get('/received:uid')
-    findThanksForUser(@Param('uid', ParseIntPipe) uid: number): Thank[] {
-        return this.thanksService.findAllForUser(uid);
+    @Get('/received/:uid')
+    findThanksForUser(@Param('uid') uid: string): Thank[] {
+        return this.thanksService.findAllForUser(parseInt(uid));
     }
     @Get(':key')
     searchThanks(@Query() query?: { key?: string, start_date?: Date, end_date?: Date}): Thank[] {
