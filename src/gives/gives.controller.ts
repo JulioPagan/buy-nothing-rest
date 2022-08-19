@@ -8,8 +8,8 @@ export class GivesController {
     constructor(private givesService: GivesService){}
 
     @Get()
-    findGives(@Query() query: { v_by: number}): Give[] {
-        return this.givesService.findAll(query.v_by);
+    findGives(@Query() query: { v_by: string, is_active?: string}): Give[] {
+        return this.givesService.findAll(parseInt(query.v_by), query.is_active);
     }
     @Get(':gid')
     findOneGive(@Param('gid', ParseIntPipe) gid: number): Give {
