@@ -107,7 +107,6 @@ export class GivesService {
                     let isTrue = (is_active == 'true');
                     let isFalse = (is_active == 'false');
                     if (!isTrue || !isFalse) {
-                        console.log('excuting empty activity');
                         return this.gives.filter(give => { 
                             return (give.uid == v_by);
                         });

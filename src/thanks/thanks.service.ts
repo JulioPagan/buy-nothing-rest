@@ -1,11 +1,24 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateThankDto } from 'src/dto/create-thank.dto';
 import { Thank } from 'src/interfaces/thank.interface';
 
 @Injectable()
 export class ThanksService {
     private readonly thanks: Thank[] = [];
-    createThank(thank: Thank) {
-        this.thanks.push(thank);
+    public counter = 0;
+
+    createThank(createThankDto: CreateThankDto): Thank {
+        let tid = this.counter;
+        const newThank: Thank = {
+            ...createThankDto,
+            tid
+        };
+        newThank.uid = +newThank.uid;
+        newThank.tid = + newThank.tid;
+        newThank.thank_to = +newThank.thank_to;
+        this.thanks.push(newThank);
+        this.counter ++;
+        return newThank;
     }
     update(uid: number, tid: number, thank: Thank): Thank {
         if (!this.thanks[tid]) {

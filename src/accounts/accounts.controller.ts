@@ -114,10 +114,13 @@ export class AccountsController {
      //** -------------- **\\
     //** Thanks endpoints **\\    
     @Post(':uid/thanks')
-    createThank(@Body() createThankDto: CreateThankDto) {
+    createThank(@Param('uid') uid: string, @Body() createThankDto: CreateThankDto, @Res( {passthrough: true}) res) {
+        let locationHeader = '/accounts/' + createThankDto.uid + '/thanks/' + this.thanksService.counter;
+        res.header('Location', locationHeader);
         return this.thanksService.createThank(createThankDto);
     }
     @Put(':uid/thanks/:tid')
+    @HttpCode(HttpStatus.NO_CONTENT)
     updateThank(@Param('uid', ParseIntPipe) uid: number, @Param('tid', ParseIntPipe) tid: number, @Body() thank: Thank): Thank {
         return this.thanksService.update(uid, tid, thank);
     }
