@@ -98,12 +98,16 @@ export class AsksService {
         };
     }
     findOne(aid: number): Ask {
-        if (!this.asks[aid]) {
+        console.log('processing get ask/' + aid);
+        console.log(this.asks[aid] == undefined);
+        console.log(this.asks[aid]);
+
+        if (!this.asks[aid] || this.asks[aid].aid != aid) {
             throw new NotFoundException('AID Not Found');
         }
-
         return this.asks.find(ask => ask.aid === aid);
     }
+    
     // REVIEW AND FIX
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
         if (!key || key === null) {

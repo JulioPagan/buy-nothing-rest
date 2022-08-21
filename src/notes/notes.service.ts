@@ -42,15 +42,12 @@ export class NotesService {
     viewNotes(c_by?: number, v_by?: number, type?: string, agid?: number, key?: string, start_date?: Date, end_date?: Date): Note[] {
         // Process type and v_by
         if (c_by) {
-            console.log('processing view Notes');
             return this.notes.filter(note => { 
                 return note.uid == c_by;
             });
         } else if (key) {
-            console.log('processing search Notes');
             return this.notes.filter(note => { 
-                let noteDescription = note.description.toLowerCase();
-                return noteDescription.includes(key.toLowerCase()) });
+                return note.description.includes(key.toLowerCase()) });
         }
         return this.notes;
     }
