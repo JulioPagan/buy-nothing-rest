@@ -98,10 +98,6 @@ export class AsksService {
         };
     }
     findOne(aid: number): Ask {
-        console.log('processing get ask/' + aid);
-        console.log(this.asks[aid] == undefined);
-        console.log(this.asks[aid]);
-
         if (!this.asks[aid] || this.asks[aid].aid != aid) {
             throw new NotFoundException('AID Not Found');
         }
