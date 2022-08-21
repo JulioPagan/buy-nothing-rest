@@ -8,11 +8,11 @@ export class ReportsController {
     constructor(private reportsService: ReportsService){}
 
     @Get()
-    findReports(): Report[] {
-        return this.reportsService.findAll();
+    viewReports(): Report[] {
+        return this.reportsService.findAvailable();
     }
     @Get(':rid')
-    findOneReport(
+    viewOneReport(
         @Param() param: {rid: number},
         @Query() query?: { c_by?: string, v_by?: string, start_date?: Date, end_date?: Date}
         ) {
