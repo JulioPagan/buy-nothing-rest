@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Res } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note } from 'src/interfaces/note.interface';
 import { CreateNoteDto } from 'src/dto/create-note.dto';
@@ -8,11 +8,14 @@ export class NotesController {
     constructor(private notesService: NotesService){}
 
     @Post()
-    create(@Body() createNoteDto: CreateNoteDto){
-        this.notesService.create(createNoteDto);
+    create(@Body() createNoteDto: CreateNoteDto, @Res( {passthrough: true}) res){
+        let locationHeader = '/notes/' + this.notesService.counter;
+        res.header('Location', locationHeader);
+        return this.notesService.create(createNoteDto);
     }
     @Put(':nid')
-    updateAskNote(@Param('nid', ParseIntPipe) nid: number, @Body() note: Note): Note{
+    @HttpCode(HttpStatus.NO_CONTENT)
+    updateAskNote(@Param('nid', ParseIntPipe) nid: number, @Body() note: Note): void{
         return this.notesService.updateNote(nid, note);
     }
     @Delete(':nid')

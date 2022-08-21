@@ -1,14 +1,28 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateNoteDto } from 'src/dto/create-note.dto';
 import { Note } from 'src/interfaces/note.interface';
 
 @Injectable()
 export class NotesService {
     private readonly notes: Note[] = [];
+    public counter = 0;
 
-    create(note: Note) {
-        this.notes.push(note);
+    create(createNoteDto: CreateNoteDto): Note {
+        let nid = this.counter;
+        const newNote: Note = {
+            ...createNoteDto,
+            nid
+        };
+        newNote.uid = +newNote.uid;
+        newNote.nid = + newNote.nid;
+        newNote.to_id = +newNote.to_id
+        newNote.to_user_id = +newNote.to_user_id;
+        this.notes.push(newNote);
+        this.counter ++;
+        return newNote;
     }
-    updateNote(nid: number, note: Note): Note {
+
+    updateNote(nid: number, note: Note): void {
         if (!this.notes[nid]) {
             throw new NotFoundException('Note NID not found, cannot UPDATE');
         }
@@ -16,7 +30,6 @@ export class NotesService {
             ...note
         };
         this.notes[nid] = updatedNote;
-        return updatedNote;
     }
 
     // updateAskNote(uid: number, aid: number, nid: number, note: Note): Note {
