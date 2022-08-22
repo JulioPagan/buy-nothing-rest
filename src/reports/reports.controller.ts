@@ -13,10 +13,9 @@ export class ReportsController {
     }
     @Get(':rid')
     viewOneReport(
-        @Param() param: {rid: number},
-        @Query() query?: { c_by?: string, v_by?: string, start_date?: Date, end_date?: Date}
-        ) {
-        return this.reportsService.findOne(param.rid, query.c_by, query.v_by, query.start_date, query.end_date);
+        @Param() param: {rid: string},
+        @Query() query?: { c_by?: string, v_by?: string, start_date?: Date, end_date?: Date}) {
+        return this.reportsService.findOne(parseInt(param.rid), parseInt(query.c_by), parseInt(query.v_by), query.start_date, query.end_date);
     }
 
 }

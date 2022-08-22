@@ -12,7 +12,27 @@ describe('ThanksService', () => {
     service = module.get<ThanksService>(ThanksService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should create a thank with TID', () => {
+    let testThank = service.createThank(
+      {
+        uid: 0,
+        tid: null,
+        thank_to: 1,
+        description: 'This is a test Thank',
+        date_created: null
+      }
+    );
+    expect(testThank).toEqual(
+      {
+        uid: 0,
+        gid: null,
+        type: "service",
+        description: "This is a test service",
+        start_date: "2022-08-01",
+        end_date: null,
+        extra_zip: null,
+        is_active: true,
+        date_created: null
+      });
   });
 });

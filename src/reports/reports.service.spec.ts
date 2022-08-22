@@ -12,7 +12,16 @@ describe('ReportsService', () => {
     service = module.get<ReportsService>(ReportsService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should create a note with NID', () => {
+    let testReportsAvailable = service.findAvailable();
+    expect(testReportsAvailable).toEqual(
+      [{  
+          'rid': parseInt('1'),
+          'name': 'Asks/gives broken down by zip'
+        },{
+          'rid': parseInt('2'),
+          'name': 'Asks/gives and communications for a user'
+      }]
+      );
   });
 });

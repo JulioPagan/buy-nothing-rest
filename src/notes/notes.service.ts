@@ -1,10 +1,13 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNoteDto } from 'src/dto/create-note.dto';
 import { Note } from 'src/interfaces/note.interface';
+import { NotesConversation } from 'src/interfaces/notes.conversation.interface';
 
 @Injectable()
 export class NotesService {
     private readonly notes: Note[] = [];
+    private readonly conversations: NotesConversation[] = [];
+
     public counter = 0;
 
     create(createNoteDto: CreateNoteDto): Note {
@@ -17,6 +20,36 @@ export class NotesService {
         newNote.nid = + newNote.nid;
         newNote.to_id = +newNote.to_id
         newNote.to_user_id = +newNote.to_user_id;
+        if (newNote.to_type != 'note') {
+            if (this.conversations.find(convo => {return convo.source_id == newNote.to_id})) {
+                let index = this.conversations.findIndex(convo => {return convo.source_id == newNote.to_id}); 
+                let conversationIndex = this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})];
+                console.log(conversationIndex == undefined);
+                if (conversationIndex == undefined) {
+                    console.log('creating new note in thread');
+                    const newThread = {
+                        'with_uid': newNote.uid,
+                        'notes': [newNote]
+                    }
+                    this.conversations[index].conversations.push(newThread);
+                    this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].notes.push(newNote);    
+                } else {
+                    this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].with_uid = newNote.uid;
+                    this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].notes.push(newNote);
+                }
+                console.log('note in conversation', this.conversations[index].conversations);
+            }else {
+                const newConversation: NotesConversation = {
+                    'uid' : newNote.to_user_id,
+                    'source_id': newNote.to_id,
+                    'conversations' : [{'with_uid' : newNote.uid, 'notes' : [newNote]}]
+                }
+                this.conversations.push(newConversation);
+            }
+        }else {
+            // Process note reply
+        }
+
         this.notes.push(newNote);
         this.counter ++;
         return newNote;
@@ -39,7 +72,7 @@ export class NotesService {
         this.notes.splice(nid, 1);
     }
     // Process 
-    viewNotes(c_by?: number, v_by?: number, type?: string, agid?: number, key?: string, start_date?: Date, end_date?: Date): Note[] {
+    viewNotes(c_by?: number, v_by?: number, type?: string, agid?: number, key?: string, start_date?: Date, end_date?: Date): Note[] | NotesConversation[] {
         // Process type and v_by
         if (c_by) {
             return this.notes.filter(note => { 
@@ -49,7 +82,8 @@ export class NotesService {
             return this.notes.filter(note => { 
                 return note.description.includes(key.toLowerCase()) });
         }
-        return this.notes;
+        
+        return this.conversations;
     }
     viewNote(nid: number): Note {
         const note: Note = this.notes.find(note => note.uid === nid);
