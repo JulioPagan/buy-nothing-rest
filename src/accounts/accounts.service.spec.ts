@@ -46,7 +46,7 @@ describe('AccountsService', () => {
   });
 
   it('should create an account with UID', () => {
-    let createdAccount = service.create(testAccount);
+    let createdAccount = service.create(testAccount1);
     expect(createdAccount).toEqual(
       {
         uid: null,
