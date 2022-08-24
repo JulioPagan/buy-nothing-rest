@@ -4,6 +4,28 @@ import { ThanksService } from './thanks.service';
 describe('ThanksService', () => {
   let service: ThanksService;
 
+  let testThank1 = {
+    uid: 0,
+    tid: null,
+    thank_to: 0,
+    description: "This is a test thank",
+    date_created: null,
+  }
+  let testThank2 = {
+    uid: 0,
+    tid: null,
+    thank_to: 0,
+    description: "This is a very grateful test thank",
+    date_created: null,
+  }
+  let updatedThank = {
+    uid: 0,
+    tid: null,
+    thank_to: 0,
+    description: "This is an updated thank-you",
+    date_created: null,
+  }
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ThanksService],
@@ -13,26 +35,14 @@ describe('ThanksService', () => {
   });
 
   it('should create a thank with TID', () => {
-    let testThank = service.createThank(
+    let createdThank = service.createThank(testThank1);
+    expect(createdThank).toEqual(
       {
         uid: 0,
         tid: null,
-        thank_to: 1,
-        description: 'This is a test Thank',
-        date_created: null
-      }
-    );
-    expect(testThank).toEqual(
-      {
-        uid: 0,
-        gid: null,
-        type: "service",
-        description: "This is a test service",
-        start_date: "2022-08-01",
-        end_date: null,
-        extra_zip: null,
-        is_active: true,
-        date_created: null
+        thank_to: 0,
+        description: "This is a test thank",
+        date_created: null,
       });
   });
 });
