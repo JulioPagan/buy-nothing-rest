@@ -27,7 +27,7 @@ describe('AccountsService', () => {
 
 
   let updatedAccount = {
-    uid: null,
+    uid: 0,
     name: 'Mr. Updated',
     address: { street : '1234 test Ave', zip : '09123' },
     phone: '312-773-1234',

@@ -4,6 +4,35 @@ import { NotesService } from './notes.service';
 describe('NotesService', () => {
   let service: NotesService;
 
+  let testNote1 = {
+    uid: 0,
+    nid: null,
+    to_type: 'give',
+    to_user_id: 0,
+    to_id: 0,
+    description: 'this is a test note',
+    date_created: null
+  }
+  let testNote2 = {
+    uid: 0,
+    nid: null,
+    to_type: 'ask',
+    to_user_id: 0,
+    to_id: 0,
+    description: 'this is another test note',
+    date_created: null
+  }
+  let updatedNote = {
+    uid: 0,
+    nid: 0,
+    to_type: 'give',
+    to_user_id: 0,
+    to_id: 0,
+    description: 'this is another test note',
+    date_created: null
+  }
+
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [NotesService],
@@ -12,27 +41,21 @@ describe('NotesService', () => {
     service = module.get<NotesService>(NotesService);
   });
 
+
   it('should create a note with NID', () => {
-    let testNotes = service.create(
+    let createdNote = service.create(testNote1);
+    expect(createdNote).toEqual(
       {
         uid: 0,
         nid: null,
         to_type: 'give',
-        to_user_id: 1,
+        to_user_id: 0,
         to_id: 0,
-        description: 'This is a test Note',
-        date_created: null
-      }
-    );
-    expect(testNotes).toEqual(
-      {
-        uid: 0,
-        nid: null,
-        to_type: 'give',
-        to_user_id: 1,
-        to_id: 0,
-        description: 'This is a test Note',
+        description: 'this is a test note',
         date_created: null
       });
   });
+
+
+  
 });

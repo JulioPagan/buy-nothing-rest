@@ -27,7 +27,7 @@ describe('AsksService', () => {
   }
   let updatedGive = {
     uid: 0,
-    gid: null,
+    gid: 0,
     type: "service",
     description: "This is an updated test service",
     start_date: "2022-08-01",

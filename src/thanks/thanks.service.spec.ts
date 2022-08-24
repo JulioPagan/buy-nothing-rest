@@ -20,7 +20,7 @@ describe('ThanksService', () => {
   }
   let updatedThank = {
     uid: 0,
-    tid: null,
+    tid: 0,
     thank_to: 0,
     description: "This is an updated thank-you",
     date_created: null,
