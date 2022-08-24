@@ -100,7 +100,7 @@ export class AccountsService {
     findAll(key?: string, start_date?: Date, end_date?: Date): Account[] {
         if (key) {
             return this.accounts.filter(account => { 
-                // TO-DO: Process s_date & e_date 
+                // TO-DO: Process s_date & e_date (date_created of the resource is >= the begining of start_date and less than the end of end_date)
                 let accountName = account.name.toLowerCase();
                 let accountAddressStreet = account.address.street.toLowerCase();
                 return accountName.includes(key.toLowerCase()) || accountAddressStreet.includes(key.toLowerCase()) || account.address.zip.includes(key) || account.phone.includes(key) });

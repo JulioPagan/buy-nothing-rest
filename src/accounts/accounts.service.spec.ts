@@ -59,6 +59,24 @@ describe('AccountsService', () => {
       });
   });
 
+  it('should throw 400 if the accountDto is pre-selecting a uid', () => {
+    let testAccount = service.create(
+      {
+        uid: 7,
+        name: 'Mr. Test',
+        address: { street : '1234 test Ave', zip : '09123' },
+        phone: '312-773-1234',
+        picture: 'http://example.com/imagetest.com',
+        is_active: false,
+        date_created: null
+      }
+    );
+    expect(testAccount).toEqual(
+      {
+        // throw 400 if account is pre-selecting a date created 
+      });
+  });
+
 
   it('should activate an account with UID', () => {
     let activatedAccount = service.activate(service.accounts[0].uid);
@@ -200,24 +218,6 @@ describe('AccountsService', () => {
       });
   });
 
-  it('should throw 400 if the accountDto is pre-selecting a uid', () => {
-    let testAccount = service.create(
-      {
-        uid: 7,
-        name: 'Mr. Test',
-        address: { street : '1234 test Ave', zip : '09123' },
-        phone: '312-773-1234',
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: null
-      }
-    );
-    expect(testAccount).toEqual(
-      {
-        // throw 400 if account is pre-selecting a date created 
-      });
-  });
-
 
   it('should update the pre-existng account with new account', () => {
     service.update(service.accounts[0].uid, updatedAccount);
@@ -261,5 +261,22 @@ describe('AccountsService', () => {
     let allAccounts = service.findAll();
     expect(allAccounts == service.accounts).toEqual(true);
   });
+
+
+  it('should find one account identified by the UID', () => {
+    let firstAccount = service.findOne(0);
+    expect(firstAccount == service.accounts[0]).toEqual(true);
+  });
+
+
+  it('should find all account that match search parameters', () => {
+    let searchedAccounts = service.findAll('created');
+    expect(searchedAccounts == service.accounts.filter(account => { 
+      // TO-DO: Process s_date & e_date 
+      let accountName = account.name.toLowerCase();
+      let accountAddressStreet = account.address.street.toLowerCase();
+      return accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created') })).toEqual(true);
+  });
+
 
 });

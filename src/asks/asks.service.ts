@@ -5,7 +5,7 @@ import { Ask } from 'src/interfaces/ask.interface';
 
 @Injectable()
 export class AsksService {
-    private readonly asks: Ask[] = [];
+    public readonly asks: Ask[] = [];
     public counter = 0;
 
     create(createAskDto: CreateAskDto): Ask {
@@ -113,5 +113,7 @@ export class AsksService {
         return this.asks.filter(ask => { 
             // TO-DO: Process s_date & e_date 
             let askDescription = ask.description.toLowerCase();
-            return askDescription.includes(key.toLowerCase()) });    }
+            let askType = ask.type.toLowerCase();
+            return askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())});    
+        }
 }
