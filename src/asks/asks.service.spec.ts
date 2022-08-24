@@ -125,6 +125,8 @@ describe('AsksService', () => {
     expect(allAsks == service.asks).toEqual(true);
   });
 
+  // Test viewing as RU
+
 
   it('should find one ask identified by the AID', () => {
     // User #2 is the Customer Service Representative (CSR)

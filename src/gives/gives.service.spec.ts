@@ -95,9 +95,11 @@ describe('AsksService', () => {
 
 
   it('should delete the give identified by gid', () => {
+    let preDelete = service.gives[0];
     service.delete(service.gives[0].uid, service.gives[0].gid);
-    expect(service.gives[0]).toEqual(updatedGive);
+    expect(preDelete == service.gives[0]).toEqual(false);
   });
+  
   
   it('should create an give with gid', () => {
     let createdGive = service.create(testGive2);
