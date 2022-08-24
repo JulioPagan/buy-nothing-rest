@@ -5,7 +5,7 @@ import { NotesConversation } from 'src/interfaces/notes.conversation.interface';
 
 @Injectable()
 export class NotesService {
-    private readonly notes: Note[] = [];
+    public readonly notes: Note[] = [];
     private readonly conversations: NotesConversation[] = [];
 
     public counter = 0;

@@ -3,7 +3,7 @@ import { Report } from 'src/interfaces/report.interface';
 
 @Injectable()
 export class ReportsService {
-    private readonly reports = [];
+    public readonly reports = [];
     private report1 = {
         'rid': parseInt('1'),
         'name': 'Asks/gives broken down by zip'
