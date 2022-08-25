@@ -8,7 +8,7 @@ export class NotesService {
     public readonly notes: Note[] = [];
     private readonly conversations: NotesConversation[] = [];
 
-    public counter = 0;
+    public counter: number = 0;
 
     create(createNoteDto: CreateNoteDto): Note {
         let nid = this.counter;
@@ -64,6 +64,10 @@ export class NotesService {
         const updatedNote: Note = {
             ...note
         };
+        updatedNote.uid = +updatedNote.uid;
+        updatedNote.nid = + updatedNote.nid;
+        updatedNote.to_id = +updatedNote.to_id
+        updatedNote.to_user_id = +updatedNote.to_user_id;
         this.notes[nid] = updatedNote;
     }
 

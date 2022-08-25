@@ -6,7 +6,7 @@ import { Give } from 'src/interfaces/give.interface';
 @Injectable()
 export class GivesService {
     public readonly gives: Give[] = [];
-    public counter = 0;
+    public counter: number = 0;
 
     create(createGiveDto: CreateGiveDto): Give {
         let gid = this.counter;

@@ -6,7 +6,7 @@ import { Ask } from 'src/interfaces/ask.interface';
 @Injectable()
 export class AsksService {
     public readonly asks: Ask[] = [];
-    public counter = 0;
+    public counter: number = 0;
 
     create(createAskDto: CreateAskDto): Ask {
         let aid = this.counter;

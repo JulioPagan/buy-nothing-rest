@@ -5,7 +5,7 @@ import { Account } from '../interfaces/account.interface';
 @Injectable()
 export class AccountsService {
     public readonly accounts: Account[] = [];
-    public counter = 0;
+    public counter: number = 0;
     static Actors = {
         0: "RU",
         1: "RU",

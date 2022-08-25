@@ -5,7 +5,7 @@ import { Thank } from 'src/interfaces/thank.interface';
 @Injectable()
 export class ThanksService {
     public readonly thanks: Thank[] = [];
-    public counter = 0;
+    public counter: number = 0;
 
     createThank(createThankDto: CreateThankDto): Thank {
         let tid = this.counter;
