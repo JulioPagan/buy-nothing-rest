@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThanksService } from './thanks.service';
 
@@ -36,13 +37,15 @@ describe('ThanksService', () => {
 
   it('should create a thank with TID', () => {
     let createdThank = service.createThank(testThank1);
+    let tid = createdThank.tid;
+    let date = createdThank.date_created;
     expect(createdThank).toEqual(
       {
         uid: 0,
-        tid: null,
+        tid: tid,
         thank_to: 0,
         description: "This is a test thank",
-        date_created: null,
+        date_created: date,
       });
   });
 
@@ -54,9 +57,7 @@ describe('ThanksService', () => {
       description: "This is an attenpt to create thank",
       date_created: null,
       });
-    expect(attemptCreate).toEqual({
-      // throw error when pre-selecting tid 
-    })
+    expect(attemptCreate).toThrow(BadRequestException)
   })
 
 
@@ -68,13 +69,15 @@ describe('ThanksService', () => {
 
   it('should create an thank with tid', () => {
     let createdThank = service.createThank(testThank2);
+    let tid = createdThank.tid;
+    let date = createdThank.date_created;
     expect(createdThank).toEqual(
       {
         uid: 0,
-        tid: null,
+        tid: tid,
         thank_to: 0,
         description: "This is a very grateful test thank",
-        date_created: null,
+        date_created: date,
       });
   });
 

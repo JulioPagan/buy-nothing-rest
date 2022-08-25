@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Account } from 'src/interfaces/account.interface';
 import { AccountsService } from './accounts.service';
@@ -47,15 +48,17 @@ describe('AccountsService', () => {
 
   it('should create an account with UID', () => {
     let createdAccount = service.create(testAccount1);
+    let uid = createdAccount.uid;
+    let date = createdAccount.date_created;
     expect(createdAccount).toEqual(
       {
-        uid: null,
+        uid: uid,
         name: 'Mr. Test',
         address: { street : '1234 test Ave', zip : '09123' },
         phone: '312-773-1234',
         picture: 'http://example.com/imagetest.com',
         is_active: false,
-        date_created: null
+        date_created: date
       });
   });
 
@@ -71,24 +74,23 @@ describe('AccountsService', () => {
         date_created: null
       }
     );
-    expect(testAccount).toEqual(
-      {
-        // throw 400 if account is pre-selecting a date created 
-      });
+    expect(testAccount).toThrow(BadRequestException);
   });
 
 
   it('should activate an account with UID', () => {
     let activatedAccount = service.activate(service.accounts[0].uid);
+    let uid = activatedAccount.uid;
+    let date = activatedAccount.date_created;
     expect(activatedAccount).toEqual(
       {
-        uid: null,
+        uid: uid,
         name: 'Mr. Test',
         address: { street : '1234 test Ave', zip : '09123' },
         phone: '312-773-1234',
         picture: 'http://example.com/imagetest.com',
         is_active: true,
-        date_created: null
+        date_created: date
       });
   });
 
@@ -244,15 +246,17 @@ describe('AccountsService', () => {
 
   it('should create another account with UID', () => {
     let createdAccount = service.create(testAccount2);
+    let uid = createdAccount.uid;
+    let date = createdAccount.date_created;
     expect(createdAccount).toEqual(
       {
-        uid: null,
+        uid: uid,
         name: 'Mr. Created 2.0',
         address: { street : '1234 test Ave', zip : '09123' },
         phone: '312-773-1234',
         picture: 'http://example.com/imagetest.com',
         is_active: false,
-        date_created: null
+        date_created: date
       });
   });
 

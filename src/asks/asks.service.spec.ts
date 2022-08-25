@@ -48,17 +48,19 @@ describe('AsksService', () => {
 
   it('should create an ask with AID', () => {
     let createdAsk = service.create(testAsk1);
+    let aid = createdAsk.aid;
+    let date = createdAsk.date_created;
     expect(createdAsk).toEqual(
       {
         uid: 0,
-        aid: null,
+        aid: aid,
         type: "gift",
         description: "This is a test gift",
         start_date: "2022-08-01",
         end_date: null,
         extra_zip: null,
         is_active: true,
-        date_created: null
+        date_created: date
       });
   });
 
@@ -101,17 +103,19 @@ describe('AsksService', () => {
   
   it('should create an ask with AID', () => {
     let createdAsk = service.create(testAsk2);
+    let aid = createdAsk.aid;
+    let date = createdAsk.date_created;
     expect(createdAsk).toEqual(
       {
         uid: 0,
-        aid: null,
+        aid: aid,
         type: "service",
         description: "This is a test service",
         start_date: "2022-08-01",
         end_date: null,
         extra_zip: null,
         is_active: true,
-        date_created: null
+        date_created: date
       });
   });
 

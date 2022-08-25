@@ -47,17 +47,19 @@ describe('AsksService', () => {
 
   it('should create a give with GID', () => {
     let createdGive = service.create(testGive1);
+    let gid = createdGive.gid;
+    let date = createdGive.date_created;
     expect(createdGive).toEqual(
       {
         uid: 0,
-        gid: null,
+        gid: gid,
         type: "gift",
         description: "This is a test gift",
         start_date: "2022-08-01",
         end_date: null,
         extra_zip: null,
         is_active: true,
-        date_created: null
+        date_created: date
       });
   });
 
@@ -100,20 +102,22 @@ describe('AsksService', () => {
     expect(preDelete == service.gives[0]).toEqual(false);
   });
   
-  
+
   it('should create an give with gid', () => {
     let createdGive = service.create(testGive2);
+    let gid = createdGive.gid;
+    let date = createdGive.date_created;
     expect(createdGive).toEqual(
       {
         uid: 0,
-        gid: null,
+        gid: gid,
         type: "service",
         description: "This is a test service",
         start_date: "2022-08-01",
         end_date: null,
         extra_zip: null,
         is_active: true,
-        date_created: null
+        date_created: date
       });
   });
 

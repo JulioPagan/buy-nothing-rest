@@ -44,15 +44,17 @@ describe('NotesService', () => {
 
   it('should create a note with NID', () => {
     let createdNote = service.create(testNote1);
+    let nid = createdNote.nid;
+    let date = createdNote.date_created;
     expect(createdNote).toEqual(
       {
         uid: 0,
-        nid: null,
+        nid: nid,
         to_type: 'give',
         to_user_id: 0,
         to_id: 0,
         description: 'this is a test note',
-        date_created: null
+        date_created: date
       });
   });
 
@@ -65,15 +67,17 @@ describe('NotesService', () => {
 
   it('should create a note with NID', () => {
     let createdNote = service.create(testNote2);
+    let nid = createdNote.nid;
+    let date = createdNote.date_created;
     expect(createdNote).toEqual(
       {
         uid: 0,
-        nid: null,
+        nid: nid,
         to_type: 'ask',
         to_user_id: 0,
         to_id: 0,
         description: 'this is another test note',
-        date_created: null
+        date_created: date
       });
   });
 
