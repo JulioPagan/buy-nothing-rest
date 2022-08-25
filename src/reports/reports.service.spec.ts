@@ -12,7 +12,7 @@ describe('ReportsService', () => {
     service = module.get<ReportsService>(ReportsService);
   });
 
-  it('should create a note with NID', () => {
+  it('should return available reports', () => {
     let testReportsAvailable = service.findAvailable();
     expect(testReportsAvailable).toEqual(
       [{  
@@ -24,4 +24,51 @@ describe('ReportsService', () => {
       }]
       );
   });
+
+  it('should return reports by ZIP', () => {
+    let testReportsAvailable = service.findAvailable();
+    expect(testReportsAvailable).toEqual(
+      {  
+        // Return asks n gives by zip report
+      }
+      );
+  });
+
+  it('should return reports of COMMUNICATIONS', () => {
+    let testReportsAvailable = service.findOne(1);
+    expect(testReportsAvailable).toEqual(
+      {  
+        // Return communications report
+      }
+      );
+  });
+
+
+  it('should throw 400 (Bad Request) if the viewed_by_id is not a CSR, or otherwise the query string consists of data that doesnt make sense', () => {
+    let testReportsAvailable = service.findAvailable();
+    expect(testReportsAvailable).toEqual(
+      [{  
+          'rid': parseInt('1'),
+          'name': 'Asks/gives broken down by zip'
+        },{
+          'rid': parseInt('2'),
+          'name': 'Asks/gives and communications for a user'
+      }]
+      );
+  });
+
+  it('should throw 404 (Not Found) if [rid] doesnt exist, and/or created_by_id doesnt exist, and/or viewed_by_id doesnt exist.', () => {
+    let testReportsAvailable = service.findAvailable();
+    expect(testReportsAvailable).toEqual(
+      [{  
+          'rid': parseInt('1'),
+          'name': 'Asks/gives broken down by zip'
+        },{
+          'rid': parseInt('2'),
+          'name': 'Asks/gives and communications for a user'
+      }]
+      );
+  });
+
+  
 });
