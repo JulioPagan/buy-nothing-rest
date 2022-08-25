@@ -5,5 +5,5 @@ export interface Account {
     phone: string;
     picture: string;
     is_active: boolean;
-    date_created: string;
+    date_created: Date|string;
 }

@@ -9,10 +9,12 @@ export class ThanksService {
 
     createThank(createThankDto: CreateThankDto): Thank {
         let tid = this.counter;
+        let date = new Date();
         const newThank: Thank = {
             ...createThankDto,
             tid
         };
+        newThank.date_created = date;
         newThank.uid = +newThank.uid;
         newThank.tid = + newThank.tid;
         newThank.thank_to = +newThank.thank_to;

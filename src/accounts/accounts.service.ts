@@ -57,10 +57,12 @@ export class AccountsService {
     create(createAccountDto: CreateAccountDto): Account {
         // find the next id for a new account
         let uid = this.counter;
+        let date = new Date();
         const newAccount: Account = {
             ...createAccountDto,
             uid
         };
+        newAccount.date_created = date;
         this.accounts.push(newAccount);
         this.counter ++;
 
@@ -73,9 +75,13 @@ export class AccountsService {
         if (!this.accounts[uid]) {
             throw new NotFoundException('Account UID not found, cannot ACTIVATE');
         }
-        this.accounts[uid].is_active = true;
-        return this.accounts[uid];
-    } 
+        let index = this.accounts.findIndex(account => {
+            account.uid == uid
+            return account.uid == uid
+        });
+        this.accounts[index].is_active = true;
+        return this.accounts[index];
+    }
     update(uid: number, account: Account): void {
         if (!this.accounts[uid]) {
             throw new NotFoundException('Account UID not found, cannot UPDATE');

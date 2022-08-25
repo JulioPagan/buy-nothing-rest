@@ -5,5 +5,5 @@ export class CreateNoteDto {
     to_user_id: number;
     to_id: number;
     description: string;
-    date_created: string|null;
+    date_created: Date|string|null;
 }

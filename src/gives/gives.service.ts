@@ -10,10 +10,12 @@ export class GivesService {
 
     create(createGiveDto: CreateGiveDto): Give {
         let gid = this.counter;
+        let date = new Date();
         const newGive: Give = {
             ...createGiveDto,
             gid
         };
+        newGive.date_created = date;
         newGive.uid = +newGive.uid;
         newGive.gid = + newGive.gid;
         this.gives.push(newGive);

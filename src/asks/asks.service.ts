@@ -10,10 +10,12 @@ export class AsksService {
 
     create(createAskDto: CreateAskDto): Ask {
         let aid = this.counter;
+        let date = new Date()
         const newAsk: Ask = {
             ...createAskDto,
             aid
         };
+        newAsk.date_created = date;
         newAsk.uid = +newAsk.uid;
         newAsk.aid = + newAsk.aid;
         this.asks.push(newAsk);

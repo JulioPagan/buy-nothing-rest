@@ -12,10 +12,12 @@ export class NotesService {
 
     create(createNoteDto: CreateNoteDto): Note {
         let nid = this.counter;
+        let date = new Date();
         const newNote: Note = {
             ...createNoteDto,
             nid
         };
+        newNote.date_created = date;
         newNote.uid = +newNote.uid;
         newNote.nid = + newNote.nid;
         newNote.to_id = +newNote.to_id

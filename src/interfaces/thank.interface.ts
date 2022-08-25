@@ -3,5 +3,5 @@ export interface Thank {
     tid: number;
     thank_to: number;
     description: string;
-    date_created: string;
+    date_created: Date|string;
 }

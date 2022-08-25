@@ -5,5 +5,5 @@ export interface Note {
     to_user_id: number;
     to_id: number;
     description: string;
-    date_created: string;
+    date_created: Date|string;
 }

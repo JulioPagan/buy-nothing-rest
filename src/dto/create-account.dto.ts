@@ -5,5 +5,5 @@ export class CreateAccountDto {
     phone: string;
     picture: string;
     is_active: boolean;
-    date_created: string|null;
+    date_created: Date|string|null;
 }
