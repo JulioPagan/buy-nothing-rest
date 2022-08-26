@@ -33,6 +33,8 @@ describe('ThanksService', () => {
     }).compile();
 
     service = module.get<ThanksService>(ThanksService);
+    service.createThank(testThank1);
+    service.createThank(testThank2);
   });
 
   it('should create a thank with TID', () => {
@@ -49,17 +51,18 @@ describe('ThanksService', () => {
       });
   });
 
-  it('should throw exception if attempting too pre-set tid', () => {
-    let attemptCreate = service.createThank({
+  it('should throw BAD REQUEST if attempting too pre-set tid', () => {
+    let attemptThank = service.createThank({
       uid: 0,
       tid: 5,
       thank_to: 0,
-      description: "This is an attenpt to create thank",
+      description: "This is an attempt to create thank",
       date_created: null,
       });
-    expect(attemptCreate).toThrow(BadRequestException)
-  })
-
+      expect(() => {service.createThank(attemptThank)}).toThrow(new BadRequestException);
+    })
+  
+  // Test is required fields are not satisfied
 
   it('should update the pre-existng thank with new thank', () => {
     service.update(service.thanks[0].uid, service.thanks[0].tid, updatedThank);

@@ -7,6 +7,11 @@ export class ReportsService {
     public readonly reports = [];
     public readonly reportByZip: ReportByZip;
     public readonly communicationReport: ReportCommunication;
+    private Actors = {
+        0: "RU",
+        1: "RU",
+        2: "CSR"
+    };
 
 
     private report1 = {

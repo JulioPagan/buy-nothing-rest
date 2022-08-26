@@ -8,6 +8,16 @@ export class ThanksService {
     public counter: number = 0;
 
     createThank(createThankDto: CreateThankDto): Thank {
+        if (createThankDto.tid) {
+            throw new BadRequestException("Cannot Pre-Select thank TID");
+        }
+        if (createThankDto.date_created) {
+            throw new BadRequestException("Cannot Pre-Select thank date_created");
+        }
+        if ((createThankDto.uid == null || "") || (createThankDto.thank_to == null || "") || (createThankDto.description == null || "")) {
+            throw new BadRequestException("Must enter all required fields");
+        }; 
+
         let tid = this.counter;
         let date = new Date();
         const newThank: Thank = {

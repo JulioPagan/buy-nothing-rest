@@ -7,8 +7,23 @@ import { Give } from 'src/interfaces/give.interface';
 export class GivesService {
     public readonly gives: Give[] = [];
     public counter: number = 0;
+    private Actors = {
+        0: "RU",
+        1: "RU",
+        2: "CSR"
+    };
 
     create(createGiveDto: CreateGiveDto): Give {
+        if (createGiveDto.gid) {
+            throw new BadRequestException("Cannot Pre-Select give GID")
+        }
+        if (createGiveDto.date_created) {
+            throw new BadRequestException("Cannot Pre-Select give date_created");
+        }
+        if ((createGiveDto.uid == null || "") || (createGiveDto.type == null || "") || (createGiveDto.description == null || "") || (createGiveDto.extra_zip == null || "")) {
+            throw new BadRequestException("Must enter all required fields");
+        }; 
+
         let gid = this.counter;
         let date = new Date();
         const newGive: Give = {
@@ -81,7 +96,7 @@ export class GivesService {
         // TO-DO: Process is_active
         if (v_by) {
             // CSR account returns all asks
-            const Actor = AccountsService.Actors[v_by];
+            const Actor = this.Actors[v_by];
             if (Actor === "CSR"){
                 if (is_active != null) {
                     let isTrue = (is_active == 'true');

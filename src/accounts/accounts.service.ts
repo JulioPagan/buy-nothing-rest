@@ -55,7 +55,16 @@ export class AccountsService {
         this.create(this.account2);
     }
     create(createAccountDto: CreateAccountDto): Account {
-        // find the next id for a new account
+        if (createAccountDto.uid) {
+            throw new BadRequestException("Cannot Pre-Select account UID")
+        }
+        if (createAccountDto.date_created) {
+            throw new BadRequestException("Cannot Pre-Select account UID")
+        }
+        if ((createAccountDto.address == null || "") || (createAccountDto.name == null || "") || (createAccountDto.phone == null || "") || (createAccountDto.picture == null || "")) {
+            throw new BadRequestException("Must enter all required fields");
+        }; 
+
         let uid = this.counter;
         let date = new Date();
         const newAccount: Account = {

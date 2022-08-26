@@ -7,8 +7,23 @@ import { Ask } from 'src/interfaces/ask.interface';
 export class AsksService {
     public readonly asks: Ask[] = [];
     public counter: number = 0;
+    private Actors = {
+        0: "RU",
+        1: "RU",
+        2: "CSR"
+    };
 
     create(createAskDto: CreateAskDto): Ask {
+        if (createAskDto.aid) {
+            throw new BadRequestException("Cannot Pre-Select ask AID")
+        }
+        if (createAskDto.date_created) {
+            throw new BadRequestException("Cannot Pre-Select ask date_created");
+        }
+        if ((createAskDto.uid == null || "") || (createAskDto.type == null || "") || (createAskDto.description == null || "") || (createAskDto.extra_zip == null || "")) {
+            throw new BadRequestException("Must enter all required fields");
+        }; 
+
         let aid = this.counter;
         let date = new Date()
         const newAsk: Ask = {
@@ -83,7 +98,7 @@ export class AsksService {
         // TO-DO: Process is_active
         if (v_by) {
             // CSR account returns all asks
-            const Actor = AccountsService.Actors[v_by];
+            const Actor = this.Actors[v_by];
             if (Actor === "CSR"){
                 return this.asks;
             }

@@ -39,6 +39,8 @@ describe('NotesService', () => {
     }).compile();
 
     service = module.get<NotesService>(NotesService);
+    service.create(testNote1);
+    service.create(testNote2);
   });
 
 

@@ -7,10 +7,19 @@ import { NotesConversation } from 'src/interfaces/notes.conversation.interface';
 export class NotesService {
     public readonly notes: Note[] = [];
     private readonly conversations: NotesConversation[] = [];
-
     public counter: number = 0;
 
     create(createNoteDto: CreateNoteDto): Note {
+        if (createNoteDto.nid) {
+            throw new BadRequestException("Cannot Pre-Select thank TID");
+        }
+        if (createNoteDto.date_created) {
+            throw new BadRequestException("Cannot Pre-Select thank date_created");
+        }
+        if ((createNoteDto.uid == null || "") || (createNoteDto.to_type == null || "") || (createNoteDto.to_user_id == null || "") || (createNoteDto.to_id == null || "") || (createNoteDto.description == null || "")) {
+            throw new BadRequestException("Must enter all required fields");
+        }; 
+
         let nid = this.counter;
         let date = new Date();
         const newNote: Note = {

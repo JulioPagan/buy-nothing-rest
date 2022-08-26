@@ -25,7 +25,18 @@ describe('AsksService', () => {
     is_active: true,
     date_created: null
   }
-  let updatedGive = {
+  let testGiveCreation = {
+    uid: 0,
+    gid: null,
+    type: "service",
+    description: "This is a created service for the community",
+    start_date: "2022-08-01",
+    end_date: null,
+    extra_zip: null,
+    is_active: true,
+    date_created: null
+  }
+  let testUpdateGive = {
     uid: 0,
     gid: 0,
     type: "service",
@@ -43,24 +54,26 @@ describe('AsksService', () => {
     }).compile();
 
     service = module.get<GivesService>(GivesService);
+    service.create(testGive1);
+    service.create(testGive2);
   });
 
   it('should create a give with GID', () => {
-    let createdGive = service.create(testGive1);
+    let createdGive = service.create(testGiveCreation);
     let gid = createdGive.gid;
     let date = createdGive.date_created;
     expect(createdGive).toEqual(
       {
         uid: 0,
         gid: gid,
-        type: "gift",
-        description: "This is a test gift",
+        type: "service",
+        description: "This is a created service for the community",
         start_date: "2022-08-01",
         end_date: null,
         extra_zip: null,
         is_active: true,
         date_created: date
-      });
+          });
   });
 
   it('should throw exception if attempting too pre-set gid', () => {
@@ -91,8 +104,8 @@ describe('AsksService', () => {
 
 
   it('should update the pre-existng give with new give', () => {
-    service.update(service.gives[0].uid, service.gives[0].gid, updatedGive);
-    expect(service.gives[0]).toEqual(updatedGive);
+    service.update(service.gives[0].uid, service.gives[0].gid, testUpdateGive);
+    expect(service.gives[0]).toEqual(testUpdateGive);
   });
 
 
