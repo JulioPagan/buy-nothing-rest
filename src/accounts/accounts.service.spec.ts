@@ -77,7 +77,7 @@ describe('AccountsService', () => {
   // Test Activation
   it('should activate an account with UID', () => {
     let activatedAccount = service.activate(service.accounts[3].uid);
-    expect(activatedAccount.is_active).toEqual(true);
+    expect(activatedAccount.is_active).toBeTruthy();
   });
 
   
@@ -206,8 +206,8 @@ describe('AccountsService', () => {
   it('should update the pre-existng account with new account', () => {
     let uid = service.accounts[0].uid;
     let date = service.accounts[0].date_created;
-    let updatedAccount = service.update(service.accounts[0].uid, testUpdateAccount);
-    expect(updatedAccount).toEqual(
+    service.update(service.accounts[0].uid, testUpdateAccount);
+    expect(service.accounts[0]).toEqual(
       {
         uid: uid,
         name: 'Mr. Updated',
@@ -221,7 +221,7 @@ describe('AccountsService', () => {
 
 
   // Test Delete
-  it('should delete an account from the existing list of accounts', () => {
+  it('should delete an account from the existing list', () => {
     let currentLength = service.accounts.length;
     service.delete(service.accounts[0].uid);
     let newLength = service.accounts.length;
@@ -232,32 +232,60 @@ describe('AccountsService', () => {
   // Test findAll
   it('should find all account in the existing list of accounts', () => {
     let allAccounts = service.findAll();
-    expect(allAccounts == service.accounts).toEqual(true);
+    expect(allAccounts == service.accounts).toBeTruthy();
   });
 
 
   // Test findOne
   it('should find one account identified by the UID', () => {
     let firstAccount = service.findOne(0);
-    expect(firstAccount == service.accounts[0]).toEqual(true);
+    expect(firstAccount == service.accounts[0]).toBeTruthy();
   });
 
 
   // Test Search by Keyword
-  it('should find all account that match search parameters', () => {
+  it('should find all account that match keyword', () => {
     let searchedAccounts = service.findAll('created');
     let filteredSearch = service.accounts.filter(account => { 
       let accountName = account.name.toLowerCase();
       let accountAddressStreet = account.address.street.toLowerCase();
       return accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created') });
-    expect(searchedAccounts.join() == filteredSearch.join()).toEqual(true);
+    expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
   });
 
   // Test search by keyword and start_date
+  it('should find all accounts that match keyword and after start date', () => {
+    let start = new Date('31-Dec-2000');
+    let searchedAccounts = service.findAll('created', start);
+    let filteredSearch = service.accounts.filter(account => { 
+      let accountName = account.name.toLowerCase();
+      let accountAddressStreet = account.address.street.toLowerCase();
+      return (accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created')) && ((account.date_created > start))});
+    expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
+  });
 
   // Test search by keyword and end_date
+  it('should find all accounts that match keyword and before end date', () => {
+    let end = new Date('31-Dec-2022')
+    let searchedAccounts = service.findAll('created', null, end);
+    let filteredSearch = service.accounts.filter(account => { 
+      let accountName = account.name.toLowerCase();
+      let accountAddressStreet = account.address.street.toLowerCase();
+      return (accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created')) && (account.date_created < end)});
+    expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
+  });
 
   // Test search by keyword and date range
+  it('should find all accounts that match keyword and between date range', () => {
+    let start = new Date('31-Dec-2000');
+    let end = new Date('31-Dec-2022')
+    let searchedAccounts = service.findAll('created', start, end);
+    let filteredSearch = service.accounts.filter(account => { 
+      let accountName = account.name.toLowerCase();
+      let accountAddressStreet = account.address.street.toLowerCase();
+      return (accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created')) && ((account.date_created > start ) && (account.date_created < end))});
+    expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
+  });
 
 
 });
