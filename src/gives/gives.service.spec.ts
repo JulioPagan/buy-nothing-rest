@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GivesService } from './gives.service';
 
@@ -89,9 +90,7 @@ describe('AsksService', () => {
       date_created: null
   
     });
-    expect(attemptCreate).toEqual({
-      // throw error when pre-selecting gid 
-    })
+    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
   })
 
   // TO-DO: Test throwing errors when Request is BAD

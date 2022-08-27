@@ -90,8 +90,8 @@ describe('AsksService', () => {
       is_active: true,
       date_created: null  
     });
-    expect(attemptCreate).toThrow(BadRequestException);
-  })
+    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+  });
 
   // TO-DO: Test throwing errors when Request is BAD
 

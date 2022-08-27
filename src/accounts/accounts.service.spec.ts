@@ -246,10 +246,11 @@ describe('AccountsService', () => {
   // Test Search by Keyword
   it('should find all account that match search parameters', () => {
     let searchedAccounts = service.findAll('created');
-    expect(searchedAccounts == service.accounts.filter(account => { 
+    let filteredSearch = service.accounts.filter(account => { 
       let accountName = account.name.toLowerCase();
       let accountAddressStreet = account.address.street.toLowerCase();
-      return accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created') })).toEqual(true);
+      return accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created') });
+    expect(searchedAccounts.join() == filteredSearch.join()).toEqual(true);
   });
 
   // Test search by keyword and start_date
