@@ -20,7 +20,7 @@ export class GivesService {
         if (createGiveDto.date_created) {
             throw new BadRequestException("Cannot Pre-Select give date_created");
         }
-        if ((createGiveDto.uid == null || "") || (createGiveDto.type == null || "") || (createGiveDto.description == null || "") || (createGiveDto.extra_zip == null || "")) {
+        if ((createGiveDto.uid == null || "") || (createGiveDto.type == null || "") || (createGiveDto.description == null || "")) {
             throw new BadRequestException("Must enter all required fields");
         }; 
 
