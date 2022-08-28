@@ -20,7 +20,7 @@ export class AsksService {
         if (createAskDto.date_created) {
             throw new BadRequestException("Cannot Pre-Select ask date_created");
         }
-        if ((createAskDto.uid == null || "") || (createAskDto.type == null || "") || (createAskDto.description == null || "") || (createAskDto.extra_zip == null || "")) {
+        if ((createAskDto.uid == null || "") || (createAskDto.type == null || "") || (createAskDto.description == null || "")) {
             throw new BadRequestException("Must enter all required fields");
         }; 
 

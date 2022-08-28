@@ -29,8 +29,8 @@ describe('AsksService', () => {
   let testAskCreation = {
     uid: 0,
     aid: null,
-    type: "service",
-    description: "This is a test service",
+    type: "service created",
+    description: "This is a test creation service",
     start_date: "2022-08-01",
     end_date: null,
     extra_zip: null,
@@ -68,15 +68,16 @@ describe('AsksService', () => {
       {
         uid: 0,
         aid: aid,
-        type: "service",
-        description: "This is a test service",
+        type: "service created",
+        description: "This is a test creation service",
         start_date: "2022-08-01",
         end_date: null,
         extra_zip: null,
         is_active: true,
         date_created: date
-          });
+      });
   });
+
 
   it('should throw exception if attempting too pre-set AID', () => {
     let attemptCreate = service.create({
