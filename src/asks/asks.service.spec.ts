@@ -104,10 +104,10 @@ describe('AsksService', () => {
 
 
   it('should update the pre-existng ask with new ask', () => {
-    let updatedAsk = service.update(service.asks[0].uid, service.asks[0].aid, testUpdateAsk);
+    service.update(service.asks[0].uid, service.asks[0].aid, testUpdateAsk);
     let aid = service.asks[0].aid;
     let date = service.asks[0].date_created;
-    expect(updatedAsk).toEqual({
+    expect(service.asks[0]).toEqual({
       uid: 0,
       aid: aid,
       type: "service",
@@ -121,38 +121,56 @@ describe('AsksService', () => {
   });
 
 
-  it('should delete the ask identified by AID', () => {
+  it('should delete an asks from the existing list', () => {
+    let currentLength = service.asks.length;
     service.delete(service.asks[0].uid, service.asks[0].aid);
-    expect(service.asks[0]).toEqual(testUpdateAsk);
+    let newLength = service.asks.length;
+    expect(newLength < currentLength).toBeTruthy();
   });
 
 
   // TO-DO: Test view my asks
 
 
+  // Test viewing as CSR
   it('should find all asks in the existing list of asks when the user viewing them is CSR', () => {
     // User #2 is the Customer Service Representative (CSR)
     let allAsks = service.findAll(2);
-    expect(allAsks == service.asks).toEqual(true);
+    expect(allAsks == service.asks).toBeTruthy();
   });
 
   // Test viewing as RU
+  it('should find asks available to regular user in the existing list', () => {
+    // User #2 is the Customer Service Representative (CSR)
+    let ruAsks = service.findAll(0);
+    let asksVby0 = service.asks.filter(ask => { 
+      return (ask.uid == 0);
+      });
+    expect(ruAsks == asksVby0).toBeTruthy();
+  });
 
 
   it('should find one ask identified by the AID', () => {
     // User #2 is the Customer Service Representative (CSR)
     let firstAsk = service.findOne(0);
-    expect(firstAsk == service.asks[0]).toEqual(true);
+    expect(firstAsk == service.asks[0]).toBeTruthy();
   });
 
 
+  // Search asks by keyword
   it('should find all asks that match search parameters', () => {
     let searchedAsks = service.searchAsks('is');
-    expect(searchedAsks == service.asks.filter(ask => { 
-      // TO-DO: Process s_date & e_date 
+    let searchResults = service.asks.filter(ask => { 
       let askDescription = ask.description.toLowerCase();
       let askType = ask.type.toLowerCase();
-      return askDescription.includes('is'.toLowerCase()) || askType.includes('is'.toLowerCase())})).toEqual(true);
+      return askDescription.includes('is'.toLowerCase()) || askType.includes('is'.toLowerCase())})
+    expect(searchedAsks).toEqual(searchResults);
   });
 
+  // Search asks by keyword and start_date
+
+  // Search asks by keyword and end_date
+
+  // Search asks by keyword and in between date range
+  
 });

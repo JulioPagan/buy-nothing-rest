@@ -99,7 +99,7 @@ export class AsksService {
         if (v_by) {
             // CSR account returns all asks
             const Actor = this.Actors[v_by];
-            if (Actor === "CSR"){
+            if (Actor === "CSR") {
                 return this.asks;
             }
             // RU account returns asks visible to them
@@ -108,7 +108,11 @@ export class AsksService {
                     return this.asks.filter(ask => { 
                         return (ask.uid == v_by) && ask.is_active;
                     });
-                }    
+                }else if (is_active == null) {
+                    return this.asks.filter(ask => { 
+                        return (ask.uid == v_by);
+                    });
+                }
             });
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')
@@ -125,7 +129,6 @@ export class AsksService {
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
         if (!key || key === null) {
             return this.asks;
-            // throw new BadRequestException('MUST identify the user requesitng VIEWING access')
         }
         return this.asks.filter(ask => { 
             // TO-DO: Process s_date & e_date 
