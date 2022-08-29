@@ -61,7 +61,7 @@ export class AccountsService {
         if (createAccountDto.date_created) {
             throw new BadRequestException("Cannot Pre-Select account UID")
         }
-        if ((createAccountDto.address == null || "") || (createAccountDto.name == null || "") || (createAccountDto.phone == null || "") || (createAccountDto.picture == null || "")) {
+        if ((createAccountDto.address.street == null || "") || (createAccountDto.address.zip == null || "")|| (createAccountDto.name == null || "") || (createAccountDto.phone == null || "") || (createAccountDto.picture == null || "")) {
             throw new BadRequestException("Must enter all required fields");
         }; 
 

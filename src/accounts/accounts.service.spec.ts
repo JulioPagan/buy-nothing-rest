@@ -83,92 +83,75 @@ describe('AccountsService', () => {
   
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is pre-selecting a uid', () => {
-    let attemptCreate = 
-      {
-        uid: 7,
-        name: 'Mr. Test',
-        address: { street : '1234 test Ave', zip : '09123' },
-        phone: '312-773-1234',
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: null
-      };
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: 7,
+      name: 'Mr. Test',
+      address: { street : '1234 test Ave', zip : '09123' },
+      phone: '312-773-1234',
+      picture: 'http://example.com/imagetest.com',
+      is_active: false,
+      date_created: null
+    })}).toThrow(BadRequestException);
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is missing name ', () => {
-    let attemptCreate = service.create(
-      {
-        uid: null,
-        name: null,
-        address: { street : '1234 test Ave', zip : '09123' },
-        phone: '312-773-1234',
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: null
-      }
-    );
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: null,
+      name: null,
+      address: { street : '1234 test Ave', zip : '09123' },
+      phone: '312-773-1234',
+      picture: 'http://example.com/imagetest.com',
+      is_active: false,
+      date_created: null
+    })}).toThrow(BadRequestException);
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is missing address zip', () => {
-    let attemptCreate = service.create(
-      {
-        uid: null,
-        name: 'Mr. Test',
-        address: { street : '1234 test Ave', zip : null },
-        phone: '312-773-1234',
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: null
-      }
-    );
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: null,
+      name: 'Mr. Test',
+      address: { street : '1234 test Ave', zip : null },
+      phone: '312-773-1234',
+      picture: 'http://example.com/imagetest.com',
+      is_active: false,
+      date_created: null
+    })}).toThrow(BadRequestException);
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is missing address address street', () => {
-    let attemptCreate = service.create(
-      {
-        uid: null,
-        name: 'Mr. Test',
-        address: { street : null, zip : '09123' },
-        phone: '312-773-1234',
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: null
-      }
-    );
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: null,
+      name: 'Mr. Test',
+      address: { street : null, zip : '09123' },
+      phone: '312-773-1234',
+      picture: 'http://example.com/imagetest.com',
+      is_active: false,
+      date_created: null
+    })}).toThrow(BadRequestException);
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is missing phone', () => {
-    let attemptCreate = service.create(
-      {
-        uid: null,
-        name: 'Mr. Test',
-        address: { street : '1234 test Ave', zip : '09123' },
-        phone: null,
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: null
-      }
-    );
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: null,
+      name: 'Mr. Test',
+      address: { street : '1234 test Ave', zip : '09123' },
+      phone: null,
+      picture: 'http://example.com/imagetest.com',
+      is_active: false,
+      date_created: null
+    })}).toThrow(BadRequestException);
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is missing picture', () => {
-    let attemptCreate = service.create(
-      {
-        uid: null,
-        name: 'Mr. Test',
-        address: { street : '1234 test Ave', zip : '09123' },
-        phone: '312-773-1234',
-        picture: null,
-        is_active: false,
-        date_created: null
-      }
-    );
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: null,
+      name: 'Mr. Test',
+      address: { street : '1234 test Ave', zip : '09123' },
+      phone: '312-773-1234',
+      picture: null,
+      is_active: false,
+      date_created: null
+    })}).toThrow(BadRequestException);
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is creating active accont', () => {
@@ -187,18 +170,15 @@ describe('AccountsService', () => {
   });
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is pre-selecting a date_created', () => {
-    let attemptCreate = service.create(
-      {
-        uid: null,
-        name: 'Mr. Test',
-        address: { street : '1234 test Ave', zip : '09123' },
-        phone: '312-773-1234',
-        picture: 'http://example.com/imagetest.com',
-        is_active: false,
-        date_created: '2022-03-12T17:12:26Z'
-      }
-    );
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    expect(() => {service.create({
+      uid: null,
+      name: 'Mr. Test',
+      address: { street : '1234 test Ave', zip : '09123' },
+      phone: '312-773-1234',
+      picture: 'http://example.com/imagetest.com',
+      is_active: false,
+      date_created: '2022-03-12T17:12:26Z'
+    })}).toThrow(BadRequestException);
   });
 
 
@@ -227,6 +207,8 @@ describe('AccountsService', () => {
     let newLength = service.accounts.length;
     expect(newLength < currentLength).toEqual(true);
   });
+
+  // && that UID doesn't exist anymore ^^^
 
 
   // Test findAll
