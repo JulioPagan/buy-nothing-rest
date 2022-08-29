@@ -33,8 +33,18 @@ export class AccountsController {
     }
     @Put(':uid')
     @HttpCode(HttpStatus.NO_CONTENT)
-    updateAccount(@Param('uid') uid: string, @Body() account: Account): void {
-        this.accountsService.update(parseInt(uid), account);
+    updateAccount(@Param('uid') uid: string, @Body() account: Account, @Res( {passthrough: true}) res): void {
+        try {
+            this.accountsService.update(parseInt(uid), account);
+        } catch(BadRequestException) {
+            res.status(400);
+            res.send({"type": "http://cs.iit.edu/~virgil/cs445/mail.spring2022/project/api/problems/data-validation",
+            "title": "Your request data didn't pass validation",
+            "detail": "You may not use PUT to activate an account, use GET /accounts/" + uid + "/activate instead",
+            "status": 400,
+            "instance": "/accounts/" + uid
+        });
+        }
     }
     @Delete(':uid')
     deleteAccount(@Param('uid', ParseIntPipe) uid: number): void {
@@ -59,7 +69,20 @@ export class AccountsController {
         }
         let locationHeader = '/accounts/' + createAskDto.uid + '/asks/' + this.asksService.counter;
         res.header('Location', locationHeader);
-        return this.asksService.create(createAskDto);
+        let creation;
+        try {
+            creation = this.asksService.create(createAskDto);
+        } catch(BadRequestException) {
+            res.status(400);
+            res.send({
+                "type": "http://cs.iit.edu/~virgil/cs445/mail.spring2022/project/api/problems/data-validation",
+                "title": "Your request data didn't pass validation",
+                "detail": "This account " + uid + " is not active an may not create an ask.",
+                "status": 400,
+                "instance": "/accounts/" + uid
+            });
+        }
+        return creation;
     }
     @Get(':uid/asks/:aid/deactivate')
     deactivateAsk(@Param('uid') uid: string, @Param('aid') aid: string): Ask {
@@ -90,8 +113,23 @@ export class AccountsController {
         }
         let locationHeader = '/accounts/' + createGiveDto.uid + '/gives/' + this.givesService.counter;
         res.header('Location', locationHeader);
-        return this.givesService.create(createGiveDto);
-    }
+        let creation;
+        try {
+            creation = this.givesService.create(createGiveDto);
+        } catch(BadRequestException) {
+            console.log('in catch');
+            res.status(400);
+            res.send({
+                "type": "http://cs.iit.edu/~virgil/cs445/mail.spring2022/project/api/problems/data-validation",
+                "title": "Your request data didn't pass validation",
+                "detail": "This account " + uid + " is not active an may not create a give.",
+                "status": 400,
+                "instance": "/accounts/" + uid
+              });
+        }
+        return creation;
+        }
+    
     @Get(':uid/gives/:gid/deactivate')
     deactivateGive(@Param('uid') uid: string, @Param('gid') gid: string): Give { 
         return this.givesService.deactivateGive(parseInt(uid), parseInt(gid));
