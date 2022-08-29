@@ -5,6 +5,14 @@ export interface NotesConversation {
     source_id: number,
     conversations: [{
         with_uid: number,
-        notes: Note [] 
+        notes: {
+            uid: number,
+            nid: number,
+            to_type: string,
+            to_user_id: number,
+            to_id: number,
+            description: string,
+            date_created: Date|string
+        } []
     }]
 }

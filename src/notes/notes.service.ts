@@ -40,21 +40,38 @@ export class NotesService {
                     console.log('creating new note in thread');
                     const newThread = {
                         'with_uid': newNote.uid,
-                        'notes': [newNote]
-                    }
+                        'notes': [{
+                            uid: newNote.uid,
+                            nid: newNote.nid,
+                            to_type: newNote.to_type,
+                            to_user_id: newNote.to_user_id,
+                            to_id: newNote.to_id,
+                            description: newNote.description,
+                            date_created: newNote.date_created
+                        }]
+                    };
                     this.conversations[index].conversations.push(newThread);
                     this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].notes.push(newNote);    
                 } else {
                     this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].with_uid = newNote.uid;
                     this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].notes.push(newNote);
                 }
-                console.log('note in conversation', this.conversations[index].conversations);
+                console.log('note in conversation', JSON.stringify(this.conversations[index].conversations));
             }else {
                 const newConversation: NotesConversation = {
                     'uid' : newNote.to_user_id,
                     'source_id': newNote.to_id,
-                    'conversations' : [{'with_uid' : newNote.uid, 'notes' : [newNote]}]
-                }
+                    'conversations' : [{'with_uid' : newNote.uid, 'notes' : [{
+                        uid: newNote.uid,
+                        nid: newNote.nid,
+                        to_type: newNote.to_type,
+                        to_user_id: newNote.to_user_id,
+                        to_id: newNote.to_id,
+                        description: newNote.description,
+                        date_created: newNote.date_created
+                    }]
+                }]
+                };
                 this.conversations.push(newConversation);
             }
         }else {
