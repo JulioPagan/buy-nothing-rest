@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { findIndex } from 'rxjs';
 import { CreateNoteDto } from 'src/dto/create-note.dto';
 import { Note } from 'src/interfaces/note.interface';
 import { NotesConversation } from 'src/interfaces/notes.conversation.interface';
@@ -35,9 +36,7 @@ export class NotesService {
             if (this.conversations.find(convo => {return convo.source_id == newNote.to_id})) {
                 let index = this.conversations.findIndex(convo => {return convo.source_id == newNote.to_id}); 
                 let conversationIndex = this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})];
-                console.log(conversationIndex == undefined);
                 if (conversationIndex == undefined) {
-                    console.log('creating new note in thread');
                     const newThread = {
                         'with_uid': newNote.uid,
                         'notes': [{
@@ -51,12 +50,10 @@ export class NotesService {
                         }]
                     };
                     this.conversations[index].conversations.push(newThread);
-                    this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].notes.push(newNote);    
                 } else {
                     this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].with_uid = newNote.uid;
                     this.conversations[index].conversations[this.conversations[index].conversations.findIndex(convo => {return convo.with_uid == newNote.uid})].notes.push(newNote);
                 }
-                console.log('note in conversation', JSON.stringify(this.conversations[index].conversations));
             }else {
                 const newConversation: NotesConversation = {
                     'uid' : newNote.to_user_id,
@@ -75,9 +72,15 @@ export class NotesService {
                 this.conversations.push(newConversation);
             }
         }else {
-            // Process note reply
+            let conversationIndex = (this.conversations.findIndex(convo => {return (convo.uid == newNote.uid) || (convo.uid == newNote.to_user_id)}));
+            let noteReplyIndex: number;
+            if ((this.conversations[conversationIndex].conversations.findIndex(note => {return (note.with_uid == newNote.to_user_id)})) != -1) {
+                noteReplyIndex = (this.conversations[conversationIndex].conversations.findIndex(note => {return (note.with_uid == newNote.to_user_id)}));
+            } else {
+                noteReplyIndex = (this.conversations[conversationIndex].conversations.findIndex(note => {return (note.notes.at(-1).nid == newNote.to_id)}));
+            }
+            this.conversations[conversationIndex].conversations[noteReplyIndex].notes.push(newNote);    
         }
-
         this.notes.push(newNote);
         this.counter ++;
         return newNote;
@@ -94,7 +97,28 @@ export class NotesService {
         updatedNote.nid = + updatedNote.nid;
         updatedNote.to_id = +updatedNote.to_id
         updatedNote.to_user_id = +updatedNote.to_user_id;
+        updatedNote.date_created = this.notes[nid].date_created;
         this.notes[nid] = updatedNote;
+        let conversationIndex: number;
+        let noteReplyIndex: number;
+
+        if (this.conversations.findIndex(convo => {return (convo.uid == updatedNote.to_user_id)}) != -1) {
+            conversationIndex = this.conversations.findIndex(convo => {return (convo.uid == updatedNote.to_user_id)})
+        } else {
+            conversationIndex = this.conversations.findIndex(convo => {return (convo.uid == updatedNote.uid)})
+        }
+
+        if (this.conversations[conversationIndex].conversations.findIndex(note => {return (note.with_uid == updatedNote.uid)}) != -1) {
+            noteReplyIndex = this.conversations[conversationIndex].conversations.findIndex(note => {return (note.with_uid == updatedNote.uid)})
+        } else {
+            noteReplyIndex = this.conversations[conversationIndex].conversations.findIndex(note => {return (note.with_uid == updatedNote.to_user_id)})
+        }
+
+        if (this.conversations[conversationIndex].conversations[noteReplyIndex].notes.find(note => {return note.nid == updatedNote.nid})) {
+            let noteIndex = this.conversations[conversationIndex].conversations[noteReplyIndex].notes.findIndex(note => {return note.nid == updatedNote.nid});
+            this.conversations[conversationIndex].conversations[noteReplyIndex].notes[noteIndex] = updatedNote;
+        }
+
     }
 
     deleteNote(nid: number): void {
