@@ -66,28 +66,10 @@ describe('NotesService', () => {
     expect(service.notes[0]).toEqual(updatedNote);
   });
 
-
-  it('should create a note with NID', () => {
-    let createdNote = service.create(testNote2);
-    let nid = createdNote.nid;
-    let date = createdNote.date_created;
-    expect(createdNote).toEqual(
-      {
-        uid: 0,
-        nid: nid,
-        to_type: 'ask',
-        to_user_id: 0,
-        to_id: 0,
-        description: 'this is another test note',
-        date_created: date
-      });
-  });
-
-
   it('should delete the note identified by NID', () => {
-    let preDelete = service.notes[0];
+    let preDelete = service.notes.length;
     service.deleteNote(service.notes[0].nid);
-    expect(preDelete ==service.notes[0]).toEqual(false);
+    expect(preDelete == service.notes.length).toBeFalsy();
   });
 
 
@@ -103,17 +85,15 @@ describe('NotesService', () => {
 
 
   it('should find one note identified by the NID', () => {
-    // User #2 is the Customer Service Representative (CSR)
     let index = 0;
     let firstNote = service.viewNote(index);
-    expect(firstNote == service.notes[index]).toEqual(true);
+    expect(firstNote == service.notes[index]).toBeTruthy();
   });
 
 
   it('should search all notes that match parameters', () => {
-    // User #2 is the Customer Service Representative (CSR)
     let keyNotes = service.viewNotes(null, null, null, null, 'test');
-    expect(keyNotes).toEqual(service.viewNotes(0, 2));
+    expect(service.viewNotes(null, null, null, null, 'test')).toEqual(keyNotes);
   });
 
 

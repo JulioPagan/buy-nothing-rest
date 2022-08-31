@@ -129,12 +129,29 @@ export class NotesService {
     }
     // Process 
     viewNotes(c_by?: number, v_by?: number, type?: string, agid?: number, key?: string, start_date?: Date, end_date?: Date): Note[] | NotesConversation[] {
-        // Process type and v_by
+        // Process type, agid and v_by
         if (c_by) {
-            return this.notes.filter(note => { 
-                return note.uid == c_by;
+            if (v_by) {
+                // process both c_by && v_by
+            }
+            return this.conversations.filter(convo => { 
+                return convo.uid == c_by;
+            });
+        } else if (v_by) {
+            console.log(JSON.stringify(this.conversations.filter(convo => { 
+                return convo.conversations.every(x => x.with_uid == v_by);
+            })));
+            return this.conversations.filter(convo => { 
+                    return convo.conversations.every(x => x.with_uid == v_by);
             });
         } else if (key) {
+            if (start_date) {
+
+            } else if (end_date) {
+
+            } else if (start_date && end_date) {
+
+            }
             return this.notes.filter(note => { 
                 return note.description.includes(key.toLowerCase()) });
         }
