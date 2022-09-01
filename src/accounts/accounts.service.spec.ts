@@ -205,7 +205,7 @@ describe('AccountsService', () => {
     let currentLength = service.accounts.length;
     service.delete(service.accounts[0].uid);
     let newLength = service.accounts.length;
-    expect(newLength < currentLength).toEqual(true);
+    expect(newLength < currentLength).toBeTruthy();
   });
 
   // && that UID doesn't exist anymore ^^^

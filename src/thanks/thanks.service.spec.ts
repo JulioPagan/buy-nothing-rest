@@ -52,14 +52,13 @@ describe('ThanksService', () => {
   });
 
   it('should throw BAD REQUEST if attempting too pre-set tid', () => {
-    let attemptThank = service.createThank({
-      uid: 0,
-      tid: 5,
-      thank_to: 0,
-      description: "This is an attempt to create thank",
-      date_created: null,
-      });
-      expect(() => {service.createThank(attemptThank)}).toThrow(new BadRequestException);
+      expect(() => {service.createThank({
+        uid: 0,
+        tid: 5,
+        thank_to: 0,
+        description: "This is an attempt to create thank",
+        date_created: null,
+        })}).toThrow(new BadRequestException);
     })
   
   // Test is required fields are not satisfied
