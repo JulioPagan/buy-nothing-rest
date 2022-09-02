@@ -80,7 +80,7 @@ describe('AsksService', () => {
 
 
   it('should throw exception if attempting too pre-set AID', () => {
-    let attemptCreate = service.create({
+    expect(() => {service.create({
       uid: 3,
       aid: 6,
       type: "service",
@@ -90,8 +90,7 @@ describe('AsksService', () => {
       extra_zip: null,
       is_active: true,
       date_created: null  
-    });
-    expect(() => {service.create(attemptCreate)}).toThrow(BadRequestException);
+    })}).toThrow(BadRequestException);
   });
 
   // TO-DO: Test throwing errors when Request is BAD
@@ -127,9 +126,21 @@ describe('AsksService', () => {
     let newLength = service.asks.length;
     expect(newLength < currentLength).toBeTruthy();
   });
+  // && that UID doesn't exist anymore ^^^
+  it('should delete the ask identified by aid', () => {
+    let preDelete = service.asks[0];
+    service.delete(service.asks[0].uid, service.asks[0].aid);
+    expect(preDelete == service.asks[0]).toBeFalsy();
+  });
 
 
   // TO-DO: Test view my asks
+  it('should find all "my" active asks', () => {
+    let myAsks = service.asks.filter(ask => { 
+      return (ask.uid == 1) && ask.is_active;
+  });;
+    expect(service.getMyAsks(1, 'true')).toEqual(myAsks);
+  });
 
 
   // Test viewing as CSR

@@ -16,11 +16,11 @@ describe('ReportsService', () => {
     let testReportsAvailable = service.findAvailable();
     expect(testReportsAvailable).toEqual(
       [{  
-          'rid': parseInt('1'),
-          'name': 'Asks/gives broken down by zip'
+          rid: 1,
+          name: 'Asks/gives broken down by zip'
         },{
-          'rid': parseInt('2'),
-          'name': 'Asks/gives and communications for a user'
+          rid: 2,
+          name: 'Asks/gives and communications for a user'
       }]
       );
   });

@@ -23,9 +23,9 @@ describe('NotesService', () => {
     date_created: null
   }
   let updatedNote = {
-    uid: 0,
+    uid: 1,
     nid: 0,
-    to_type: 'give',
+    to_type: 'note',
     to_user_id: 0,
     to_id: 0,
     description: 'this is another test note',
@@ -63,7 +63,16 @@ describe('NotesService', () => {
 
   it('should update the pre-existng note with new note', () => {
     service.updateNote(service.notes[0].nid, updatedNote);
-    expect(service.notes[0]).toEqual(updatedNote);
+    let date = service.notes[0].date_created;
+    expect(service.notes[0]).toEqual({
+      uid: 1,
+      nid: 0,
+      to_type: 'note',
+      to_user_id: 0,
+      to_id: 0,
+      description: 'this is another test note',
+      date_created: date
+    });
   });
 
   it('should delete the note identified by NID', () => {

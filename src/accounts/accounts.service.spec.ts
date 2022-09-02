@@ -207,8 +207,13 @@ describe('AccountsService', () => {
     let newLength = service.accounts.length;
     expect(newLength < currentLength).toBeTruthy();
   });
-
   // && that UID doesn't exist anymore ^^^
+  it('should delete the account identified by uid', () => {
+    let preDelete = service.accounts[0];
+    service.delete(service.accounts[0].uid);
+    expect(preDelete == service.accounts[0]).toBeFalsy();
+  });
+
 
 
   // Test findAll

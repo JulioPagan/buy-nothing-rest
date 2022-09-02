@@ -80,7 +80,7 @@ describe('AsksService', () => {
   it('should throw exception if attempting too pre-set gid', () => {
     expect(() => {service.create({
       uid: 3,
-      gid: null,
+      gid: 5,
       type: "service",
       description: "This is a test service",
       start_date: "2022-08-01",
@@ -126,6 +126,12 @@ describe('AsksService', () => {
   
 
   // TO-DO: Test view my gives
+  it('should find all "my" active gives', () => {
+    let myGives = service.gives.filter(give => { 
+      return (give.uid == 1) && give.is_active;
+  });;
+    expect(service.getMyGives(1, 'true')).toEqual(myGives);
+  });
 
 
   it('should find all gives in the existing list of gives when the user viewing them is CSR', () => {

@@ -85,6 +85,12 @@ describe('ThanksService', () => {
 
 
   // TO-DO: Test finding my thanks
+  it('should find all "my" active thanks', () => {
+    let myThanks = service.thanks.filter(thank => { 
+      return (thank.uid == 1);
+  });;
+    expect(service.getMyThanks(1)).toEqual(myThanks);
+  });
 
 
   it('should find all thanks in the existing list of thanks', () => {
@@ -100,17 +106,15 @@ describe('ThanksService', () => {
     let firstThank = service.findOne(index);
     expect(firstThank == service.thanks[index]).toEqual(true);
   });
-
-
-  // Test finding thank for users
-
+  
 
   it('should find all thanks that match search parameters', () => {
     let searchedThanks = service.searchThanks('is');
-    expect(searchedThanks == service.thanks.filter(thank => { 
+    let searchResults = service.thanks.filter(thank => { 
       // TO-DO: Process s_date & e_date 
       let thankDescription = thank.description.toLowerCase();
-      return thankDescription.includes('is'.toLowerCase())})).toEqual(true);
+      return thankDescription.includes('is'.toLowerCase())})
+    expect(searchedThanks).toEqual(searchResults);
   });
 
 
