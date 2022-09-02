@@ -138,12 +138,10 @@ export class NotesService {
                 return convo.uid == c_by;
             });
         } else if (v_by) {
-            console.log(JSON.stringify(this.conversations.filter(convo => { 
-                return convo.conversations.every(x => x.with_uid == v_by);
-            })));
-            return this.conversations.filter(convo => { 
-                    return convo.conversations.every(x => x.with_uid == v_by);
-            });
+            return this.conversations.map(convo => {
+                convo.conversations = convo.conversations.filter(element => element.with_uid == v_by)
+                return convo;
+            })
         } else if (key) {
             if (start_date) {
 

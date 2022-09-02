@@ -3,7 +3,7 @@ import { Note } from "./note.interface"
 export interface NotesConversation {
     uid: number,
     source_id: number,
-    conversations: [{
+    conversations: {
         with_uid: number,
         notes: {
             uid: number,
@@ -14,5 +14,5 @@ export interface NotesConversation {
             description: string,
             date_created: Date|string
         } []
-    }]
+    } []
 }
