@@ -13,6 +13,8 @@ export class AsksService {
         2: "CSR"
     };
 
+    constructor (private accountsService: AccountsService){}
+
     create(createAskDto: CreateAskDto): Ask {
         if (createAskDto.aid) {
             throw new BadRequestException("Cannot Pre-Select ask AID")
@@ -103,6 +105,7 @@ export class AsksService {
                 return this.asks;
             }
             // RU account returns asks visible to them
+            // let visibleZip == this.accounts
             return this.asks.filter(ask => {
                 if (is_active != null) {
                     return this.asks.filter(ask => { 

@@ -58,8 +58,20 @@ describe('ThanksService', () => {
         thank_to: 0,
         description: "This is an attempt to create thank",
         date_created: null,
-        })}).toThrow(new BadRequestException);
+        })}).toThrow(BadRequestException);
     })
+
+  
+  it('should throw BAD REQUEST if attempting too pre-set date_created', () => {
+    expect(() => {service.createThank({
+      uid: 0,
+      tid: null,
+      thank_to: 0,
+      description: "This is an attempt to create thank",
+      date_created: '2022-03-12T17:12:26Z',
+      })}).toThrow(BadRequestException);
+  })
+
   
   // Test is required fields are not satisfied
 
@@ -106,7 +118,7 @@ describe('ThanksService', () => {
     let firstThank = service.findOne(index);
     expect(firstThank == service.thanks[index]).toEqual(true);
   });
-  
+
 
   it('should find all thanks that match search parameters', () => {
     let searchedThanks = service.searchThanks('is');

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AsksModule } from 'src/asks/asks.module';
 import { GivesModule } from 'src/gives/gives.module';
 import { NotesModule } from 'src/notes/notes.module';
@@ -11,7 +11,7 @@ import { AccountsService } from './accounts.service';
   controllers: [AccountsController],
   providers: [AccountsService],
   exports: [AccountsService],
-  imports: [AsksModule, GivesModule, ThanksModule, GivesModule, NotesModule, ReportsModule]
+  imports: [forwardRef(() => AsksModule), GivesModule, ThanksModule, GivesModule, NotesModule, ReportsModule]
 })
 export class AccountsModule {
   
