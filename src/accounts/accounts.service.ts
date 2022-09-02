@@ -133,7 +133,6 @@ export class AccountsService {
                 return (accountName.includes(key.toLowerCase()) || accountAddressStreet.includes(key.toLowerCase()) || account.address.zip.includes(key) || account.phone.includes(key)) && (account.date_created < end_date)});
             }
             return this.accounts.filter(account => { 
-                // TO-DO: Process s_date & e_date (date_created of the resource is >= the begining of start_date and less than the end of end_date)
                 let accountName = account.name.toLowerCase();
                 let accountAddressStreet = account.address.street.toLowerCase();
                 return accountName.includes(key.toLowerCase()) || accountAddressStreet.includes(key.toLowerCase()) || account.address.zip.includes(key) || account.phone.includes(key) });

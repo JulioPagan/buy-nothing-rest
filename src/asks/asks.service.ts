@@ -105,17 +105,19 @@ export class AsksService {
                 return this.asks;
             }
             // RU account returns asks visible to them
-            // let visibleZip == this.accounts
             return this.asks.filter(ask => {
-                if (is_active != null) {
-                    return this.asks.filter(ask => { 
-                        return (ask.uid == v_by) && ask.is_active;
-                    });
-                }else if (is_active == null) {
-                    return this.asks.filter(ask => { 
-                        return (ask.uid == v_by);
-                    });
-                }
+                let visibleAccountIndex = this.accountsService.accounts.findIndex(account => account.uid == v_by);
+                let visibleZip = this.accountsService.accounts[visibleAccountIndex].address.zip
+                return ask.uid == v_by || ask.extra_zip.includes(visibleZip);
+                // if (is_active != null) {
+                //     return this.asks.filter(ask => { 
+                //         return (ask.uid == v_by) && ask.is_active;
+                //     });
+                // }else if (is_active == null) {
+                //     return this.asks.filter(ask => { 
+                //         return (ask.uid == v_by);
+                //     });
+                // }
             });
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')

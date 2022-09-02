@@ -5,7 +5,7 @@ export class CreateAskDto {
     description: string;
     start_date: string;
     end_date: string|null;
-    extra_zip: [number, number]|null;
+    extra_zip: string[]|null;
     is_active: boolean;
     date_created: Date|string|null;
 }

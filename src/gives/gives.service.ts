@@ -13,6 +13,8 @@ export class GivesService {
         2: "CSR"
     };
 
+    constructor (private accountsService: AccountsService){}
+
     create(createGiveDto: CreateGiveDto): Give {
         if (createGiveDto.gid) {
             throw new BadRequestException("Cannot Pre-Select give GID")
@@ -120,26 +122,32 @@ export class GivesService {
             }
             // RU account returns asks visible to them
             return this.gives.filter(give => {
-                if (is_active != null) {
-                    let isTrue = (is_active == 'true');
-                    let isFalse = (is_active == 'false');
-                    if (!isTrue || !isFalse) {
-                        return this.gives.filter(give => { 
-                            return (give.uid == v_by);
-                        });
-                    }
-                    let activeBoolean = is_active == 'true' ? true : false
-                    if (activeBoolean) {
-                        return this.gives.filter(give => { 
-                            return (give.uid == v_by) && give.is_active;
-                        });
-                    }else if (!activeBoolean) {
-                        return this.gives.filter(give => { 
-                            return (give.uid == v_by) && !give.is_active;
-                        });
-                    }                
-                }    
-            });
+
+            let visibleAccountIndex = this.accountsService.accounts.findIndex(account => account.uid == v_by);
+            let visibleZip = this.accountsService.accounts[visibleAccountIndex].address.zip
+            return give.uid == v_by || give.extra_zip.includes(visibleZip);
+            })
+            // return this.gives.filter(give => {
+            //     if (is_active != null) {
+            //         let isTrue = (is_active == 'true');
+            //         let isFalse = (is_active == 'false');
+            //         if (!isTrue || !isFalse) {
+            //             return this.gives.filter(give => { 
+            //                 return (give.uid == v_by);
+            //             });
+            //         }
+            //         let activeBoolean = is_active == 'true' ? true : false
+            //         if (activeBoolean) {
+            //             return this.gives.filter(give => { 
+            //                 return (give.uid == v_by) && give.is_active;
+            //             });
+            //         }else if (!activeBoolean) {
+            //             return this.gives.filter(give => { 
+            //                 return (give.uid == v_by) && !give.is_active;
+            //             });
+            //         }                
+            //     }    
+            // });
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')
         };

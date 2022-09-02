@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AccountsModule } from 'src/accounts/accounts.module';
 import { AsksController } from './asks.controller';
 import { AsksService } from './asks.service';
