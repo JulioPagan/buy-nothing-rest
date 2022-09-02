@@ -17,7 +17,7 @@ import { Thank } from 'src/interfaces/thank.interface';
 
 @Controller('accounts')
 export class AccountsController {
-    constructor(private accountsService: AccountsService, private asksService: AsksService, private givesService: GivesService, private thanksService: ThanksService, private notesService: NotesService, private reportsService: ReportsService){}
+    constructor(private accountsService: AccountsService, private asksService: AsksService, private givesService: GivesService, private thanksService: ThanksService){}
 
      //** ---------------- **\\
     //** Accounts endpoints **\\
@@ -65,14 +65,6 @@ export class AccountsController {
     createAsk(@Param('uid') uid: string, @Body() createAskDto: CreateAskDto, @Res( {passthrough: true}) res) {
         // Check if the account creating the ask is active
         if (!this.accountsService.accounts[parseInt(uid)].is_active) {
-            throw new BadRequestException('INACTIVE Account CANNOTT create an Ask');
-        }
-        let locationHeader = '/accounts/' + createAskDto.uid + '/asks/' + this.asksService.counter;
-        res.header('Location', locationHeader);
-        let creation;
-        try {
-            creation = this.asksService.create(createAskDto);
-        } catch(BadRequestException) {
             res.status(400);
             res.send({
                 "type": "http://cs.iit.edu/~virgil/cs445/mail.spring2022/project/api/problems/data-validation",
@@ -81,8 +73,11 @@ export class AccountsController {
                 "status": 400,
                 "instance": "/accounts/" + uid
             });
+            throw new BadRequestException('INACTIVE Account CANNOTT create an Ask');
         }
-        return creation;
+        let locationHeader = '/accounts/' + createAskDto.uid + '/asks/' + this.asksService.counter;
+        res.header('Location', locationHeader);
+        return this.asksService.create(createAskDto);
     }
     @Get(':uid/asks/:aid/deactivate')
     deactivateAsk(@Param('uid') uid: string, @Param('aid') aid: string): Ask {
@@ -109,15 +104,6 @@ export class AccountsController {
     createGive(@Param('uid') uid: string, @Body() createGiveDto: CreateGiveDto, @Res( {passthrough: true}) res) {
         // Check if the account creating the give is active
         if (!this.accountsService.accounts[parseInt(uid)].is_active) {
-            throw new BadRequestException('INACTIVE Account CANNOTT create a Give');
-        }
-        let locationHeader = '/accounts/' + createGiveDto.uid + '/gives/' + this.givesService.counter;
-        res.header('Location', locationHeader);
-        let creation;
-        try {
-            creation = this.givesService.create(createGiveDto);
-        } catch(BadRequestException) {
-            console.log('in catch');
             res.status(400);
             res.send({
                 "type": "http://cs.iit.edu/~virgil/cs445/mail.spring2022/project/api/problems/data-validation",
@@ -126,8 +112,11 @@ export class AccountsController {
                 "status": 400,
                 "instance": "/accounts/" + uid
               });
+            throw new BadRequestException('INACTIVE Account CANNOTT create a Give');
         }
-        return creation;
+        let locationHeader = '/accounts/' + createGiveDto.uid + '/gives/' + this.givesService.counter;
+        res.header('Location', locationHeader);
+        return this.givesService.create(createGiveDto);
         }
     
     @Get(':uid/gives/:gid/deactivate')

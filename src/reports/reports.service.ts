@@ -1,12 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { AccountsService } from 'src/accounts/accounts.service';
+import { AsksService } from 'src/asks/asks.service';
+import { GivesService } from 'src/gives/gives.service';
 import { ReportByZip } from 'src/interfaces/AsksGivesByZipReport.interface';
-import { ReportCommunication } from 'src/interfaces/AsksGivesUserCommunication.interface';
+import { ReportCommunication } from 'src/interfaces/AsksGivesUserCommunicationReport.interface';
+import { NotesService } from 'src/notes/notes.service';
 
 @Injectable()
 export class ReportsService {
-    public readonly reports = [];
-    public readonly reportByZip: ReportByZip;
-    public readonly communicationReport: ReportCommunication;
+    public reports = [];
+    public reportByZip: ReportByZip;
+    public communicationReport: ReportCommunication;
     private Actors = {
         0: "RU",
         1: "RU",
@@ -22,7 +26,7 @@ export class ReportsService {
         'rid': parseInt('2'),
         'name': 'Asks/gives and communications for a user'
     }
-    constructor () {
+    constructor (private asksService: AsksService, private givesService: GivesService, private notesService: NotesService) {
         this.reports.push(this.report1);
         this.reports.push(this.report2);
     }
@@ -31,15 +35,48 @@ export class ReportsService {
     }
     findOne(rid: number, c_by?, v_by?, start_date?, end_date?): ReportByZip | ReportCommunication{
         const selectedReport = this.reports.find(report => report.rid === rid);
-        if (!selectedReport) {
-            throw new NotFoundException('you must specify a Report to generate');
-        }else if (selectedReport == 1) {
+        if (selectedReport == null || c_by == null || v_by == null) {
+            throw new BadRequestException('Must specify the RID, C_BY, V_BY')
+        }
+
+        if (selectedReport == 1) {
+            let actor = this.Actors[v_by];
+            if (actor != 'CSR') {
+                throw new BadRequestException('User requesting view must be a CSR');
+            }
+            this.reportByZip = {
+                rid: rid,
+    	        name: "Asks/gives broken down by zip",
+                c_by: c_by,
+    	        v_by: v_by,
+                start_date: start_date,
+                end_date: end_date,
+                asks: this.asksService.asks.length,
+                gives: this.givesService.gives.length,
+                detail: []
+            }
+            this.reportByZip.detail.push();
             return this.reportByZip;
         }else if (selectedReport == 2) {
+            let actor = this.Actors[v_by];
+            if (actor != 'CSR') {
+                throw new BadRequestException('User requesting view must be a CSR');
+            }
+            this.communicationReport = {
+                rid: rid,
+                name: "Asks/gives and communications for a user",
+                c_by: c_by,
+                v_by: v_by,
+                start_date: start_date,
+                end_date: end_date,
+                asks: [],
+                gives: []
+            }
+            this.communicationReport.asks.push();
+            this.communicationReport.gives.push();
             return this.communicationReport;
         }else {
-            throw new NotFoundException('No report identifiable by that id');
+            throw new NotFoundException('No report exists with that id');
         }
     }
-
 }
