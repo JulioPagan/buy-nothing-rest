@@ -100,32 +100,26 @@ export class GivesService {
             // CSR account returns all asks
             const Actor = this.Actors[v_by];
             if (Actor === "CSR"){
-                if (is_active != null) {
-                    let isTrue = (is_active == 'true');
-                    let isFalse = (is_active == 'false');
-                    if (!isTrue || !isFalse) {
-                        return this.gives;
-                    }
-    
-                    let activeBoolean = is_active == 'true' ? true : false
+                if (is_active) { 
+                    let activeBoolean = is_active == 'true' ? true : 'false' ? false : null
                     if (activeBoolean) {
                         return this.gives.filter(give => { 
-                            return (give.uid == v_by) && give.is_active;
+                            return give.is_active == true;
                         });
                     }else if (!activeBoolean) {
                         return this.gives.filter(give => { 
-                            return (give.uid == v_by) && !give.is_active;
+                            return give.is_active == false;
                         });
                     }                
-                }    
+                }  
+                // if no active parameter is given, return ALL gives  
                 return this.gives;
             }
             // RU account returns asks visible to them
             return this.gives.filter(give => {
-
-            let visibleAccountIndex = this.accountsService.accounts.findIndex(account => account.uid == v_by);
-            let visibleZip = this.accountsService.accounts[visibleAccountIndex].address.zip
-            return give.uid == v_by || give.extra_zip.includes(visibleZip);
+                let visibleAccountIndex = this.accountsService.accounts.findIndex(account => account.uid == v_by);
+                let visibleZip = this.accountsService.accounts[visibleAccountIndex].address.zip
+                return give.uid == v_by || give.extra_zip.includes(visibleZip);
             })
             // return this.gives.filter(give => {
             //     if (is_active != null) {
