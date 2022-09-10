@@ -77,6 +77,21 @@ export class ThanksService {
     }
     searchThanks(key?: string, start_date?: Date, end_date?: Date): Thank[] {
         if (key) {
+            if (start_date) {
+                if (end_date) {
+                    return this.thanks.filter(thank => { 
+                        let thankDescription = thank.description.toLowerCase();
+                    return (thankDescription.includes(key.toLowerCase())) && ((thank.date_created > start_date) && (thank.date_created < end_date))});
+                }
+                return this.thanks.filter(thank => { 
+                    let thankDescription = thank.description.toLowerCase();
+                return (thankDescription.includes(key.toLowerCase())) && (thank.date_created > start_date)});
+            } else if (end_date) {
+                return this.thanks.filter(thank => { 
+                    let thankDescription = thank.description.toLowerCase();
+                return (thankDescription.includes(key.toLowerCase()) ) && (thank.date_created < end_date)});
+            }
+
             return this.thanks.filter(thank => { 
                 let thankDescription = thank.description.toLowerCase();
                 return thankDescription.includes(key.toLowerCase()) });

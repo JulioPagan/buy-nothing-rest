@@ -1,5 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AccountsService } from '../accounts/accounts.service';
 import { AsksService } from './asks.service';
 
 describe('AsksService', () => {
@@ -52,7 +53,7 @@ describe('AsksService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AsksService],
+      providers: [AsksService, AccountsService],
     }).compile();
 
     service = module.get<AsksService>(AsksService);
@@ -179,9 +180,37 @@ describe('AsksService', () => {
   });
 
   // Search asks by keyword and start_date
+  it('should find all asks that match keyword and after start date', () => {
+    let start = new Date('31-Dec-2000');
+    let searchedAsks = service.searchAsks('created', start);
+    let filteredSearch = service.asks.filter(ask => { 
+      let askDescription = ask.description.toLowerCase();
+      let askType = ask.type.toLowerCase();
+      return (askDescription.includes('created'.toLowerCase()) || askType.includes('created'.toLowerCase()) ) && ((ask.date_created > start))});
+    expect(searchedAsks.join() == filteredSearch.join()).toBeTruthy();
+  });
 
   // Search asks by keyword and end_date
+  it('should find all asks that match keyword and before end date', () => {
+    let end = new Date('31-Dec-2030');
+    let searchedAsks = service.searchAsks('created', end);
+    let filteredSearch = service.asks.filter(ask => { 
+      let askDescription = ask.description.toLowerCase();
+      let askType = ask.type.toLowerCase();
+      return (askDescription.includes('created'.toLowerCase()) || askType.includes('created'.toLowerCase()) ) && ((ask.date_created < end))});
+    expect(searchedAsks.join() == filteredSearch.join()).toBeTruthy();
+  });
 
   // Search asks by keyword and in between date range
-  
+  it('should find all asks that match keyword and between start and end date', () => {
+    let start = new Date('31-Dec-2000');
+    let end = new Date('31-Dec-2030');
+    let searchedAsks = service.searchAsks('created', start, end);
+    let filteredSearch = service.asks.filter(ask => { 
+      let askDescription = ask.description.toLowerCase();
+      let askType = ask.type.toLowerCase();
+      return (askDescription.includes('created'.toLowerCase()) || askType.includes('created'.toLowerCase()) ) && ((ask.date_created > start)) && ((ask.date_created < end))});
+    expect(searchedAsks.join() == filteredSearch.join()).toBeTruthy();
+  });
+
 });

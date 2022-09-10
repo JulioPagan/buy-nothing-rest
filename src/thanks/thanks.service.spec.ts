@@ -120,7 +120,7 @@ describe('ThanksService', () => {
   });
 
 
-  it('should find all thanks that match search parameters', () => {
+  it('should find all thanks that match keyword', () => {
     let searchedThanks = service.searchThanks('is');
     let searchResults = service.thanks.filter(thank => { 
       // TO-DO: Process s_date & e_date 
@@ -129,6 +129,36 @@ describe('ThanksService', () => {
     expect(searchedThanks).toEqual(searchResults);
   });
 
+  // Search thanks by keyword and start_date
+  it('should find all thanks that match keyword and after start date', () => {
+    let start = new Date('31-Dec-2000');
+    let searchedThanks = service.searchThanks('created', start);
+    let filteredSearch = service.thanks.filter(thank => { 
+      let thankDescription = thank.description.toLowerCase();
+      return (thankDescription.includes('created'.toLowerCase())) && ((thank.date_created > start))});
+    expect(searchedThanks.join() == filteredSearch.join()).toBeTruthy();
+  });
+
+  // Search thanks by keyword and end_date
+  it('should find all thanks that match keyword and before end date', () => {
+    let end = new Date('31-Dec-2030');
+    let searchedThanks = service.searchThanks('created', end);
+    let filteredSearch = service.thanks.filter(thank => { 
+      let thankDescription = thank.description.toLowerCase();
+      return (thankDescription.includes('created'.toLowerCase()) ) && ((thank.date_created < end))});
+    expect(searchedThanks.join() == filteredSearch.join()).toBeTruthy();
+  });
+
+  // Search thanks by keyword and in between date range
+  it('should find all thanks that match keyword and between start and end date', () => {
+    let start = new Date('31-Dec-2000');
+    let end = new Date('31-Dec-2030');
+    let searchedThanks = service.searchThanks('created', start, end);
+    let filteredSearch = service.thanks.filter(thank => { 
+      let thankDescription = thank.description.toLowerCase();
+      return (thankDescription.includes('created'.toLowerCase()) ) && ((thank.date_created > start)) && ((thank.date_created < end))});
+    expect(searchedThanks.join() == filteredSearch.join()).toBeTruthy();
+  });
 
 
 });

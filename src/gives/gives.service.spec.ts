@@ -1,5 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AccountsService } from '../accounts/accounts.service';
 import { GivesService } from './gives.service';
 
 describe('AsksService', () => {
@@ -51,7 +52,7 @@ describe('AsksService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GivesService],
+      providers: [GivesService, AccountsService],
     }).compile();
 
     service = module.get<GivesService>(GivesService);
@@ -148,7 +149,7 @@ describe('AsksService', () => {
   });
 
 
-  it('should find all gives that match search parameters', () => {
+  it('should find all gives that match keyword', () => {
     let searchedGives = service.searchGives('is');
     let searchResults = service.gives.filter(give => { 
       // TO-DO: Process s_date & e_date 
@@ -158,4 +159,38 @@ describe('AsksService', () => {
     expect(searchedGives).toEqual(searchResults);
   });
 
+    // Search gives by keyword and start_date
+    it('should find all gives that match keyword and after start date', () => {
+      let start = new Date('31-Dec-2000');
+      let searchedGives = service.searchGives('created', start);
+      let filteredSearch = service.gives.filter(give => { 
+        let giveDescription = give.description.toLowerCase();
+        let giveType = give.type.toLowerCase();
+        return (giveDescription.includes('created'.toLowerCase()) || giveType.includes('created'.toLowerCase()) ) && ((give.date_created > start))});
+      expect(searchedGives.join() == filteredSearch.join()).toBeTruthy();
+    });
+  
+    // Search gives by keyword and end_date
+    it('should find all gives that match keyword and before end date', () => {
+      let end = new Date('31-Dec-2030');
+      let searchedGives = service.searchGives('created', end);
+      let filteredSearch = service.gives.filter(give => { 
+        let giveDescription = give.description.toLowerCase();
+        let giveType = give.type.toLowerCase();
+        return (giveDescription.includes('created'.toLowerCase()) || giveType.includes('created'.toLowerCase()) ) && ((give.date_created < end))});
+      expect(searchedGives.join() == filteredSearch.join()).toBeTruthy();
+    });
+  
+    // Search gives by keyword and in between date range
+    it('should find all gives that match keyword and between start and end date', () => {
+      let start = new Date('31-Dec-2000');
+      let end = new Date('31-Dec-2030');
+      let searchedGives = service.searchGives('created', start, end);
+      let filteredSearch = service.gives.filter(give => { 
+        let giveDescription = give.description.toLowerCase();
+        let giveType = give.type.toLowerCase();
+        return (giveDescription.includes('created'.toLowerCase()) || giveType.includes('created'.toLowerCase()) ) && ((give.date_created > start)) && ((give.date_created < end))});
+      expect(searchedGives.join() == filteredSearch.join()).toBeTruthy();
+    });
+  
 });

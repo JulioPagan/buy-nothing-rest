@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { AccountsService } from 'src/accounts/accounts.service';
+import { AccountsService } from '../accounts/accounts.service';
 import { CreateGiveDto } from 'src/dto/create-give.dto';
 import { Give } from 'src/interfaces/give.interface';
 
@@ -156,6 +156,24 @@ export class GivesService {
     }
     searchGives(key?: string, start_date?: Date, end_date?: Date): Give[] {
         if (key) {
+            if (start_date) {
+                if (end_date) {
+                    return this.gives.filter(give => { 
+                        let giveDescription = give.description.toLowerCase();
+                        let giveType = give.type.toLowerCase();    
+                    return (giveDescription.includes(key.toLowerCase()) || giveType.includes(key.toLowerCase())) && ((give.date_created > start_date) && (give.date_created < end_date))});
+                }
+                return this.gives.filter(give => { 
+                    let giveDescription = give.description.toLowerCase();
+                    let giveType = give.type.toLowerCase();    
+                return (giveDescription.includes(key.toLowerCase()) || giveType.includes(key.toLowerCase())) && (give.date_created > start_date)});
+            } else if (end_date) {
+                return this.gives.filter(give => { 
+                    let giveDescription = give.description.toLowerCase();
+                    let giveType = give.type.toLowerCase();    
+                return (giveDescription.includes(key.toLowerCase()) || giveType.includes(key.toLowerCase())) && (give.date_created < end_date)});
+            }
+
             return this.gives.filter(give => { 
                 let giveDescription = give.description.toLowerCase();
                 return giveDescription.includes(key.toLowerCase()) });

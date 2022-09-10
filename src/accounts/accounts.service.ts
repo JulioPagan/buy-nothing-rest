@@ -125,8 +125,7 @@ export class AccountsService {
                     let accountName = account.name.toLowerCase();
                     let accountAddressStreet = account.address.street.toLowerCase();    
                 return (accountName.includes(key.toLowerCase()) || accountAddressStreet.includes(key.toLowerCase()) || account.address.zip.includes(key) || account.phone.includes(key)) && (account.date_created > start_date)});
-            }
-            if (end_date) {
+            } else if (end_date) {
                 return this.accounts.filter(account => { 
                     let accountName = account.name.toLowerCase();
                     let accountAddressStreet = account.address.street.toLowerCase();    

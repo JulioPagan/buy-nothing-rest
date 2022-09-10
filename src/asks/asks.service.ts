@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { AccountsService } from 'src/accounts/accounts.service';
+import { AccountsService } from '../accounts/accounts.service';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { Ask } from 'src/interfaces/ask.interface';
 
@@ -134,6 +134,23 @@ export class AsksService {
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
         if (!key || key === null) {
             return this.asks;
+        }
+        if (start_date) {
+            if (end_date) {
+                return this.asks.filter(ask => { 
+                    let askDescription = ask.description.toLowerCase();
+                    let askType = ask.type.toLowerCase();    
+                return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && ((ask.date_created > start_date) && (ask.date_created < end_date))});
+            }
+            return this.asks.filter(ask => { 
+                let askDescription = ask.description.toLowerCase();
+                let askType = ask.type.toLowerCase();    
+            return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && (ask.date_created > start_date)});
+        } else if (end_date) {
+            return this.asks.filter(ask => { 
+                let askDescription = ask.description.toLowerCase();
+                let askType = ask.type.toLowerCase();    
+            return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && (ask.date_created < end_date)});
         }
         return this.asks.filter(ask => { 
             // TO-DO: Process s_date & e_date 

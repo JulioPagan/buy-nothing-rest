@@ -1,4 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { NotesService } from '../notes/notes.service';
+import { AccountsService } from '../accounts/accounts.service';
+import { AsksService } from '../asks/asks.service';
+import { GivesService } from '../gives/gives.service';
 import { ReportsService } from './reports.service';
 
 describe('ReportsService', () => {
@@ -6,7 +10,7 @@ describe('ReportsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ReportsService],
+      providers: [ReportsService, AccountsService, AsksService, GivesService, NotesService],
     }).compile();
 
     service = module.get<ReportsService>(ReportsService);
@@ -35,7 +39,7 @@ describe('ReportsService', () => {
   });
 
   it('should return reports of COMMUNICATIONS', () => {
-    let testReportsAvailable = service.findOne(1);
+    let testReportsAvailable = service.findReport(1);
     expect(testReportsAvailable).toEqual(
       {  
         // Return communications report
