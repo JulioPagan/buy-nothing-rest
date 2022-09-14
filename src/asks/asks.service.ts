@@ -109,15 +109,6 @@ export class AsksService {
                 let visibleAccountIndex = this.accountsService.accounts.findIndex(account => account.uid == v_by);
                 let visibleZip = this.accountsService.accounts[visibleAccountIndex].address.zip
                 return ask.uid == v_by || ask.extra_zip.includes(visibleZip);
-                // if (is_active != null) {
-                //     return this.asks.filter(ask => { 
-                //         return (ask.uid == v_by) && ask.is_active;
-                //     });
-                // }else if (is_active == null) {
-                //     return this.asks.filter(ask => { 
-                //         return (ask.uid == v_by);
-                //     });
-                // }
             });
         } else {
             throw new BadRequestException('MUST identify the user requesitng VIEWING access')
@@ -132,30 +123,30 @@ export class AsksService {
     
     // REVIEW AND FIX
     searchAsks(key?: string, start_date?: Date, end_date?: Date): Ask[] {
-        if (!key || key === null) {
-            return this.asks;
-        }
-        if (start_date) {
-            if (end_date) {
+        if (key) {
+            if (start_date) {
+                if (end_date) {
+                    return this.asks.filter(ask => { 
+                        let askDescription = ask.description.toLowerCase();
+                        let askType = ask.type.toLowerCase();    
+                    return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && ((ask.date_created > start_date) && (ask.date_created < end_date))});
+                }
                 return this.asks.filter(ask => { 
                     let askDescription = ask.description.toLowerCase();
                     let askType = ask.type.toLowerCase();    
-                return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && ((ask.date_created > start_date) && (ask.date_created < end_date))});
+                return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && (ask.date_created > start_date)});
+            } else if (end_date) {
+                return this.asks.filter(ask => { 
+                    let askDescription = ask.description.toLowerCase();
+                    let askType = ask.type.toLowerCase();    
+                return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && (ask.date_created < end_date)});
             }
-            return this.asks.filter(ask => { 
+            return this.asks.filter(ask => {
+                // TO-DO: Process s_date & e_date 
                 let askDescription = ask.description.toLowerCase();
-                let askType = ask.type.toLowerCase();    
-            return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && (ask.date_created > start_date)});
-        } else if (end_date) {
-            return this.asks.filter(ask => { 
-                let askDescription = ask.description.toLowerCase();
-                let askType = ask.type.toLowerCase();    
-            return (askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())) && (ask.date_created < end_date)});
+                let askType = ask.type.toLowerCase();
+                return askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())});    
         }
-        return this.asks.filter(ask => { 
-            // TO-DO: Process s_date & e_date 
-            let askDescription = ask.description.toLowerCase();
-            let askType = ask.type.toLowerCase();
-            return askDescription.includes(key.toLowerCase()) || askType.includes(key.toLowerCase())});    
-        }
+        return this.asks;
+    }
 }

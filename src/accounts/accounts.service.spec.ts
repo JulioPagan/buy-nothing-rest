@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsService } from './accounts.service';
 
@@ -42,7 +42,17 @@ describe('AccountsService', () => {
     is_active: false,
     date_created: null
   }
+  let badUpdateAccount = {
+    uid: 0,
+    name: 'Mr. Updated',
+    address: { street : '1234 test Ave', zip : '09123' },
+    phone: '312-773-1234',
+    picture: 'http://example.com/imagetest.com',
+    is_active: true,
+    date_created: null
+  }
 
+  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -54,6 +64,7 @@ describe('AccountsService', () => {
     service.create(testAccount2);
     
   });
+
 
 
   // Test Creation
@@ -72,15 +83,6 @@ describe('AccountsService', () => {
         date_created: date
       });
   });
-
-
-  // Test Activation
-  it('should activate an account with UID', () => {
-    let activatedAccount = service.activate(service.accounts[3].uid);
-    expect(activatedAccount.is_active).toBeTruthy();
-  });
-
-  
   // Test BAD Account Creation
   it('should throw 400 if the accountDto is pre-selecting a uid', () => {
     expect(() => {service.create({
@@ -180,6 +182,21 @@ describe('AccountsService', () => {
       date_created: '2022-03-12T17:12:26Z'
     })}).toThrow(BadRequestException);
   });
+  
+
+  // Test Activation
+  it('should activate an account with UID', () => {
+    let activatedAccount = service.activate(service.accounts[3].uid);
+    expect(activatedAccount.is_active).toBeTruthy();
+  });
+  // BAD Activation
+  it('should throw 400 if uid is not a number', () => {
+    expect(() => {service.activate(null)}).toThrow(BadRequestException);
+  });
+  // BAD Activation
+  it('should throw 404 if UID not found', () => {
+    expect(() => {service.activate(8)}).toThrow(NotFoundException);
+  });
 
 
   // Test Update
@@ -198,6 +215,14 @@ describe('AccountsService', () => {
         date_created: date    
       });
   });
+  // BAD Update
+  it('should throw 404 if the uid cannot be found', () => {
+    expect(() => {service.update(9, testUpdateAccount)}).toThrow(NotFoundException);
+  });
+  // BAD Update
+  it('should throw 400 if the update is trying to activate account', () => {
+    expect(() => {service.update(1, badUpdateAccount)}).toThrow(BadRequestException);
+  });
 
 
   // Test Delete
@@ -206,14 +231,17 @@ describe('AccountsService', () => {
     service.delete(service.accounts[0].uid);
     let newLength = service.accounts.length;
     expect(newLength < currentLength).toBeTruthy();
-  });
+  });  
   // && that UID doesn't exist anymore ^^^
   it('should delete the account identified by uid', () => {
     let preDelete = service.accounts[0];
     service.delete(service.accounts[0].uid);
     expect(preDelete == service.accounts[0]).toBeFalsy();
   });
-
+  // BAD Delete
+  it('should throw 404 if an account is not found to delete', () => {
+    expect(() => {service.delete(7)}).toThrow(NotFoundException);
+  });
 
 
   // Test findAll
@@ -228,6 +256,10 @@ describe('AccountsService', () => {
     let firstAccount = service.findOne(0);
     expect(firstAccount == service.accounts[0]).toBeTruthy();
   });
+  // BAD findOne
+  it('should throw 404 if an account is not found with the specified UID', () => {
+    expect(() => {service.findOne(8)}).toThrow(NotFoundException);
+  });
 
 
   // Test Search by Keyword
@@ -239,7 +271,6 @@ describe('AccountsService', () => {
       return accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created') });
     expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
   });
-
   // Test search by keyword and start_date
   it('should find all accounts that match keyword and after start date', () => {
     let start = new Date('31-Dec-2000');
@@ -250,7 +281,6 @@ describe('AccountsService', () => {
       return (accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created')) && ((account.date_created > start))});
     expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
   });
-
   // Test search by keyword and end_date
   it('should find all accounts that match keyword and before end date', () => {
     let end = new Date('31-Dec-2022')
@@ -261,7 +291,6 @@ describe('AccountsService', () => {
       return (accountName.includes('created'.toLowerCase()) || accountAddressStreet.includes('created'.toLowerCase()) || account.address.zip.includes('created') || account.phone.includes('created')) && (account.date_created < end)});
     expect(searchedAccounts.join() == filteredSearch.join()).toBeTruthy();
   });
-
   // Test search by keyword and date range
   it('should find all accounts that match keyword and between date range', () => {
     let start = new Date('31-Dec-2000');
