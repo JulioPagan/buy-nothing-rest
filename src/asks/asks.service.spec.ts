@@ -198,7 +198,7 @@ describe('AsksService', () => {
   it('should throw 400 if trying to update inactive ask', () => {
     expect(() => {
       service.deactivate(service.asks[0].uid, service.asks[0].aid)
-      service.update(service.asks[0].uid, service.asks[0].aid, testUpdateAsk)}).toThrow(NotFoundException);
+      service.update(service.asks[0].uid, service.asks[0].aid, testUpdateAsk)}).toThrow(BadRequestException);
   });
 
   
@@ -216,12 +216,12 @@ describe('AsksService', () => {
     expect(preDelete == service.asks[0]).toBeFalsy();
   });
   // Test BAD delete
-  it('should to throw error if aid is not found', () => {
-    expect(service.delete(0, 9)).toThrow(NotFoundException);
+  it('should throw error if aid is not found', () => {
+    expect(() => {service.delete(0, 9)}).toThrow(NotFoundException);
   });
   // Test BAD delete
-  it('should to throw error if uid is not found', () => {
-    expect(service.delete(9, 0)).toThrow(NotFoundException);
+  it('should throw error if uid is not found', () => {
+    expect(() => {service.delete(9, 0)}).toThrow(NotFoundException);
   });
   
 
@@ -229,29 +229,26 @@ describe('AsksService', () => {
   it('should find all "my" active asks', () => {
     let myAsks = service.asks.filter(ask => { 
       return (ask.uid == 1) && ask.is_active;
-  });;
+  });
     expect(service.getMyAsks(1, 'true')).toEqual(myAsks);
   });
   // TO-DO: Test view my asks
   it('should find all "my" inactive asks', () => {
     let myAsks = service.asks.filter(ask => { 
       return (ask.uid == 1) && ask.is_active;
-  });;
+    });
     expect(service.getMyAsks(1, 'false')).toEqual(myAsks);
   });
   // TO-DO: Test view my asks
   it('should find all "my" asks', () => {
     let myAsks = service.asks.filter(ask => { 
       return (ask.uid == 1) && ask.is_active;
-  });;
+    });
     expect(service.getMyAsks(1)).toEqual(myAsks);
   });
   // BAD Request to getMyAsks()
   it('should throw error for inavalid uid', () => {
-    let myAsks = service.asks.filter(ask => { 
-      return (ask.uid == 1) && ask.is_active;
-  });;
-    expect(service.getMyAsks(null)).toEqual(myAsks);
+    expect(() => {service.getMyAsks(null)}).toThrow(NotFoundException);
   });
 
 
@@ -265,7 +262,7 @@ describe('AsksService', () => {
   it('should find asks visible to user', () => {
     // User #1 is a Regular User (RU)
     let visibleAsks = service.findAll(1);
-    expect(visibleAsks == service.findAll(1)).toBeTruthy();
+    expect(() => {service.findAll(1)}).toEqual(visibleAsks);
   });
   // BAD request with no user specified
   it('should throw error if no user is specified', () => {
@@ -285,7 +282,7 @@ describe('AsksService', () => {
   });
 
 
-  // Search asks by keyword
+  // Search asks
   it('should find all asks', () => {
     let searchResults = service.asks;
     expect(service.searchAsks()).toEqual(searchResults);
