@@ -4,6 +4,9 @@
 
 ## Installation
 
+$ sudo apt update
+$ sudo apt install npm
+(you will be asked to type 'y' to continue)
 $ npm install
 
 ## Running the app
