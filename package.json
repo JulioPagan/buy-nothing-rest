@@ -66,6 +66,16 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/src/accounts/accounts.controller.ts",
+      "/src/asks/asks.controller.ts",
+      "/src/gives/gives.controller.ts",
+      "/src/thanks/thanks.controller.ts",
+      "/src/notes/notes.controller.ts",
+      "src/reports/reports.controller.ts",
+      "src/app.controller.ts",
+      "src/dto"
+    ]
   }
 }
