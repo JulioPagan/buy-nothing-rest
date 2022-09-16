@@ -75,6 +75,7 @@
       "/src/notes/notes.controller.ts",
       "src/reports/reports.controller.ts",
       "src/app.controller.ts",
+      "src/main.ts",
       "src/dto"
     ]
   }
