@@ -1,16 +1,16 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Res } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import { AsksService } from 'src/asks/asks.service';
-import { GivesService } from 'src/gives/gives.service';
-import { ThanksService } from 'src/thanks/thanks.service';
+import { AsksService } from '../asks/asks.service';
+import { GivesService } from '../gives/gives.service';
+import { ThanksService } from '../thanks/thanks.service';
 import { Account } from 'src/interfaces/account.interface';
-import { CreateAccountDto } from 'src/dto/create-account.dto';
-import { CreateAskDto } from 'src/dto/create-ask.dto';
-import { CreateGiveDto } from 'src/dto/create-give.dto';
-import { CreateThankDto } from 'src/dto/create-thank.dto';
-import { Ask } from 'src/interfaces/ask.interface';
-import { Give } from 'src/interfaces/give.interface';
-import { Thank } from 'src/interfaces/thank.interface';
+import { CreateAccountDto } from '../dto/create-account.dto';
+import { CreateAskDto } from '../dto/create-ask.dto';
+import { CreateGiveDto } from '../dto/create-give.dto';
+import { CreateThankDto } from '../dto/create-thank.dto';
+import { Ask } from '../interfaces/ask.interface';
+import { Give } from '../interfaces/give.interface';
+import { Thank } from '../interfaces/thank.interface';
 
 @Controller('accounts')
 export class AccountsController {

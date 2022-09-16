@@ -1,9 +1,9 @@
 import { Global, Module } from '@nestjs/common';
-import { AccountsModule } from 'src/accounts/accounts.module';
-import { AsksModule } from 'src/asks/asks.module';
-import { GivesModule } from 'src/gives/gives.module';
-import { NotesModule } from 'src/notes/notes.module';
-import { ThanksModule } from 'src/thanks/thanks.module';
+import { AccountsModule } from '../accounts/accounts.module';
+import { AsksModule } from '../asks/asks.module';
+import { GivesModule } from '../gives/gives.module';
+import { NotesModule } from '../notes/notes.module';
+import { ThanksModule } from '../thanks/thanks.module';
 import { ReportsController } from './reports.controller';
 import { ReportsService } from './reports.service';
 
@@ -11,6 +11,6 @@ import { ReportsService } from './reports.service';
   controllers: [ReportsController],
   providers: [ReportsService],
   exports: [ReportsService],
-  imports: [AsksModule, GivesModule, ThanksModule, NotesModule]
+  imports: [AccountsModule, AsksModule, GivesModule, ThanksModule, NotesModule]
 })
 export class ReportsModule {}

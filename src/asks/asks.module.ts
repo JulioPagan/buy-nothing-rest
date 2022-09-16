@@ -1,5 +1,5 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { AccountsModule } from 'src/accounts/accounts.module';
+import { AccountsModule } from '../accounts/accounts.module';
 import { AsksController } from './asks.controller';
 import { AsksService } from './asks.service';
 
