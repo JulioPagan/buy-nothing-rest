@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Res } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note } from 'src/interfaces/note.interface';
-import { CreateNoteDto } from 'src/dto/create-note.dto';
+import { CreateNoteDto } from '../dto/create-note.dto';
 import { NotesConversation } from 'src/interfaces/notes.conversation.interface';
 
 @Controller('notes')
