@@ -6,58 +6,67 @@ describe('NotesService', () => {
   let service: NotesService;
 
   let testNote1 = {
-    uid: 0,
+    uid: 71,
     nid: null,
     to_type: 'give',
-    to_user_id: 0,
-    to_id: 0,
-    description: 'this is a test note',
+    to_user_id: 19,
+    to_id: 43,
+    description: 'Can I get braids this coming Monday?',
     date_created: null
   }
   let testNote2 = {
+    uid: 79,
+    nid: null,
+    to_type: 'ask',
+    to_user_id: 7,
+    to_id: 31,
+    description: 'IKEA is my middle name, when do you need help?',
+    date_created: null
+  }
+  let createNote = {
     uid: 0,
     nid: null,
     to_type: 'ask',
     to_user_id: 0,
     to_id: 0,
-    description: 'this is another test note',
+    description: 'This is a test creation',
     date_created: null
   }
   let testThread = {
-    uid: 1,
+    uid: 79,
     nid: null,
-    to_type: 'ask',
-    to_user_id: 0,
-    to_id: 0,
-    description: 'this is a test thread',
+    to_type: 'give',
+    to_user_id: 19,
+    to_id: 43,
+    description: 'Is this Mondays spot taken already?',
     date_created: null
   }
   let testThread1 = {
-    uid: 1,
+    uid: 7,
     nid: null,
     to_type: 'note',
-    to_user_id: 0,
-    to_id: 0,
-    description: 'this is a test thread',
+    to_user_id: 79,
+    to_id: 1,
+    description: 'Thank you, hows tomorrow after 5pm?  Im at 123 Main ST.',
     date_created: null
-  }
+}
   let testThread2 = {
-    uid: 1,
+    uid: 79,
     nid: null,
     to_type: 'note',
-    to_user_id: 1,
-    to_id: 0,
-    description: 'this is a test thread',
+    to_user_id: 7,
+    to_id: 2,
+    description: 'Got it, see you tomorrow around 5:30pm.',
     date_created: null
 }
 
   let updatedNote = {
-    uid: 1,
-    nid: 0,
-    to_type: 'note',
-    to_user_id: 0,
-    to_id: 0,
-    description: 'this is another test note',
+    uid: 71,
+    nid: null,
+    to_type: 'give',
+    to_user_id: 19,
+    to_id: 43,
+    description: 'This note was updated',
     date_created: null
   }
 
@@ -77,17 +86,17 @@ describe('NotesService', () => {
 
   // Test create note
   it('should create a note with NID', () => {
-    let createdNote = service.create(testNote1);
+    let createdNote = service.create(createNote);
     let nid = createdNote.nid;
     let date = createdNote.date_created;
     expect(createdNote).toEqual(
       {
         uid: 0,
         nid: nid,
-        to_type: 'give',
+        to_type: 'ask',
         to_user_id: 0,
         to_id: 0,
-        description: 'this is a test note',
+        description: 'This is a test creation',
         date_created: date
       });
   });
@@ -98,14 +107,13 @@ describe('NotesService', () => {
     let date = createdNote.date_created;
     expect(createdNote).toEqual(
       {
-        uid: 1,
+        uid: 79,
         nid: nid,
-        to_type: 'ask',
-        to_user_id: 0,
-        to_id: 0,
-        description: 'this is a test thread',
+        to_type: 'give',
+        to_user_id: 19,
+        to_id: 43,
+        description: 'Is this Mondays spot taken already?',
         date_created: date
-    
       });
   });
   // Test create note
@@ -115,29 +123,30 @@ describe('NotesService', () => {
     let date = createdNote.date_created;
     expect(createdNote).toEqual(
       {
-        uid: 1,
+        uid: 7,
         nid: nid,
         to_type: 'note',
-        to_user_id: 0,
-        to_id: 0,
-        description: 'this is a test thread',
+        to_user_id: 79,
+        to_id: 1,
+        description: 'Thank you, hows tomorrow after 5pm?  Im at 123 Main ST.',
         date_created: date
       });
   });
   // Test create note
   it('should create a response', () => {
+    service.create(testThread1);
     let createdNote = service.create(testThread2);
     let nid = createdNote.nid;
     let date = createdNote.date_created;
     expect(createdNote).toEqual(
       {
-        uid: 1,
+        uid: 79,
         nid: nid,
         to_type: 'note',
-        to_user_id: 1,
-        to_id: 0,
-        description: 'this is a test thread',
-        date_created: date
+        to_user_id: 7,
+        to_id: 2,
+        description: 'Got it, see you tomorrow around 5:30pm.',
+        date_created: date    
       });
   });
   // Test BAD request when pre-setting NID
@@ -231,12 +240,12 @@ describe('NotesService', () => {
     service.updateNote(service.notes[0].nid, updatedNote);
     let date = service.notes[0].date_created;
     expect(service.notes[0]).toEqual({
-      uid: 1,
+      uid: 71,
       nid: 0,
-      to_type: 'note',
-      to_user_id: 0,
-      to_id: 0,
-      description: 'this is another test note',
+      to_type: 'give',
+      to_user_id: 19,
+      to_id: 43,
+      description: 'This note was updated',
       date_created: date
     });
   });
@@ -273,9 +282,8 @@ describe('NotesService', () => {
 
   // Test viewNote
   it('should find one note identified by the NID', () => {
-    let index = 0;
-    let firstNote = service.viewNote(index);
-    expect(firstNote == service.notes[index]).toBeTruthy();
+    let firstNote = service.notes.find(note => note.uid === 0)
+    expect(service.viewNote[0]).toEqual(firstNote);
   });
   // Test BAD viewNote
   it('should throw 404 if no note found', () => {
@@ -287,8 +295,5 @@ describe('NotesService', () => {
     let keyNotes = service.viewNotes(null, null, null, null, 'test');
     expect(service.viewNotes(null, null, null, null, 'test')).toEqual(keyNotes);
   });
-
-
-
 
 });

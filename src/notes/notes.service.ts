@@ -12,10 +12,10 @@ export class NotesService {
 
     create(createNoteDto: CreateNoteDto): Note {
         if (createNoteDto.nid) {
-            throw new BadRequestException("Cannot Pre-Select thank TID");
+            throw new BadRequestException("Cannot Pre-Select note NID");
         }
         if (createNoteDto.date_created) {
-            throw new BadRequestException("Cannot Pre-Select thank date_created");
+            throw new BadRequestException("Cannot Pre-Select note date_created");
         }
         if ((createNoteDto.uid == null || "") || (createNoteDto.to_type == null || "") || (createNoteDto.to_user_id == null || "") || (createNoteDto.to_id == null || "") || (createNoteDto.description == null || "")) {
             throw new BadRequestException("Must enter all required fields");
@@ -123,7 +123,7 @@ export class NotesService {
 
     deleteNote(nid: number): void {
         if (!this.notes[nid]) {
-            throw new NotFoundException('Ask AID not found, cannot DELETE');
+            throw new NotFoundException('Note NID not found, cannot DELETE');
         }
         this.notes.splice(nid, 1);
     }
@@ -157,12 +157,14 @@ export class NotesService {
         return this.conversations;
     }
     viewNote(nid: number): Note {
-        const note: Note = this.notes.find(note => note.uid === nid);
-
-        if (!note) {
+        if (!this.notes[nid]) {
+            throw new NotFoundException('Note NID not found');
+        }
+        if (nid) {
+            return this.notes.find(note => note.uid === nid);
+        } else {
             throw new NotFoundException('Note Not Found');
         }
-        return note;
     }
 
 }
