@@ -176,7 +176,7 @@ describe('ThanksService', () => {
         date_created: date,
       },{
         uid: 0,
-        tid: 11,
+        tid: 1,
         thank_to: 0,
         description: "This is a very grateful test thank",
         date_created: date2,    
