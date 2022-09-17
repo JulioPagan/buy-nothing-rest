@@ -165,10 +165,23 @@ describe('ThanksService', () => {
 
   // Test findAllForUser
   it('should find thanks for user', () => {
-    console.log(service.findAllForUser(0));
-    let filteredSearch = service.thanks.filter(thank => { 
-      return (thank.thank_to == 0)});
-    expect(service.findAllForUser(0)).toEqual(filteredSearch);
+    let date = service.thanks[0].date_created;
+    let date2 = service.thanks[1].date_created;
+    expect(service.findAllForUser(0)).toEqual(
+      [{    
+        uid: 0,
+        tid: 0,
+        thank_to: 0,
+        description: "This is a test thank",
+        date_created: date,
+      },{
+        uid: 0,
+        tid: 11,
+        thank_to: 0,
+        description: "This is a very grateful test thank",
+        date_created: date2,    
+      }]
+    );
   });
   // Test findAllForUser
   it('should throw 404 if no thanks for user found', () => {

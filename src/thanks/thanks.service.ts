@@ -67,12 +67,12 @@ export class ThanksService {
         return thank;
     }
     findAllForUser(uid: number): Thank[] {
-        if (uid) {
+        if (uid != null) {
             return this.thanks.filter(thank => { 
                 return (thank.thank_to == uid);
             });
         } else {
-            throw new BadRequestException('NO thanks found for the specified user');
+            throw new NotFoundException('NO thanks found for the specified user');
         };
     }
     searchThanks(key?: string, start_date?: Date, end_date?: Date): Thank[] {
