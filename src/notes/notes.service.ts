@@ -6,8 +6,8 @@ import { NotesConversation } from 'src/interfaces/notes.conversation.interface';
 
 @Injectable()
 export class NotesService {
-    public readonly notes: Note[] = [];
-    public readonly conversations: NotesConversation[] = [];
+    public notes: Note[] = [];
+    public conversations: NotesConversation[] = [];
     public counter: number = 0;
 
     create(createNoteDto: CreateNoteDto): Note {
@@ -131,29 +131,25 @@ export class NotesService {
     viewNotes(c_by?: number, v_by?: number, type?: string, agid?: number, key?: string, start_date?: Date, end_date?: Date): Note[] | NotesConversation[] {
         // Process type, agid and v_by
         if (c_by) {
-            if (v_by) {
-                // process both c_by && v_by
-            }
             return this.conversations.filter(convo => { 
                 return convo.uid == c_by;
             });
         } else if (v_by) {
+            if (type) {
+                let filteredSearch = this.conversations.filter(convo => {(convo.source_id == agid) && (convo[0].notes[0].to_type == type)});
+                if (filteredSearch.length == 0){
+                    throw new NotFoundException("No conversation found for the AGID")
+                }
+            }
+
             return this.conversations.map(convo => {
                 convo.conversations = convo.conversations.filter(element => element.with_uid == v_by)
                 return convo;
             })
         } else if (key) {
-            if (start_date) {
-
-            } else if (end_date) {
-
-            } else if (start_date && end_date) {
-
-            }
             return this.notes.filter(note => { 
                 return note.description.includes(key.toLowerCase()) });
         }
-        
         return this.conversations;
     }
     viewNote(nid: number): Note {

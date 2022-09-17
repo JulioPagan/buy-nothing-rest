@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AccountsService } from '../accounts/accounts.service';
+import { NotesService } from '../notes/notes.service';
 import { CreateAskDto } from 'src/dto/create-ask.dto';
 import { Ask } from 'src/interfaces/ask.interface';
 
@@ -13,7 +14,7 @@ export class AsksService {
         2: "CSR"
     };
 
-    constructor (private accountsService: AccountsService){}
+    constructor (private accountsService: AccountsService, private notesService: NotesService){}
 
     create(createAskDto: CreateAskDto): Ask {
         if (createAskDto.aid) {
@@ -71,6 +72,7 @@ export class AsksService {
             throw new NotFoundException('Account UID invalid, cannot DELETE');
         }
         this.asks.splice(aid, 1);
+        this.notesService.conversations = this.notesService.conversations.filter(convo => convo.source_id != aid);
     }
     // REVIEW AND FIX
     getMyAsks(uid: number, is_active?: string): Ask[] {
