@@ -165,7 +165,7 @@ describe('GivesService', () => {
   });
   // Test deactivate
   it('should throw error if gid not found', () => {
-    expect(service.deactivateGive(0, 9)).toThrow(NotFoundException);
+    expect(() => {service.deactivateGive(0, 9)}).toThrow(NotFoundException);
   });
   // Test deactivate
   it('should throw error if uid not found', () => {
@@ -191,17 +191,17 @@ describe('GivesService', () => {
   });
   // Test BAD request 
   it('should throw error if GID not found', () => {
-    expect(service.update(0, 9, testUpdateGive)).toThrow(NotFoundException);
+    expect(() => {service.update(0, 9, testUpdateGive)}).toThrow(NotFoundException);
   });
   // Test BAD request 
   it('should throw error if UID not found', () => {
-    expect(service.update(9, 0, testUpdateGive)).toThrow(NotFoundException);
+    expect(() => {service.update(9, 0, testUpdateGive)}).toThrow(NotFoundException);
   });
   // Test BAD request 
   it('should throw 400 if trying to update inactive give', () => {
     expect(() => {
       service.deactivateGive(service.gives[0].uid, service.gives[0].gid)
-      service.update(service.gives[0].uid, service.gives[0].gid, testUpdateGive)}).toThrow(NotFoundException);
+      service.update(service.gives[0].uid, service.gives[0].gid, testUpdateGive)}).toThrow(BadRequestException);
   });
 
 
@@ -219,11 +219,11 @@ describe('GivesService', () => {
   });
   // Test BAD delete
   it('should to throw error if gid is not found', () => {
-    expect(service.delete(0, 9)).toThrow(NotFoundException);
+    expect(() => service.delete(0, 9)).toThrow(NotFoundException);
   });
   // Test BAD delete
   it('should to throw error if uid is not found', () => {
-    expect(service.delete(9, 0)).toThrow(NotFoundException);
+    expect(() => service.delete(9, 0)).toThrow(NotFoundException);
   });
   
 
@@ -250,7 +250,7 @@ describe('GivesService', () => {
   });
   // TO-DO: Test view my gives
   it('should throw error for invalid uid', () => {
-    expect(service.getMyGives(null)).toThrow(NotFoundException);
+    expect(() => service.getMyGives(null)).toThrow(NotFoundException);
   });
 
 
@@ -279,8 +279,32 @@ describe('GivesService', () => {
   // Test viewing as RU
   it('should find gives visible to user', () => {
     // User #1 is a Regular User (RU)
-    let visibleGives = service.findAll(1);
-    expect(() => {service.findAll(1)}).toEqual(visibleGives);
+    let date = service.gives[0].date_created;
+    let date2 = service.gives[0].date_created;
+    expect(service.findAll(0)).toEqual([    
+      {
+      uid: 0,
+      gid: 0,
+      type: "gift",
+      description: "This is a test gift",
+      start_date: "2022-08-01",
+      end_date: null,
+      extra_zip: null,
+      is_active: true,
+      date_created: date
+      },
+      {
+      uid: 0,
+      gid: 1,
+      type: "service",
+      description: "This is a test service",
+      start_date: "2022-08-01",
+      end_date: null,
+      extra_zip: null,
+      is_active: true,
+      date_created: date2
+      }
+  ]);
   });
   // BAD request with no user specified
   it('should throw error if no user is specified', () => {

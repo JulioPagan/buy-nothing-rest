@@ -261,8 +261,31 @@ describe('AsksService', () => {
   // Test viewing as RU
   it('should find asks visible to user', () => {
     // User #1 is a Regular User (RU)
-    let visibleAsks = service.findAll(1);
-    expect(() => {service.findAll(1)}).toEqual(visibleAsks);
+    let date = service.asks[0].date_created;
+    let date2 = service.asks[1].date_created;
+    expect(service.findAll(0)).toEqual(
+      [{    
+        uid: 0,
+        aid: 0,
+        type: "gift",
+        description: "This is a test gift",
+        start_date: "2022-08-01",
+        end_date: null,
+        extra_zip: null,
+        is_active: true,
+        date_created: date
+      }, {
+        uid: 0,
+        aid: 1,
+        type: "service",
+        description: "This is a test service",
+        start_date: "2022-08-01",
+        end_date: null,
+        extra_zip: null,
+        is_active: true,
+        date_created: date2
+      }]
+    )
   });
   // BAD request with no user specified
   it('should throw error if no user is specified', () => {

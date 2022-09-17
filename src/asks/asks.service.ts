@@ -97,8 +97,7 @@ export class AsksService {
     }
     // REVIEW AND FIX
     findAll(v_by: number, is_active?): Ask[] {
-        // TO-DO: Process is_active
-        if (v_by) {
+        if (v_by != null) {
             // CSR account returns all asks
             const Actor = this.Actors[v_by];
             if (Actor === "CSR") {
