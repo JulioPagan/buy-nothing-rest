@@ -1,11 +1,13 @@
-$ sudo apt update
-$ sudo apt upgrade
-$ sudo apt install npm
-$ npm install
+#!/bin/bash
 
-$ npm run test
+sudo apt update
+sudo apt upgrade
+sudo apt install npm
+npm install
 
-$ npm run test:cov
+npm run test
+
+npm run test:cov
 
 
-$ npm run start
+npm run start
