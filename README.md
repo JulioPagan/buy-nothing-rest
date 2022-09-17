@@ -37,7 +37,8 @@ $ npm run test
 $ npm run test:cov
 
 # navigate to the test coverage report
-$ cd coverage/lcov-report/index.html
+$ cd coverage/lcov-report/
+# open the index.html file to see the coverage report on the browser
 ```
 
 
