@@ -19,6 +19,7 @@ $ ./run.sh
 $ sudo apt update
 $ sudo apt upgrade
 $ sudo apt install npm
+$ sudo apt install nodejs
 (you will be prompted to type 'y' and press 'enter' to continue)
 $ npm install
 

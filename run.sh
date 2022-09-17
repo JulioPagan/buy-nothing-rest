@@ -3,6 +3,7 @@
 sudo apt update
 sudo apt upgrade
 sudo apt install npm
+sudo apt install nodejs
 npm install
 
 npm run test
