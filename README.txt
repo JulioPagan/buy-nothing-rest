@@ -18,10 +18,12 @@ $ ./run.sh
 
 $ sudo apt update
 $ sudo apt upgrade
-$ sudo apt install npm
+$ sudo snap install curl
+$ curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 $ sudo apt install nodejs
-(you will be prompted to type 'y' and press 'enter' to continue)
+$ sudo apt install npm
 $ npm install
+(you will be prompted to type 'y' and press 'enter' to continue)
 
 
 ## Test
