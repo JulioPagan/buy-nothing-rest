@@ -1,11 +1,23 @@
 export interface ReportByZip {
     rid: number;
     name: string;
-    c_by: number;
+    c_by: number|""|null;
     v_by: number; 
-    start_date: string;
-    end_date: string;
+    start_date: Date|""|null;
+    end_date: Date|""|null;
     asks: number;
     gives: number;
-    detail: [] | [{}]
+    detail: {
+        zip: string,
+        asks: {
+            total: number,
+            active: number,
+            inactive: number
+        },
+        gives: {
+            total: number,
+            active: number,
+            inactive: number
+        }
+    } []
 }

@@ -1,5 +1,6 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { NotesService } from '../notes/notes.service';
 import { AccountsService } from '../accounts/accounts.service';
 import { AsksService } from './asks.service';
 
@@ -54,7 +55,7 @@ describe('AsksService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AsksService, AccountsService],
+      providers: [AsksService, AccountsService, NotesService],
     }).compile();
 
     service = module.get<AsksService>(AsksService);

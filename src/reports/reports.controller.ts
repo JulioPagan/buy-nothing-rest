@@ -13,7 +13,7 @@ export class ReportsController {
     viewOneReport(
         @Param() param: {rid: string},
         @Query() query?: { c_by?: string, v_by?: string, start_date?: Date, end_date?: Date}) {
-        return this.reportsService.findOne(parseInt(param.rid), parseInt(query.c_by), parseInt(query.v_by), query.start_date, query.end_date);
+        return this.reportsService.findReport(parseInt(param.rid), parseInt(query.c_by), parseInt(query.v_by), query.start_date, query.end_date);
     }
 
 }
